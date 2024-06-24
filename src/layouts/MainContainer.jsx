@@ -8,7 +8,7 @@ export default function MainContainer() {
       <Sidebar />
       <div className="ml-[260px] w-full shadow">
         <TopNav />
-        <div className="bg-white mt-[80px] mx-4 h-full scroll-smooth">
+        <div className="mt-[80px] mx-4 bg-white h-full scroll-smooth border border-red-400">
           <Outlet />
         </div>
       </div>
