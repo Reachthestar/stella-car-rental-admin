@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import Avatar from '../components/Avatar';
+import { Link } from "react-router-dom";
+import Avatar from "../components/Avatar";
 
 export default function TopNav() {
   return (

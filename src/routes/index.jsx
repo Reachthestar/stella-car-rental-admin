@@ -1,34 +1,34 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
-import Bookings from '../pages/Bookings';
-import Settings from '../pages/Settings';
-import MainContainer from '../layouts/MainContainer';
-import Payments from '../pages/Payments';
-import Cars from '../pages/Cars';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import Bookings from "../pages/Bookings";
+import Settings from "../pages/Settings";
+import MainContainer from "../layouts/MainContainer";
+import Payments from "../pages/Payments";
+import Cars from "../pages/Cars";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <MainContainer />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Dashboard />,
       },
       {
-        path: '/bookings',
+        path: "/bookings",
         element: <Bookings />,
       },
       {
-        path: '/cars',
+        path: "/cars",
         element: <Cars />,
       },
       {
-        path: '/payments',
+        path: "/payments",
         element: <Payments />,
       },
       {
-        path: '/settings',
+        path: "/settings",
         element: <Settings />,
       },
     ],

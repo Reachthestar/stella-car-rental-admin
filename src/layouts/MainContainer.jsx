@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import TopNav from './TopNav';
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import TopNav from "./TopNav";
 
 export default function MainContainer() {
   return (
