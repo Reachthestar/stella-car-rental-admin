@@ -1,4 +1,4 @@
-import navLinks from '../assets/dummy-data/navLinks';
+import navLinks from '../links/navLinks';
 import { NavLink } from 'react-router-dom';
 
 export default function Sidebar() {

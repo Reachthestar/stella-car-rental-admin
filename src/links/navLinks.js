@@ -10,6 +10,11 @@ const navLinks = [
     display: 'Booking',
   },
   {
+    path: '/cars',
+    icon: 'ri-taxi-wifi-fill',
+    display: 'Cars',
+  },
+  {
     path: '/payments',
     icon: 'ri-bank-card-line',
     display: 'Payments',
