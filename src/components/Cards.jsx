@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
+import { useBooking } from "../contexts/booking-context";
+import bookingApi from "../apis/booking";
 
 function Cards() {
-  const handleCancel = (bookingId) => {
-    Swal.fire({
-      text: "Status",
-      title: `Are you sure you want to cancel this booking?`,
-      icon: "warning",
-      showCancelButton: true,
-      showConfirmButton: true,
-    });
+
+  const { allBooking, fetchBooking } = useBooking()
+
+  const handleCancel = async (bookingId) => {
+    try {
+      const result = Swal.fire({
+        text: "Status",
+        title: `Are you sure you want to cancel this booking?`,
+        icon: "warning",
+        showCancelButton: true,
+        showConfirmButton: true,
+      })
+      if ((await result).isConfirmed) {
+        await bookingApi.updateBookingStatus(bookingId, "cancelled")
+        fetchBooking()
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -30,47 +43,7 @@ function Cards() {
             <div className="p-2">Status</div>
           </div>
         </div>
-        {[
-          {
-            id: 1,
-            customer: "John",
-            car: "Toyota Prius",
-            plate: "กส 1111",
-            startDate: "24/6/2024",
-            endDate: "25/6/2024",
-            amount: "฿1000",
-            pickup: "Suvarnabhumi Airport",
-            dropoff: "Had Yai Airport",
-            time: "10:00 AM",
-            status: "Confirmed",
-          },
-          {
-            id: 2,
-            customer: "Jane",
-            car: "Honda Civic",
-            plate: "ลส 7798",
-            startDate: "23/6/2024",
-            endDate: "24/6/2024",
-            amount: "฿1200",
-            pickup: "Don Mueang Airport",
-            dropoff: "Phuket Airport",
-            time: "9:00 AM",
-            status: "Confirmed",
-          },
-          {
-            id: 3,
-            customer: "Mike",
-            car: "Ford Focus",
-            plate: "จส 4421",
-            startDate: "22/6/2024",
-            endDate: "23/6/2024",
-            amount: "฿900",
-            pickup: "Chiang Mai Airport",
-            dropoff: "Udon Thani Airport",
-            time: "8:00 AM",
-            status: "Confirmed",
-          },
-        ].map((booking) => (
+        {allBooking?.map((booking) => (
           <div
             key={booking.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"

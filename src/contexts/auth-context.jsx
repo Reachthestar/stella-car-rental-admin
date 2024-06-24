@@ -6,7 +6,7 @@ import authApi from "../apis/auth";
 const AuthContext = createContext()
 
 export default function AuthContextProvider({ children }) {
-    const [admin, setAdmin] = useState()
+    const [admin, setAdmin] = useState(null)
 
     const fetchAdmin = async () => {
         try {
@@ -35,6 +35,7 @@ export default function AuthContextProvider({ children }) {
 
     const logout = () => {
         localStorage.clear()
+        setAdmin(null)
     }
 
     return (

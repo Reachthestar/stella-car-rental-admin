@@ -1,9 +1,11 @@
 import Cards from "../components/Cards";
+import { useBooking } from "../contexts/booking-context";
 
 export default function Bookings() {
+  const { isAllBookingLoading } = useBooking()
   return (
     <div>
-      <Cards />
+      {isAllBookingLoading ? <div className="border-2 text-center">Loading...</div> : <Cards />}
     </div>
   );
 }

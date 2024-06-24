@@ -8,10 +8,10 @@ const initial_input = {
 }
 
 export default function Login() {
-    const { admin, login } = useAuth()
+    const { login } = useAuth()
     const [input, setInput] = useState(initial_input)
     const navigate = useNavigate()
-    
+
     const handleChangeInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value })
     }
