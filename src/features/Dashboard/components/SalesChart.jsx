@@ -60,7 +60,7 @@ export const data = {
 
 export default function SalesChart() {
   return (
-    <div className="p-4 bg-gray-100 rounded-xl">
+    <div className="p-4 bg-white rounded-md shadow-md">
       <div style={{ width: '600px', height: '300px' }}>
         {data ? <Bar data={data} options={options} /> : <div>Loading...</div>}
       </div>
