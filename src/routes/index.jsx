@@ -4,6 +4,7 @@ import Bookings from '../pages/Bookings';
 import Settings from '../pages/Settings';
 import MainContainer from '../layouts/MainContainer';
 import Payments from '../pages/Payments';
+import Cars from '../pages/Cars';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: '/bookings',
         element: <Bookings />,
+      },
+      {
+        path: '/cars',
+        element: <Cars />,
       },
       {
         path: '/payments',
