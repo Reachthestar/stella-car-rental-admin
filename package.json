@@ -10,11 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+
     "axios": "^1.7.2",
+
+    "@faker-js/faker": "^8.4.1",
+    "chart.js": "^4.4.3",
+
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
-    "remixicon": "^4.3.0"
+    "remixicon": "^4.3.0",
+    "sweetalert2": "^11.12.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

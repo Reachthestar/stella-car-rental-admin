@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import TopNav from './TopNav';
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import TopNav from "./TopNav";
 
 export default function MainContainer() {
   return (
@@ -8,7 +8,7 @@ export default function MainContainer() {
       <Sidebar />
       <div className="ml-[260px] w-full shadow">
         <TopNav />
-        <div className="bg-white h-full scroll-smooth">
+        <div className="mt-[80px] mx-4 bg-white h-full scroll-smooth border border-red-400">
           <Outlet />
         </div>
       </div>
