@@ -6,12 +6,7 @@ export default function Bookings() {
   const { isAllBookingLoading } = useBooking()
   return (
     <div>
-      {isAllBookingLoading ?
-        <div className="pt-5">
-          <LoadingSpinner />
-        </div>
-        :
-        <BookingCards />}
+      {isAllBookingLoading ? <LoadingSpinner /> : <BookingCards />}
     </div>
   );
 }
