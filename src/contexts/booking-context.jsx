@@ -28,7 +28,7 @@ export default function BookingContextProvider({ children }) {
                 acc.push(dataBooking)
                 return acc
             }, [])
-            setAllBooking(data.sort((a,b) => b-a))
+            setAllBooking(data.sort((a, b) => b.id - a.id))
         } catch (error) {
             console.log(error)
         } finally {
@@ -41,7 +41,7 @@ export default function BookingContextProvider({ children }) {
     }, [])
 
     return (
-        <BookingContext.Provider value={{ allBooking, isAllBookingLoading,fetchBooking }}>{children}</BookingContext.Provider>
+        <BookingContext.Provider value={{ allBooking, isAllBookingLoading, fetchBooking }}>{children}</BookingContext.Provider>
     )
 }
 
