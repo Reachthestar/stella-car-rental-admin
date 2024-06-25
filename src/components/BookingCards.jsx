@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useBooking } from "../contexts/booking-context";
 import bookingApi from "../apis/booking";
 
-function Cards() {
+function BookingCards() {
 
   const { allBooking, fetchBooking } = useBooking()
 
