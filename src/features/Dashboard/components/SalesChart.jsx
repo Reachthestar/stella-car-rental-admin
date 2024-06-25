@@ -52,8 +52,9 @@ export const data = {
   datasets: [
     {
       label: 'Monthly Sales',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100000 })),
+      backgroundColor: 'rgba(53, 162, 235, 0.8)',
+      borderRadius: '5',
     },
   ],
 };
