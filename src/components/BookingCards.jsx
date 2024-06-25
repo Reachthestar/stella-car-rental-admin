@@ -4,7 +4,10 @@ import { useBooking } from '../contexts/booking-context';
 import bookingApi from '../apis/booking';
 
 function BookingCards() {
+
+
   const { allBooking, fetchBooking } = useBooking();
+
 
   const handleCancel = async (bookingId) => {
     try {
@@ -58,9 +61,9 @@ function BookingCards() {
               <div className="p-2 h-fit">{booking.pickup}</div>
               <div className="p-2 h-fit">{booking.dropoff}</div>
               <div className="p-2 h-fit">{booking.time}</div>
-              <div className="p-2 flex flex-col items-center justify-center gap-2">
+              <div className="p-2 flex flex-col items-center justify-center gap-2 first-letter:uppercase">
                 {booking.status}
-                <button
+                <button hidden={booking.status !== 'cancelled' ? false : true}
                   onClick={() => handleCancel(booking.id)}
                   className="ml-2 bg-red-500 text-white rounded-full px-2"
                 >

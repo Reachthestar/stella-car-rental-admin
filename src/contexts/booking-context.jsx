@@ -7,7 +7,6 @@ const BookingContext = createContext()
 export default function BookingContextProvider({ children }) {
     const [allBooking, setAllBooking] = useState()
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
-
     const fetchBooking = async () => {
         try {
             const bookingRes = await bookingApi.getAllBooking()
