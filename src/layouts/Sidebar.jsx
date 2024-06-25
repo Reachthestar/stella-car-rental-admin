@@ -22,17 +22,18 @@ export default function Sidebar() {
         <div className="h-[80%]">
           <ul className="flex flex-col items-center gap-2 cursor-pointer">
             {navLinks.map((item, index) => (
-              <li
+              <NavLink
+                to={item.path}
                 key={index}
                 className="hover:bg-secondary-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50"
               >
-                <NavLink to={item.path}>
+                <li>
                   <span className="text-gray-50">
                     <i className={item.icon}></i>
                   </span>{' '}
                   {item.display}
-                </NavLink>
-              </li>
+                </li>
+              </NavLink>
             ))}
           </ul>
         </div>
