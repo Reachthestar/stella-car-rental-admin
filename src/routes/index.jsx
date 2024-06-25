@@ -9,6 +9,7 @@ import Settings from "../pages/Settings";
 import MainContainer from "../layouts/MainContainer";
 import Payments from "../pages/Payments";
 import Cars from "../pages/Cars";
+import BookingContextProvider from '../contexts/booking-context';
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookings",
-        element: <Bookings />,
+        element:
+          <BookingContextProvider>
+            <Bookings />
+          </BookingContextProvider>
+        ,
       },
       {
         path: "/cars",
@@ -38,8 +43,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-  { path: '/login', element: <Login />}
+  { path: '/login', element: <Login /> }
 ]);
 
 export default function Router() {
