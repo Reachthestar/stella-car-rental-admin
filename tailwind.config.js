@@ -6,7 +6,7 @@ export default {
       colors: {
         'primary-color': '#FF7A00',
         'secondary-color': '#1154FF',
-        'top-nav': '#f8f7f0',
+        'bg-children-container': '#f0f2f5',
         'side-bar': '#191919',
         'body-bg': '#0b0c28',
         'card-03-bg': '#725cff',
