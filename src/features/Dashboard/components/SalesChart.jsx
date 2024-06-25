@@ -52,16 +52,19 @@ export const data = {
   datasets: [
     {
       label: 'Monthly Sales',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      data: labels.map(() => faker.datatype.number({ min: 0, max: 100000 })),
+      backgroundColor: 'rgba(53, 162, 235, 0.8)',
+      borderRadius: '5',
     },
   ],
 };
 
 export default function SalesChart() {
   return (
-    <div>
-      {data ? <Bar data={data} options={options} /> : <div>Loading...</div>}
+    <div className="p-4 bg-white rounded-md shadow-md">
+      <div style={{ width: '600px', height: '300px' }}>
+        {data ? <Bar data={data} options={options} /> : <div>Loading...</div>}
+      </div>
     </div>
   );
 }

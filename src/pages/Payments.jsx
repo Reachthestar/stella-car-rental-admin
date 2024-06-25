@@ -1,3 +1,9 @@
+import PaymentCards from "../components/PaymentCards";
+
 export default function Payments() {
-  return <div>Payments</div>;
+  return (
+    <div>
+      <PaymentCards />
+    </div>
+  );
 }
