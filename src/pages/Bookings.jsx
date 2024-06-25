@@ -1,9 +1,9 @@
-import Cards from "../components/Cards";
+import BookingCards from "../components/BookingCards";
 
 export default function Bookings() {
   return (
     <div>
-      <Cards />
+      <BookingCards />
     </div>
   );
 }
