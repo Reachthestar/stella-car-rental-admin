@@ -1,3 +1,9 @@
+import CarsCards from "../components/CarsCards";
+
 export default function Cars() {
-  return <div className="">Cars</div>;
+  return (
+    <div className="">
+      <CarsCards />
+    </div>
+  );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 
-function Cards() {
+function BookingCards() {
   const handleCancel = (bookingId) => {
     Swal.fire({
       text: "Status",
@@ -103,4 +103,4 @@ function Cards() {
   );
 }
 
-export default Cards;
+export default BookingCards;
