@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/auth-context"
 import { useNavigate } from "react-router-dom"
+import LoadingSpinner from "../components/LoadingSpinner"
 
 const initial_input = {
     username: '',
@@ -30,6 +31,7 @@ export default function Login() {
 
     return (
         <>
+            <LoadingSpinner/>
             <form className="flex flex-col gap-2 items-center p-4" onSubmit={handleSubmitLogin}>
                 <input className="border-2 w-[200px]" placeholder="Username" name="username" value={input.username} onChange={handleChangeInput} />
                 <input className="border-2 w-[200px]" placeholder="Password" name="password" value={input.password} onChange={handleChangeInput} />
