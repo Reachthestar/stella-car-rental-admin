@@ -1,11 +1,14 @@
 import AuthContextProvider from './contexts/auth-context';
+import CarsContextProvider from './contexts/car-context';
 import Router from './routes/index';
 
 function App() {
   return (
     <>
       <AuthContextProvider>
-        <Router />
+        <CarsContextProvider>
+          <Router />
+        </CarsContextProvider>
       </AuthContextProvider>
     </>
   );
