@@ -26,7 +26,6 @@ export default function CarsContextProvider({ children }) {
                 acc.push(carsData)
                 return acc
             }, [])
-            console.log(data)
             setAllCars(data)
         } catch (error) {
             console.log(error)

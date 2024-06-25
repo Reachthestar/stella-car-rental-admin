@@ -32,11 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/cars",
-        element:
-          <CarsContextProvider>
-            <Cars />
-          </CarsContextProvider>
-        ,
+        element:<Cars />,
       },
       {
         path: "/payments",
