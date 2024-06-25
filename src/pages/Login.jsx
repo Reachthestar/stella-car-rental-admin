@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/auth-context"
 import { useNavigate } from "react-router-dom"
+import LoadingSpinner from "../components/LoadingSpinner"
 
 const initial_input = {
     username: '',
