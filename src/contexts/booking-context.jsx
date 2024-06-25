@@ -28,7 +28,7 @@ export default function BookingContextProvider({ children }) {
                 acc.push(dataBooking)
                 return acc
             }, [])
-            setAllBooking(data)
+            setAllBooking(data.sort((a,b) => b-a))
         } catch (error) {
             console.log(error)
         } finally {
