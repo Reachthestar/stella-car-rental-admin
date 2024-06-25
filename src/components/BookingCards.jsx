@@ -1,27 +1,26 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { useBooking } from "../contexts/booking-context";
-import bookingApi from "../apis/booking";
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import { useBooking } from '../contexts/booking-context';
+import bookingApi from '../apis/booking';
 
-function Cards() {
-
-  const { allBooking, fetchBooking } = useBooking()
+function BookingCards() {
+  const { allBooking, fetchBooking } = useBooking();
 
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
-        text: "Status",
+        text: 'Status',
         title: `Are you sure you want to cancel this booking?`,
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
         showConfirmButton: true,
-      })
+      });
       if ((await result).isConfirmed) {
-        await bookingApi.updateBookingStatus(bookingId, "cancelled")
-        fetchBooking()
+        await bookingApi.updateBookingStatus(bookingId, 'cancelled');
+        fetchBooking();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 

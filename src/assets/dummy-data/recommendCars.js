@@ -28,7 +28,7 @@ const recommendCars = [
     percentage: '74',
   },
   {
-    id: '03',
+    id: '04',
     carName: 'Porsche 911 Carrera',
     rentPrice: 28,
     retweet: '130',
@@ -36,7 +36,7 @@ const recommendCars = [
     percentage: '74',
   },
   {
-    id: '01',
+    id: '05',
     carName: 'Mini Cooper',
     rentPrice: 32,
     retweet: '132',
@@ -44,7 +44,7 @@ const recommendCars = [
     percentage: '74',
   },
   {
-    id: '02',
+    id: '06',
     carName: 'Porsche 911 Carrera',
     rentPrice: 28,
     retweet: '130',
@@ -52,7 +52,7 @@ const recommendCars = [
     percentage: '74',
   },
   {
-    id: '03',
+    id: '07',
     carName: 'Porsche 911 Carrera',
     rentPrice: 28,
     retweet: '130',
@@ -60,7 +60,7 @@ const recommendCars = [
     percentage: '74',
   },
   {
-    id: '03',
+    id: '08',
     carName: 'Porsche 911 Carrera',
     rentPrice: 28,
     retweet: '130',
