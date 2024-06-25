@@ -48,17 +48,17 @@ function BookingCards() {
             key={booking.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
           >
-            <div className="grid grid-cols-11 text-center">
-              <div className="p-2">{booking.id}</div>
-              <div className="p-2">{booking.customer}</div>
-              <div className="p-2">{booking.car}</div>
-              <div className="p-2">{booking.plate}</div>
-              <div className="p-2">{booking.startDate}</div>
-              <div className="p-2">{booking.endDate}</div>
-              <div className="p-2">{booking.amount}</div>
-              <div className="p-2">{booking.pickup}</div>
-              <div className="p-2">{booking.dropoff}</div>
-              <div className="p-2">{booking.time}</div>
+            <div className="grid grid-cols-11 text-center items-center">
+              <div className="p-2 h-fit">{booking.id}</div>
+              <div className="p-2 h-fit">{booking.customer}</div>
+              <div className="p-2 h-fit">{booking.car}</div>
+              <div className="p-2 h-fit">{booking.plate}</div>
+              <div className="p-2 h-fit">{booking.startDate}</div>
+              <div className="p-2 h-fit">{booking.endDate}</div>
+              <div className="p-2 h-fit">{booking.amount}</div>
+              <div className="p-2 h-fit">{booking.pickup}</div>
+              <div className="p-2 h-fit">{booking.dropoff}</div>
+              <div className="p-2 h-fit">{booking.time}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
                 {booking.status}
                 <button
