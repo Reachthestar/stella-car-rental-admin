@@ -4,7 +4,11 @@ import { useBooking } from '../contexts/booking-context';
 import bookingApi from '../apis/booking';
 
 function BookingCards() {
-  const { allBooking, fetchBooking } = useBooking()
+
+
+  const { allBooking, fetchBooking } = useBooking();
+
+
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
