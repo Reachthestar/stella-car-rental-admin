@@ -1,52 +1,52 @@
-import React from "react";
-import Swal from "sweetalert2";
-import { useCars } from "../contexts/car-context";
-import carsApi from "../apis/cars";
+import React from 'react';
+import Swal from 'sweetalert2';
+import { useCars } from '../contexts/car-context';
+import carsApi from '../apis/cars';
 
 function CarsCards() {
-  const { allCar, fetchCars } = useCars()
+  const { allCar, fetchCars } = useCars();
 
   const handleMaintenance = (carId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to put this car under maintenance?`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            await carsApi.updateCar(carId, { status: 'maintenance' })
+            await carsApi.updateCar(carId, { status: 'maintenance' });
           } catch (error) {
-            console.log(error)
+            console.log(error);
           } finally {
             fetchCars();
           }
-        }
-        run()
+        };
+        run();
       }
-    })
+    });
   };
 
   const handleMakeAvailable = (carId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to mark this car as available?`,
-      icon: "info",
+      icon: 'info',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            await carsApi.updateCar(carId, { status: 'available' })
+            await carsApi.updateCar(carId, { status: 'available' });
           } catch (error) {
-            console.log(error)
+            console.log(error);
           } finally {
             fetchCars();
           }
-        }
+        };
         run();
       }
     });
@@ -73,7 +73,6 @@ function CarsCards() {
         </div>
 
         {allCar?.map((car) => (
-
           <div
             key={car.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
@@ -90,7 +89,7 @@ function CarsCards() {
               <div className="p-2 flex flex-col items-center justify-center gap-2">
                 {car.status}
                 <div className="flex space-x-2">
-                  {car.status === "Available" && (
+                  {car.status === 'Available' && (
                     <button
                       onClick={() => handleMaintenance(car.id)}
                       className="bg-red-500 text-white rounded-full px-2"
@@ -98,7 +97,7 @@ function CarsCards() {
                       X
                     </button>
                   )}
-                  {car.status === "Maintenance" && (
+                  {car.status === 'Maintenance' && (
                     <button
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full px-2"
