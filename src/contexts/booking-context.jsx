@@ -8,6 +8,7 @@ export default function BookingContextProvider({ children }) {
     const [allBooking, setAllBooking] = useState(null)
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
     const [monthlyBookings, setMonthlyBookings] = useState(null)
+    const [bookingBrand, setBookingBrand] = useState(null)
     const today = new Date();
     const currentMonth = today.getMonth() + 1
 
@@ -18,7 +19,7 @@ export default function BookingContextProvider({ children }) {
                 const dataBooking = {
                     id: item.bookingId,
                     customer: item.Customer.firstName,
-                    car: item.Car.CarModel.brand + ' ' + item.Car.CarModel.model,
+                    car: item.Car.CarModel.brand + ' ' + item.Car.CarModel.model + ' ' + item.Car.CarModel.color,
                     plate: item.Car.licensePlate,
                     startDate: item.startDate.split('T')[0].split('-').join('/'),
                     endDate: item.endDate.split('T')[0].split('-').join('/'),
@@ -32,6 +33,18 @@ export default function BookingContextProvider({ children }) {
                 acc.push(dataBooking)
                 return acc
             }, [])
+            const bookingBrandData = data.reduce((acc, item) => {
+                if (acc[item.car]) {
+                    acc[item.car]++;
+                } else {
+                    acc[item.car] = 1;
+                }
+                return acc;
+            }, {});
+            const bookingBrandDataArray = Object.keys(bookingBrandData).map(key => {
+                return { brand: key, count: bookingBrandData[key] };
+            });
+            setBookingBrand(bookingBrandDataArray)
             setMonthlyBookings(data.filter(item => parseInt(item.createdAt.split('-')[1]) === currentMonth))
             setAllBooking(data.sort((a, b) => b.id - a.id))
         } catch (error) {
@@ -45,7 +58,15 @@ export default function BookingContextProvider({ children }) {
     }, [])
 
     return (
-        <BookingContext.Provider value={{ allBooking, isAllBookingLoading, fetchBooking, monthlyBookings }}>{children}</BookingContext.Provider>
+        <BookingContext.Provider value={{
+            allBooking,
+            isAllBookingLoading,
+            fetchBooking,
+            monthlyBookings,
+            bookingBrand
+        }}>
+            {children}
+        </BookingContext.Provider>
     )
 }
 
