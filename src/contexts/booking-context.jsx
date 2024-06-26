@@ -9,6 +9,7 @@ export default function BookingContextProvider({ children }) {
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
     const [monthlyBookings, setMonthlyBookings] = useState(null)
     const [bookingBrand, setBookingBrand] = useState(null)
+    const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null)
     const today = new Date();
     const currentMonth = today.getMonth() + 1
 
@@ -33,6 +34,8 @@ export default function BookingContextProvider({ children }) {
                 acc.push(dataBooking)
                 return acc
             }, [])
+            setMonthlyBookings(data.filter(item => parseInt(item.createdAt.split('-')[1]) === currentMonth))
+            setAllBooking(data.sort((a, b) => b.id - a.id))
             const bookingBrandData = data.reduce((acc, item) => {
                 if (acc[item.car]) {
                     acc[item.car]++;
@@ -45,8 +48,16 @@ export default function BookingContextProvider({ children }) {
                 return { brand: key, count: bookingBrandData[key] };
             });
             setBookingBrand(bookingBrandDataArray)
-            setMonthlyBookings(data.filter(item => parseInt(item.createdAt.split('-')[1]) === currentMonth))
-            setAllBooking(data.sort((a, b) => b.id - a.id))
+
+            console.log(bookingRes.data.message)
+            const totalPaymentPerMonth = bookingRes.data.message.reduce((acc, item) => {
+                const month = new Date(item.createdAt).getMonth(); // สมมติว่า item.date เป็นวันที่ในรูปแบบ string
+                acc[month] = (acc[month] || 0) + item.totalAmount;
+                return acc;
+            }, Array(12).fill(0)); // เริ่มต้น array ด้วยค่า 0 สำหรับแต่ละเดือน (12 เดือน)
+
+            setTotalPaymentPerMonth(totalPaymentPerMonth);
+
         } catch (error) {
             console.log(error)
         } finally {
@@ -63,7 +74,8 @@ export default function BookingContextProvider({ children }) {
             isAllBookingLoading,
             fetchBooking,
             monthlyBookings,
-            bookingBrand
+            bookingBrand,
+            totalPaymentPerMonth
         }}>
             {children}
         </BookingContext.Provider>
