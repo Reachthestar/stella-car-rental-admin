@@ -1,11 +1,12 @@
 import { useBooking } from "../contexts/booking-context";
 import BookingCards from "../components/BookingCards";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Bookings() {
   const { isAllBookingLoading } = useBooking()
   return (
     <div>
-      {isAllBookingLoading ? <div className="border-2 text-center">Loading...</div> : <BookingCards/>}
+      {isAllBookingLoading ? <LoadingSpinner /> : <BookingCards />}
     </div>
   );
 }

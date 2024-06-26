@@ -10,6 +10,7 @@ import MainContainer from "../layouts/MainContainer";
 import Payments from "../pages/Payments";
 import Cars from "../pages/Cars";
 import BookingContextProvider from '../contexts/booking-context';
+import CarsContextProvider from '../contexts/car-context';
 
 
 const router = createBrowserRouter([
@@ -23,15 +24,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookings",
-        element:
-          <BookingContextProvider>
-            <Bookings />
-          </BookingContextProvider>
-        ,
+        element:<Bookings />,
       },
       {
         path: "/cars",
-        element: <Cars />,
+        element:<Cars />,
       },
       {
         path: "/payments",

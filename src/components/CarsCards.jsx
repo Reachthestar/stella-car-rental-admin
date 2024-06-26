@@ -1,7 +1,11 @@
 import React from "react";
 import Swal from "sweetalert2";
+import { useCars } from "../contexts/car-context";
+import carsApi from "../apis/cars";
 
 function CarsCards() {
+  const { allCar, fetchCars } = useCars()
+
   const handleMaintenance = (carId) => {
     Swal.fire({
       text: "Status",
@@ -9,7 +13,20 @@ function CarsCards() {
       icon: "warning",
       showCancelButton: true,
       showConfirmButton: true,
-    });
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const run = async () => {
+          try {
+            await carsApi.updateCar(carId, { status: 'maintenance' })
+          } catch (error) {
+            console.log(error)
+          } finally {
+            fetchCars();
+          }
+        }
+        run()
+      }
+    })
   };
 
   const handleMakeAvailable = (carId) => {
@@ -21,8 +38,16 @@ function CarsCards() {
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        // Implement the logic to mark the car as available here
-        console.log(`Car ID ${carId} marked as available.`);
+        const run = async () => {
+          try {
+            await carsApi.updateCar(carId, { status: 'available' })
+          } catch (error) {
+            console.log(error)
+          } finally {
+            fetchCars();
+          }
+        }
+        run();
       }
     });
   };
@@ -46,44 +71,9 @@ function CarsCards() {
             <div className="p-2">Status</div>
           </div>
         </div>
-        {[
-          {
-            id: 1,
-            brand: "Toyota",
-            model: "Prius",
-            color: "White",
-            plate: "กส 1111",
-            region: "Central",
-            airport: "Suvarnabhumi Airport",
-            useDate: "24/6/2024",
-            updatedAt: "20/6/2024",
-            status: "Available",
-          },
-          {
-            id: 2,
-            brand: "Honda",
-            model: "Civic",
-            color: "Black",
-            plate: "ลส 7798",
-            region: "Southern",
-            airport: "Phuket Airport",
-            useDate: "23/6/2024",
-            updatedAt: "19/6/2024",
-            status: "Maintenance",
-          },
-          {
-            id: 3,
-            brand: "Ford",
-            model: "Focus",
-            color: "Blue",
-            plate: "จส 4421",
-            region: "Northern",
-            airport: "Chiang Mai Airport",
-            useDate: "22/6/2024",
-            updatedAt: "18/6/2024",
-            status: "Rented",
-          },
-        ].map((car) => (
+
+        {allCar?.map((car) => (
+
           <div
             key={car.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"

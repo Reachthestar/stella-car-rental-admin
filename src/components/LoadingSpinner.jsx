@@ -1,8 +1,8 @@
 
-const LoadingSpinner = ({w='w-10',h='h-10'}) => {
+const LoadingSpinner = ({w='w-12',h='h-12'}) => {
   return (
-    <div className="flex justify-center items-center">
-      <div className={`${w} ${h} border-4 border-dashed rounded-full animate-spin border-blue-500`}></div>
+    <div className="flex justify-center items-center w-fit mx-auto">
+      <div className={`${w} ${h} border-[6px] border-dashed rounded-full animate-spin border-blue-500`}></div>
     </div>
   );
 };
