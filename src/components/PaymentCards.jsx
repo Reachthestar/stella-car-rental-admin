@@ -21,6 +21,9 @@ function PaymentsCards() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      <h1 className="text-xl font-bold text-decoration-line: underline">
+        Payment
+      </h1>
       <div className="grid grid-cols-1 gap-4 w-full">
         <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
           <div className="grid grid-cols-6 text-center font-bold">

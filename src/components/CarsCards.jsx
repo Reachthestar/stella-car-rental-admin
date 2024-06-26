@@ -54,11 +54,15 @@ function CarsCards() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      <h1 className="text-xl font-bold text-decoration-line: underline">
+        Cars
+      </h1>
       <div className="grid grid-cols-1 gap-4 w-full">
         <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
-          <div className="grid grid-cols-8 text-center font-bold">
+          <div className="grid grid-cols-9 text-center font-bold">
             <div className="p-2">Car Brand</div>
             <div className="p-2">Car Model</div>
+            <div className="p-2">Color</div>
             <div className="p-2">License Plate</div>
             <div className="p-2">Region</div>
             <div className="p-2">Airport</div>
@@ -67,14 +71,17 @@ function CarsCards() {
             <div className="p-2">Status</div>
           </div>
         </div>
+
         {allCar?.map((car) => (
+
           <div
             key={car.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
           >
-            <div className="grid grid-cols-8 text-center">
+            <div className="grid grid-cols-9 text-center">
               <div className="p-2">{car.brand}</div>
               <div className="p-2">{car.model}</div>
+              <div className="p-2">{car.color}</div>
               <div className="p-2">{car.plate}</div>
               <div className="p-2">{car.region}</div>
               <div className="p-2">{car.airport}</div>

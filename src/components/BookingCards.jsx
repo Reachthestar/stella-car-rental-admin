@@ -6,6 +6,7 @@ import bookingApi from '../apis/booking';
 function BookingCards() {
 
 
+
   const { allBooking, fetchBooking } = useBooking();
 
 
@@ -19,7 +20,9 @@ function BookingCards() {
         showConfirmButton: true,
       });
       if ((await result).isConfirmed) {
+
         await bookingApi.updateBookingStatus(bookingId, 'cancelled');
+
         fetchBooking();
       }
     } catch (error) {
@@ -29,6 +32,9 @@ function BookingCards() {
 
   return (
     <div className="w-full flex flex-col items-center">
+      <h1 className="text-xl font-bold text-decoration-line: underline">
+        Booking
+      </h1>
       <div className="grid grid-cols-1 gap-4 w-full">
         <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
           <div className="grid grid-cols-11 text-center font-bold">
