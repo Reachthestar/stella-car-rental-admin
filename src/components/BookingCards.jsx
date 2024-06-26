@@ -4,8 +4,7 @@ import { useBooking } from "../contexts/booking-context";
 import bookingApi from "../apis/booking";
 
 function BookingCards() {
-
-  const { allBooking, fetchBooking } = useBooking()
+  const { allBooking, fetchBooking } = useBooking();
 
   const handleCancel = async (bookingId) => {
     try {
@@ -15,18 +14,21 @@ function BookingCards() {
         icon: "warning",
         showCancelButton: true,
         showConfirmButton: true,
-      })
+      });
       if ((await result).isConfirmed) {
-        await bookingApi.updateBookingStatus(bookingId, "cancelled")
-        fetchBooking()
+        await bookingApi.updateBookingStatus(bookingId, "cancelled");
+        fetchBooking();
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   return (
     <div className="w-full flex flex-col items-center">
+      <h1 className="text-xl font-bold text-decoration-line: underline">
+        Booking
+      </h1>
       <div className="grid grid-cols-1 gap-4 w-full">
         <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
           <div className="grid grid-cols-11 text-center font-bold">
