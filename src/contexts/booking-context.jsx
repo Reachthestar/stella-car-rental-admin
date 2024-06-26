@@ -12,6 +12,7 @@ export default function BookingContextProvider({ children }) {
     const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null)
     const today = new Date();
     const currentMonth = today.getMonth() + 1
+    const currentYear = today.getFullYear()
 
     const fetchBooking = async () => {
         try {
@@ -75,7 +76,9 @@ export default function BookingContextProvider({ children }) {
             fetchBooking,
             monthlyBookings,
             bookingBrand,
-            totalPaymentPerMonth
+            totalPaymentPerMonth,
+            currentMonth,
+            currentYear
         }}>
             {children}
         </BookingContext.Provider>

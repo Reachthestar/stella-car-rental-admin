@@ -23,8 +23,8 @@ import { faker } from '@faker-js/faker'
 import { useBooking } from '../../../contexts/booking-context';
 
 export default function SalesChart() {
-  const {totalPaymentPerMonth} = useBooking()
-  const labels = [
+  const {totalPaymentPerMonth, currentMonth, currentYear} = useBooking()
+  const months = [
     'Jan',
     'Feb',
     'Mar',
@@ -47,7 +47,7 @@ export default function SalesChart() {
       },
       title: {
         display: true,
-        text: 'Yearly Sales',
+        text: `Yearly Sales (${currentYear})`,
       },
       scales: {
         y: {
@@ -58,10 +58,10 @@ export default function SalesChart() {
   };
 
   const data = {
-    labels,
+    labels : months.slice(0,currentMonth),
     datasets: [
       {
-        label: 'Yearly Sales',
+        label: `Monthly Sales (${currentMonth} Months)`,
         data: totalPayment,
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
