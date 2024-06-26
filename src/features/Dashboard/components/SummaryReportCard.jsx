@@ -22,15 +22,15 @@ export default function SummaryReportCard() {
         <p className="font-semibold text-2xl">{isLoading ? 'loading...' : carAvailable?.length}</p>
       </div>
       <div className="bg-card-02-bg w-full h-full rounded-md p-4 shadow-md">
-        <p>Payments</p>
+        <p>Monthly Payments</p>
         <p className="font-semibold text-2xl">{isLoading ? 'loading...' : monthlyPayments?.length}</p>
       </div>
       <div className="bg-card-03-bg w-full h-full rounded-md p-4 shadow-md">
-        <p>Bookings</p>
+        <p>Monthly Bookings</p>
         <p className="font-semibold text-2xl">{isLoading ? 'loading...' : monthlyBookings?.length}</p>
       </div>
       <div className="bg-card-04-bg w-full h-full rounded-md p-4 shadow-md">
-        <p>Customers</p>
+        <p>Total Customers</p>
         <p className="font-semibold text-2xl">{isLoading ? 'loading...' : allCustomer?.length}</p>
       </div>
     </div>
