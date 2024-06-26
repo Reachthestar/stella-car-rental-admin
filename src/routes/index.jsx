@@ -24,11 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookings",
-        element:
-          <BookingContextProvider>
-            <Bookings />
-          </BookingContextProvider>
-        ,
+        element:<Bookings />,
       },
       {
         path: "/cars",
