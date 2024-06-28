@@ -50,7 +50,6 @@ export default function BookingContextProvider({ children }) {
             });
             setBookingBrand(bookingBrandDataArray)
 
-            console.log(bookingRes.data.message)
             const totalPaymentPerMonth = bookingRes.data.message.reduce((acc, item) => {
                 const month = new Date(item.createdAt).getMonth(); // สมมติว่า item.date เป็นวันที่ในรูปแบบ string
                 acc[month] = (acc[month] || 0) + item.totalAmount;
