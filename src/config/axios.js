@@ -2,7 +2,9 @@ import axios from 'axios';
 import { getAdminToken, removeAdminToken } from '../utils/local-storage';
 
 // axios.defaults.baseURL = 'https://group-project-car-rental-beckend.vercel.app/';
+
 axios.defaults.baseURL = "http://localhost:8888"
+
 
 axios.interceptors.request.use(
   (config) => {
