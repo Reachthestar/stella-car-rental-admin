@@ -1,11 +1,13 @@
 import recommendCars from '../../../assets/dummy-data/recommendCars';
+import { useCars } from '../../../contexts/car-context';
 import CarItem from './CarItem';
 
 export default function ShowCarsCard() {
+  const {allCarModel} = useCars()
   return (
     <div className="grid grid-cols-4 gap-4">
-      {recommendCars.map((car) => (
-        <div key={car.id}>
+      {allCarModel?.map((car) => (
+        <div key={car.carModelId}>
           <CarItem car={car} />
         </div>
       ))}

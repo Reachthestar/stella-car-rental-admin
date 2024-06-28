@@ -15,15 +15,23 @@ const navLinks = [
     display: 'Cars',
   },
   {
+      
+
+    path: "/customers",
+    icon: "ri-user-search-fill",
+    display: "Customers",
+  },
+  {
     path: '/payments',
     icon: 'ri-bank-card-line',
     display: 'Payments',
   },
-  {
+
+ {
     path: '/statistics',
     icon: 'ri-line-chart-fill',
     display: 'Statistics',
-  },
+ },
   {
     path: '/settings',
     icon: 'ri-settings-2-line',

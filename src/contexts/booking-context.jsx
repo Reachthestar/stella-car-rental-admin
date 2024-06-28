@@ -12,6 +12,7 @@ export default function BookingContextProvider({ children }) {
     const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null)
     const today = new Date();
     const currentMonth = today.getMonth() + 1
+    const currentYear = today.getFullYear()
 
     const fetchBooking = async () => {
         try {
@@ -49,7 +50,6 @@ export default function BookingContextProvider({ children }) {
             });
             setBookingBrand(bookingBrandDataArray)
 
-            console.log(bookingRes.data.message)
             const totalPaymentPerMonth = bookingRes.data.message.reduce((acc, item) => {
                 const month = new Date(item.createdAt).getMonth(); // สมมติว่า item.date เป็นวันที่ในรูปแบบ string
                 acc[month] = (acc[month] || 0) + item.totalAmount;
@@ -75,7 +75,9 @@ export default function BookingContextProvider({ children }) {
             fetchBooking,
             monthlyBookings,
             bookingBrand,
-            totalPaymentPerMonth
+            totalPaymentPerMonth,
+            currentMonth,
+            currentYear
         }}>
             {children}
         </BookingContext.Provider>
