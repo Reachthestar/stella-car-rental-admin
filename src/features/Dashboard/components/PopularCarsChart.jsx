@@ -35,9 +35,12 @@ export default function PopularCarsChart() {
   };
 
   return (
-    <div className="p-2 bg-white rounded-md shadow-md">
+    <div className="p-2 bg-white rounded-md shadow-md h-full">
       <h1 className="text-center">Popular Cars</h1>
-      <div style={{ width: '500px', height: '500px' }}>
+      <div 
+      style={{ height: '500px' }}
+      className='flex items-center'
+      >
         <Doughnut data={data} />
       </div>
     </div>

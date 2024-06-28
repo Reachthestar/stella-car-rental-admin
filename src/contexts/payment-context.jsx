@@ -8,6 +8,7 @@ export default function PaymentContextProvider({ children }) {
     const [allPayment, setAllPayment] = useState()
     const [isAllPaymentLoading, setIsAllPaymentLoading] = useState(true)
     const [monthlyPayments, setMonthlyPayments] = useState(null)
+    const [allPaymentComplete , setAllPaymentComplete] = useState(null)
     const today = new Date();
     const currentMonth = today.getMonth() + 1
 
@@ -29,6 +30,7 @@ export default function PaymentContextProvider({ children }) {
             }, [])
             setMonthlyPayments(data.filter(item => parseInt(item.createdAt.split('-')[1]) === currentMonth))
             setAllPayment(data.sort((a, b) => b.bookingId - a.bookingId))
+            setAllPaymentComplete(data.filter(item => item.status === 'Complete'))
         } catch (error) {
             console.log(error)
         } finally {
@@ -41,7 +43,7 @@ export default function PaymentContextProvider({ children }) {
     }, [])
 
     return (
-        <PaymentContext.Provider value={{ allPayment, isAllPaymentLoading, monthlyPayments }}>{children}</PaymentContext.Provider>
+        <PaymentContext.Provider value={{ allPayment, isAllPaymentLoading, monthlyPayments, allPaymentComplete }}>{children}</PaymentContext.Provider>
     )
 }
 
