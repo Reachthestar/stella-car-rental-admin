@@ -13,12 +13,12 @@ export default function Dashboard() {
         <LoadingSpinner />
       ) : (
         <div className="flex flex-col gap-4">
-          <div className="flex w-full gap-4">
-            <div className=" h-[200px] flex flex-col gap-4 w-2/3">
+          <div className="flex w-full gap-4 h-fit">
+            <div className="flex flex-col gap-4 w-2/3">
               <SummaryReportCard />
               <SalesChart />
             </div>
-            <div className="flex-1 justify-between items-center w-1/3">
+            <div className="flex-1 justify-between items-center w-1/3 h-[100%]">
               <PopularCarsChart />
             </div>
           </div>
