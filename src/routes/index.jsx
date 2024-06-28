@@ -1,6 +1,4 @@
-
-
-import Login from '../pages/Login';
+import Login from "../pages/Login";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
@@ -9,9 +7,9 @@ import Settings from "../pages/Settings";
 import MainContainer from "../layouts/MainContainer";
 import Payments from "../pages/Payments";
 import Cars from "../pages/Cars";
-import BookingContextProvider from '../contexts/booking-context';
-import CarsContextProvider from '../contexts/car-context';
-
+import BookingContextProvider from "../contexts/booking-context";
+import CarsContextProvider from "../contexts/car-context";
+import Customers from "../pages/Customers";
 
 const router = createBrowserRouter([
   {
@@ -24,11 +22,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookings",
-        element:<Bookings />,
+        element: <Bookings />,
+      },
+      {
+        path: "/customers",
+        element: <Customers />,
       },
       {
         path: "/cars",
-        element:<Cars />,
+        element: <Cars />,
       },
       {
         path: "/payments",
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: '/login', element: <Login /> }
+  { path: "/login", element: <Login /> },
 ]);
 
 export default function Router() {
