@@ -43,7 +43,7 @@ export default function PaymentContextProvider({ children }) {
     }, [])
 
     return (
-        <PaymentContext.Provider value={{ allPayment, isAllPaymentLoading, monthlyPayments, allPaymentComplete }}>{children}</PaymentContext.Provider>
+        <PaymentContext.Provider value={{ allPayment, isAllPaymentLoading, monthlyPayments, allPaymentComplete, fetchPayment }}>{children}</PaymentContext.Provider>
     )
 }
 
