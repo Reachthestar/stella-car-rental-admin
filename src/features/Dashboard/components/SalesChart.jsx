@@ -70,8 +70,10 @@ export default function SalesChart() {
   };
 
   return (
-    <div className="flex justify-center p-4 bg-white rounded-md shadow-md">
-      <div style={{ width: '600px', height: '300px' }}>
+    <div className="flex justify-center p-1 bg-white rounded-md shadow-md border-2">
+      <div 
+      style={{ width: '600px', height: '300px' }}
+      >
         {data ? <Bar data={data} options={options} /> : <div>Loading...</div>}
       </div>
     </div>

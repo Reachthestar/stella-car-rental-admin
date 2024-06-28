@@ -32,7 +32,6 @@ export default function CarsContextProvider({ children }) {
       }, []);
       setCarAvailable(dataCars.filter((item) => item.status === 'Available'));
 
-      console.log(dataCars.sort((beforeModel, afterModel) => beforeModel.model - afterModel.model))
       setAllCars(dataCars.sort((beforeModel, afterModel) => beforeModel.model - afterModel.model))
       //CarModels
       const carModelRes = await carsApi.getAllCarModel()

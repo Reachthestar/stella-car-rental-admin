@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { usePayment } from "../contexts/payment-context";
 
 function PaymentsCards() {
-  const { allPayment } = usePayment()
+  const { allPaymentComplete } = usePayment()
   const handleComplete = (paymentId) => {
     Swal.fire({
       text: "Status",
@@ -35,7 +35,7 @@ function PaymentsCards() {
             <div className="p-2">Status</div>
           </div>
         </div>
-        {allPayment?.map((payment) => (
+        {allPaymentComplete?.map((payment) => (
             <div
               key={payment.paymentId}
               className="bg-white rounded-lg p-5 shadow-lg w-full"
