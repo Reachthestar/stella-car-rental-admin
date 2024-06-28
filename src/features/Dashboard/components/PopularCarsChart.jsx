@@ -4,13 +4,15 @@ import { useBooking } from '../../../contexts/booking-context';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 export default function PopularCarsChart() {
-  const { bookingBrand } = useBooking()
+  const { bookingBrand } = useBooking();
   const data = {
+
     labels: bookingBrand?.map(item => item.brand),
     datasets: [
       {
         label: 'Popular Cars',
         data: bookingBrand?.map(item => item.count),
+
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
