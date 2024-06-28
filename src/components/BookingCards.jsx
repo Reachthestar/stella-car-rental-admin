@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useBooking } from "../contexts/booking-context";
 import bookingApi from "../apis/booking";
+import paymentApi from "../apis/payment";
+import { usePayment } from "../contexts/payment-context";
 
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
-
+  const { fetchPayment } = usePayment()
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
@@ -17,7 +19,9 @@ function BookingCards() {
       });
       if ((await result).isConfirmed) {
         await bookingApi.updateBookingStatus(bookingId, "cancelled");
+        await paymentApi.deletePayment(bookingId)
         fetchBooking();
+        fetchPayment();
       }
     } catch (error) {
       console.log(error);
@@ -58,14 +62,18 @@ function BookingCards() {
               <div className="p-2 h-fit">{booking.pickup}</div>
               <div className="p-2 h-fit">{booking.dropoff}</div>
               <div className="p-2 h-fit">{booking.time}</div>
-              <div className="p-2 flex flex-col items-center justify-center gap-2">
+              <div className={`p-2 flex flex-col items-center justify-center gap-2 ${booking.status === 'Cancelled' ? ' text-red-500' : 'text-green-600'}`}>
                 {booking.status}
-                <button
-                  onClick={() => handleCancel(booking.id)}
-                  className="ml-2 bg-red-500 text-white rounded-full px-2"
-                >
-                  X
-                </button>
+                {booking.status === 'Confirmed' ?
+                  <button
+                    onClick={() => handleCancel(booking.id)}
+                    className="ml-2 bg-red-500 text-white rounded-full px-2"
+                  >
+                    X
+                  </button>
+                  :
+                  null
+                }
               </div>
             </div>
           </div>
