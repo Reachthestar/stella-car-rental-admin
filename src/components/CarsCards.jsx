@@ -2,6 +2,7 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
+import { Bin } from '../assets/icons';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
@@ -52,6 +53,31 @@ function CarsCards() {
     });
   };
 
+  const handleDelete = (carId) => {
+    Swal.fire({
+      text: 'Remove ?',
+      title: 'Are you sure you want to remove this car ?',
+      icon: 'error',
+      showCancelButton: true,
+      showConfirmButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const run = async () => {
+          try {
+            console.log(carId)
+            const res = await carsApi.deleteCar(carId)
+            console.log(res.data.message)
+          } catch (error) {
+            console.log(error);
+          } finally {
+            fetchCars();
+          }
+        };
+        run();
+      }
+    })
+  }
+
   return (
     <div className="w-full flex flex-col items-center">
       <h1 className="text-xl font-bold text-decoration-line: underline">
@@ -92,7 +118,7 @@ function CarsCards() {
                   {car.status === 'Available' && (
                     <button
                       onClick={() => handleMaintenance(car.id)}
-                      className="bg-red-500 text-white rounded-full px-2"
+                      className="bg-red-500 text-white rounded-full w-6 h-6"
                     >
                       X
                     </button>
@@ -100,9 +126,16 @@ function CarsCards() {
                   {car.status === 'Maintenance' && (
                     <button
                       onClick={() => handleMakeAvailable(car.id)}
-                      className="bg-green-500 text-white rounded-full px-2"
+                      className="bg-green-500 text-white rounded-full w-6 h-6"
                     >
                       <i className="ri-check-double-line"></i>
+                    </button>
+                  )}
+                  {car.status !== 'Rented' && (
+                    <button
+                      onClick={() => handleDelete(car.id)}
+                      className='px-2 w-10'>
+                      <Bin className=' w-full' />
                     </button>
                   )}
                 </div>
