@@ -30,7 +30,7 @@ export default function BookingContextProvider({ children }) {
           plate: item.Car.licensePlate,
           startDate: item.startDate.split('T')[0].split('-').join('/'),
           endDate: item.endDate.split('T')[0].split('-').join('/'),
-          amount: '฿' + ' ' + item.totalAmount.toLocaleString(),
+          amount: item.totalAmount,
           pickup: item.PickupLocation.branchName,
           dropoff: item.DropoffLocation.branchName,
           time: item.pickDropTime,

@@ -48,6 +48,7 @@ export const data = {
 
 export default function Income() {
   const { allPayment } = usePayment();
+  console.log(allPayment);
 
   return (
     <div className="flex flex-col gap-3 ">
