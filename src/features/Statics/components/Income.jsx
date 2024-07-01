@@ -48,12 +48,12 @@ export const data = {
 
 export default function Income() {
   const { allPayment } = usePayment();
+  console.log(allPayment);
 
   return (
     <div className="flex flex-col gap-3 ">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Income</h1>
-
         <form>
           <select
             name="category"

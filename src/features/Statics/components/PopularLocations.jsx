@@ -91,7 +91,7 @@ export default function PopularLocations() {
 
         {allBooking?.map((booking) => (
           <div
-            key={booking?.carModelId}
+            key={booking?.id}
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-5 text-center">
