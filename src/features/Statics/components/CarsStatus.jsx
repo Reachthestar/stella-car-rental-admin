@@ -9,7 +9,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
-import { usePayment } from '../../../contexts/payment-context';
+import { useCars } from '../../../contexts/car-context';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +28,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Income',
+      text: 'Cars Status',
     },
   },
 };
@@ -39,30 +39,30 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'Income',
+      label: 'Cars Status',
       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
-export default function Income() {
-  const { allPayment } = usePayment();
+export default function CarsStatus() {
+  const { allCar } = useCars();
 
   return (
     <div className="flex flex-col gap-3 ">
       <div className="bg-white rounded-md shadow-md p-4">
-        <h1 className="text-center text-2xl font-semibold">Income</h1>
+        <h1 className="text-center text-2xl font-semibold">Cars Status</h1>
 
         <form>
           <select
-            name="category"
-            id="categorySelect"
+            name="status"
+            id="statusSelect"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
           >
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
+            <option value="available">Available</option>
+            <option value="rented">Rented</option>
+            <option value="maintenance">Maintenance</option>
           </select>
         </form>
       </div>
@@ -70,25 +70,39 @@ export default function Income() {
       <div className="flex flex-col gap-4 h-[400px] overflow-auto">
         <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
           <div className="grid grid-cols-5 text-center font-bold">
-            <div className="p-2">Booking ID</div>
-            <div className="p-2">Payment ID</div>
-            <div className="p-2">Customer</div>
-            <div className="p-2">Payment Date</div>
-            <div className="p-2">Amount</div>
+            <div className="p-2">Car ID</div>
+            <div className="p-2">Plate</div>
+            <div className="p-2">Model</div>
+            <div className="p-2">color</div>
+            <div className="p-2">Status</div>
           </div>
         </div>
 
-        {allPayment?.map((payment) => (
+        {allCar?.map((car) => (
           <div
-            key={payment?.paymentId}
+            key={car?.id}
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-5 text-center">
-              <div className="p-2">{payment?.bookingId}</div>
-              <div className="p-2">{payment?.paymentId}</div>
-              <div className="p-2">{payment?.customer}</div>
-              <div className="p-2">{payment?.paymentDate}</div>
-              <div className="p-2">{payment?.amount}</div>
+              <div className="p-2">{car?.id}</div>
+              <div className="p-2">{car?.plate}</div>
+              <div className="p-2">
+                {car?.model}, {car?.brand}
+              </div>
+              <div className="p-2">{car?.color}</div>
+              <div className="p-2">
+                <p
+                  className={`font-bold rounded-full ${
+                    car?.status === 'Available'
+                      ? 'text-green-600 bg-green-100'
+                      : car?.status === 'Maintenance'
+                      ? 'text-red-400 bg-red-100'
+                      : 'text-indigo-400 bg-indigo-100'
+                  } `}
+                >
+                  {car?.status}
+                </p>
+              </div>
             </div>
           </div>
         ))}
@@ -100,7 +114,7 @@ export default function Income() {
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
-              <div className="p-2">&#3647;100,000</div>
+              <div className="p-2">{allCar?.length}</div>
             </div>
           </div>
         </div>
