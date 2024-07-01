@@ -18,8 +18,10 @@ export default function BookingContextProvider({ children }) {
         try {
             const bookingRes = await bookingApi.getAllBooking()
             const data = bookingRes.data.message.reduce((acc, item) => {
+                console.log(bookingRes.data.message)
                 const dataBooking = {
                     id: item.bookingId,
+                    carModelId: item.Car.CarModel.carModelId,
                     customer: item.Customer.firstName,
                     car: item.Car.CarModel.brand + ' ' + item.Car.CarModel.model + ' ' + item.Car.CarModel.color,
                     plate: item.Car.licensePlate,

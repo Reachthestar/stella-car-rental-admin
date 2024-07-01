@@ -1,4 +1,3 @@
-import carImage from '../../../assets/images/mini-car-01.png'
 
 export default function CarItem({ car }) {
   return (
