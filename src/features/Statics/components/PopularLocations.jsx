@@ -48,7 +48,6 @@ export const data = {
 
 export default function PopularLocations() {
   const { allBooking } = useBooking();
-  console.log(allBooking);
 
   return (
     <div className="flex flex-col gap-3 ">
