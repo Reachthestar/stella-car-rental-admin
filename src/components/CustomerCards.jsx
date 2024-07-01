@@ -7,6 +7,8 @@ function CustomerCards() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortKey, setSortKey] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const customersPerPage = 10;
 
   useEffect(() => {
     setCustomers(allCustomer || []);
@@ -14,6 +16,7 @@ function CustomerCards() {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset to the first page on search
   };
 
   const handleSort = (event) => {
@@ -22,23 +25,25 @@ function CustomerCards() {
     const sortedCustomers = [...customers].sort((a, b) => {
       const valueA = a[key];
       const valueB = b[key];
+
       if (key === "totalPoints") {
-        // Descending order for totalPoints
-        return valueB - valueA;
+        return valueB - valueA; // Descending order for totalPoints
       }
 
       if (key === "customerId") {
-        // Ascending order for customerId
-        return valueA - valueB;
+        return valueA - valueB; // Ascending order for customerId
       }
+
       if (typeof valueA === "number" && typeof valueB === "number") {
-        return valueA - valueB;
+        return valueA - valueB; // Ascending order for other numerical fields
       }
+
       if (valueA < valueB) return -1;
       if (valueA > valueB) return 1;
       return 0;
     });
     setCustomers(sortedCustomers);
+    setCurrentPage(1); // Reset to the first page on sort
   };
 
   const filteredCustomers = customers.filter((customer) => {
@@ -53,6 +58,15 @@ function CustomerCards() {
       customer.totalPoints.toString().includes(searchTerm)
     );
   });
+
+  // Calculate pagination
+  const indexOfLastCustomer = currentPage * customersPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
+  const currentCustomers = filteredCustomers.slice(
+    indexOfFirstCustomer,
+    indexOfLastCustomer
+  );
+  const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
 
   return (
     <div className="w-full flex flex-col items-center p-4">
@@ -69,8 +83,8 @@ function CustomerCards() {
           onChange={handleSort}
           className="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
-          <option value="">Sort by &nbsp; &nbsp; &#8595;</option>
-          <option value="customerId">ID </option>
+          <option value="">Sort by</option>
+          <option value="customerId">ID</option>
           <option value="firstName">First Name</option>
           <option value="lastName">Last Name</option>
           <option value="email">Email</option>
@@ -93,7 +107,7 @@ function CustomerCards() {
             <div className="p-2">Total Points</div>
           </div>
         </div>
-        {filteredCustomers.map((customer) => (
+        {currentCustomers.map((customer) => (
           <div
             key={customer.customerId}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
@@ -114,6 +128,27 @@ function CustomerCards() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex justify-between w-full mt-4">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-200"
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="text-gray-700">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-200"
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
