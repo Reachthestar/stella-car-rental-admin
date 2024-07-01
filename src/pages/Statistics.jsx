@@ -7,9 +7,9 @@ import TotalCustomers from '../features/Statics/components/TotalCustomers';
 export default function Statistics() {
   return (
     <div className="flex flex-col gap-4">
+      <CarsStatus />
       <Income />
       <TotalCustomers />
-      <CarsStatus />
       <PopularCars />
       <PopularLocations />
     </div>
