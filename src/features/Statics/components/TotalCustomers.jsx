@@ -9,7 +9,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
-import { usePayment } from '../../../contexts/payment-context';
+import { useCustomer } from '../../../contexts/customer-context';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +28,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Income',
+      text: 'Total Customers',
     },
   },
 };
@@ -39,20 +39,20 @@ export const data = {
   labels,
   datasets: [
     {
-      label: 'Income',
+      label: 'Total Customers',
       data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
-export default function Income() {
-  const { allPayment } = usePayment();
+export default function TotalCustomers() {
+  const { allCustomer } = useCustomer();
 
   return (
     <div className="flex flex-col gap-3 ">
       <div className="bg-white rounded-md shadow-md p-4">
-        <h1 className="text-center text-2xl font-semibold">Income</h1>
+        <h1 className="text-center text-2xl font-semibold">Total Customers</h1>
 
         <form>
           <select
@@ -69,38 +69,43 @@ export default function Income() {
 
       <div className="flex flex-col gap-4 h-[400px] overflow-auto">
         <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-5 text-center font-bold">
-            <div className="p-2">Booking ID</div>
-            <div className="p-2">Payment ID</div>
-            <div className="p-2">Customer</div>
-            <div className="p-2">Payment Date</div>
-            <div className="p-2">Amount</div>
+          <div className="grid grid-cols-6 text-center font-bold">
+            <div className="p-2">Customer ID</div>
+            <div className="p-2">Name</div>
+            <div className="p-2">Email</div>
+            <div className="p-2">Phone</div>
+            <div className="p-2">Address</div>
+            <div className="p-2">Driver License</div>
           </div>
         </div>
 
-        {allPayment?.map((payment) => (
+        {allCustomer?.map((customer) => (
           <div
-            key={payment?.paymentId}
+            key={customer?.customerId}
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
-            <div className="grid grid-cols-5 text-center">
-              <div className="p-2">{payment?.bookingId}</div>
-              <div className="p-2">{payment?.paymentId}</div>
-              <div className="p-2">{payment?.customer}</div>
-              <div className="p-2">{payment?.paymentDate}</div>
-              <div className="p-2">{payment?.amount}</div>
+            <div className="grid grid-cols-6 text-center">
+              <div className="p-2">{customer?.customerId}</div>
+              <div className="p-2">
+                {customer?.firstName} {customer?.lastName}
+              </div>
+              <div className="p-2">{customer?.email}</div>
+              <div className="p-2">{customer?.phone}</div>
+              <div className="p-2">{customer?.address}</div>
+              <div className="p-2">{customer?.driverLicense}</div>
             </div>
           </div>
         ))}
 
         <div>
           <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
-            <div className="grid grid-cols-5 text-center font-bold text-lg">
-              <div className="p-2">Total</div>
+            <div className="grid grid-cols-6 text-center font-bold text-lg">
+              <div className="p-2">Total customers</div>
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
-              <div className="p-2">&#3647;100,000</div>
+              <div className="p-2"></div>
+              <div className="p-2">{allCustomer?.length}</div>
             </div>
           </div>
         </div>
