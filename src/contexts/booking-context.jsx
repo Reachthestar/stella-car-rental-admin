@@ -5,6 +5,8 @@ const BookingContext = createContext();
 
 export default function BookingContextProvider({ children }) {
 
+  
+
 
     const [allBooking, setAllBooking] = useState(null)
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
@@ -99,9 +101,12 @@ export default function BookingContextProvider({ children }) {
             {children}
         </BookingContext.Provider>
     );
+
 }
 
 
 export function useBooking() {
+
     return useContext(BookingContext);
+
 }
