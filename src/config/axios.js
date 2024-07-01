@@ -21,7 +21,7 @@ axios.interceptors.response.use(
   (err) => {
     if (err.response.status === 401) {
       removeAdminToken();
-      window.location.assign('/');
+      window.location.assign('/login');
       return;
     }
     return Promise.reject(err);

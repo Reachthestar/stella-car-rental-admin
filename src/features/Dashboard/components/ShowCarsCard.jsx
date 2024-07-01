@@ -4,6 +4,7 @@ import CarItem from './CarItem';
 
 export default function ShowCarsCard() {
   const {allCarModel} = useCars()
+  console.log(allCarModel)
   return (
     <div className="grid grid-cols-4 gap-x-20 gap-y-4">
       {allCarModel?.map((car) => (

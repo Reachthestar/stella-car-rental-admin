@@ -6,6 +6,7 @@ const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
   const [admin, setAdmin] = useState(null);
+  const [isAdminLoading , setIsAdminLoading] = useState(true)
 
   const fetchAdmin = async () => {
     try {
@@ -16,6 +17,8 @@ export default function AuthContextProvider({ children }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsAdminLoading(false)
     }
   };
 
@@ -38,7 +41,7 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ login, admin, logout }}>
+    <AuthContext.Provider value={{ login, admin, logout, isAdminLoading }}>
       {children}
     </AuthContext.Provider>
   );
