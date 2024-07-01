@@ -8,6 +8,46 @@ import { usePayment } from "../contexts/payment-context";
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
   const { fetchPayment } = usePayment()
+  const [currentPage , setCurrentPage] = useState(1)
+  const cardPerPage = 10
+  const totalPage = Math.ceil(allBooking.length / cardPerPage)
+  const indexOfLastBookingPerPage = currentPage * cardPerPage
+  const firstIndexOfBookingPerPage = indexOfLastBookingPerPage - cardPerPage
+  const currentBookingPerPage = allBooking.slice(
+    firstIndexOfBookingPerPage,
+    indexOfLastBookingPerPage
+  )
+
+  const handleChangePage = (page) => {
+    setCurrentPage(page)
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPage) {
+      setCurrentPage((prev) => prev + 1)
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      })
+    }
+  }
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1)
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      })
+    }
+  }
+
+
+
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
@@ -46,7 +86,7 @@ function BookingCards() {
             <div className="p-2">Status</div>
           </div>
         </div>
-        {allBooking?.map((booking) => (
+        {currentBookingPerPage?.map((booking) => (
           <div
             key={booking.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
@@ -79,6 +119,42 @@ function BookingCards() {
           </div>
         ))}
       </div>
+      
+
+
+      <div className='p-2 flex gap-2'>
+        <button
+          onClick={goToPrevPage}
+          disabled={currentPage === 1}
+          className='hover:text-orange-500'
+        >
+          prev
+        </button>
+
+        {Array.from({ length: totalPage }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleChangePage(index + 1)}
+            className={`w-10 h-10 rounded-full ${currentPage === index + 1
+              ? "bg-black text-white"
+              : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+              }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={goToNextPage}
+          disabled={currentPage === totalPage}
+          className=' hover:text-orange-500'
+        >
+          Next
+        </button>
+      </div>
+
+
+
     </div>
   );
 }

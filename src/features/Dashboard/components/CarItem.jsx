@@ -1,3 +1,4 @@
+
 export default function CarItem({ car }) {
   return (
     <div className="w-[100%] h-[200px] bg-white p-4 rounded-md shadow-m flex flex-col items-center shadow-md ">

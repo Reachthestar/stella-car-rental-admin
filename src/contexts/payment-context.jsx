@@ -21,7 +21,7 @@ export default function PaymentContextProvider({ children }) {
                     paymentId: item.paymentId,
                     customer: item.Booking.Customer.firstName + ' ' + item.Booking.Customer.lastName,
                     paymentDate: item.paymentDate.split('T')[0].split('-').join('/'),
-                    amount: '฿' + item.amount.toLocaleString(),
+                    amount: item.amount,
                     status: item.paymentStatus.charAt(0).toUpperCase() + item.paymentStatus.slice(1),
                     createdAt: item.createdAt.split('T')[0]
                 }
