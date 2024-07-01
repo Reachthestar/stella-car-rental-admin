@@ -48,10 +48,14 @@ export const data = {
 
 export default function Income() {
   const { allPayment } = usePayment();
-  console.log(allPayment);
+
+  const totalAmount = allPayment?.reduce(
+    (acc, payment) => acc + payment.amount,
+    0
+  );
 
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Income</h1>
         <form>
@@ -88,7 +92,7 @@ export default function Income() {
               <div className="p-2">{payment?.paymentId}</div>
               <div className="p-2">{payment?.customer}</div>
               <div className="p-2">{payment?.paymentDate}</div>
-              <div className="p-2">{payment?.amount}</div>
+              <div className="p-2">&#3647;{payment?.amount}</div>
             </div>
           </div>
         ))}
@@ -100,7 +104,7 @@ export default function Income() {
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
-              <div className="p-2">&#3647;100,000</div>
+              <div className="p-2">&#3647;{totalAmount}</div>
             </div>
           </div>
         </div>
