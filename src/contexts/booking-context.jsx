@@ -5,6 +5,7 @@ const BookingContext = createContext();
 
 export default function BookingContextProvider({ children }) {
 
+
     const [allBooking, setAllBooking] = useState(null)
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
     const [monthlyBookings, setMonthlyBookings] = useState(null)
@@ -59,6 +60,7 @@ export default function BookingContextProvider({ children }) {
                 return { brand: key, count: bookingBrandData[key] };
             });
             setBookingBrand(bookingBrandDataArray);
+
 
             const totalPaymentPerMonth = bookingRes.data.message.reduce(
                 (acc, item) => {
