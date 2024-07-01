@@ -12,7 +12,7 @@ export default function Dashboard() {
       {isAllBookingLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 p-3">
           <div className="flex w-full gap-4 h-fit">
             <div className="flex flex-col gap-4 w-2/3">
               <SummaryReportCard />

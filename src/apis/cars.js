@@ -7,5 +7,6 @@ carsApi.updateCar = (carId,data) => axios.patch(`/admin/cars/carId/${carId}`,dat
 carsApi.getAllCarModel = () => axios.get('/admin/cars/model')
 carsApi.getAllBranches = () => axios.get('/admin/branches')
 carsApi.createCar = (data) => axios.post('/admin/cars',data)
+carsApi.deleteCar = (carId) => axios.delete(`/admin/car/${carId}`)
 
 export default carsApi

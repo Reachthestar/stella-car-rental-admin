@@ -7,15 +7,35 @@ import Settings from '../pages/Settings';
 import MainContainer from '../layouts/MainContainer';
 import Payments from '../pages/Payments';
 import Cars from '../pages/Cars';
-import BookingContextProvider from '../contexts/booking-context';
-import CarsContextProvider from '../contexts/car-context';
 import Statistics from '../pages/Statistics';
-import Customers from '../pages/Customers';
+
+import Customers from "../pages/Customers";
+import CustomerContextProvider from '../contexts/customer-context';
+import CarsContextProvider from '../contexts/car-context';
+import BookingContextProvider from '../contexts/booking-context';
+import PaymentContextProvider from '../contexts/payment-context';
+
+
+
+
+
+
 
 const router = createBrowserRouter([
+  { path: "/login", element: <Login /> },
   {
     path: '/',
-    element: <MainContainer />,
+    element:
+        <CustomerContextProvider>
+          <CarsContextProvider>
+            <BookingContextProvider>
+              <PaymentContextProvider>
+                <MainContainer />
+              </PaymentContextProvider>
+            </BookingContextProvider>
+          </CarsContextProvider>
+        </CustomerContextProvider>
+    ,
     children: [
       {
         path: '/',
@@ -53,7 +73,6 @@ const router = createBrowserRouter([
     ],
   },
 
-  { path: '/login', element: <Login /> },
 ]);
 
 export default function Router() {

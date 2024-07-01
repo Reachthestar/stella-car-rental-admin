@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { useAuth } from "../contexts/auth-context"
 import { useNavigate } from "react-router-dom"
-import LoadingSpinner from "../components/LoadingSpinner"
 
 const initial_input = {
     username: '',
@@ -18,8 +17,8 @@ export default function Login() {
     }
 
     const handleSubmitLogin = async (e) => {
+        e.preventDefault()
         try {
-            e.preventDefault()
             setInput(initial_input)
             await login(input)
             navigate('/')
