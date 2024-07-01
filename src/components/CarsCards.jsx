@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
@@ -6,6 +6,17 @@ import { Bin } from '../assets/icons';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
+  const [currentPage, setCurrentPage] = useState(1)
+  const cardPerPage = 10
+  const totalPage = Math.ceil(allCar.length / cardPerPage);
+
+  const indexOfLastCarPerPage = currentPage * cardPerPage
+  const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage
+
+  const currentCarPerPage = allCar.slice(
+    firstIndexOfCarPerPage,
+    indexOfLastCarPerPage
+  )
 
   const handleMaintenance = (carId) => {
     Swal.fire({
@@ -78,6 +89,34 @@ function CarsCards() {
     })
   }
 
+  const handleChangePage = (page) => {
+    setCurrentPage(page)
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPage) {
+      setCurrentPage((prev) => prev + 1)
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      })
+    }
+  }
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1)
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      })
+    }
+  }
+
   return (
     <div className="w-full flex flex-col items-center">
       <h1 className="text-xl font-bold text-decoration-line: underline">
@@ -98,7 +137,7 @@ function CarsCards() {
           </div>
         </div>
 
-        {allCar?.map((car) => (
+        {currentCarPerPage?.map((car) => (
           <div
             key={car.id}
             className="bg-white rounded-lg p-5 shadow-lg w-full"
@@ -143,6 +182,38 @@ function CarsCards() {
             </div>
           </div>
         ))}
+      </div>
+
+
+      <div className='p-2 flex gap-2'>
+        <button
+          onClick={goToPrevPage}
+          disabled={currentPage === 1}
+          className='hover:text-orange-500'
+        >
+          prev
+        </button>
+
+        {Array.from({ length: totalPage }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleChangePage(index + 1)}
+            className={`w-10 h-10 rounded-full ${currentPage === index + 1
+              ? "bg-black text-white"
+              : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+              }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+
+        <button
+          onClick={goToNextPage}
+          disabled={currentPage === totalPage}
+          className=' hover:text-orange-500'
+        >
+          Next
+        </button>
       </div>
     </div>
   );
