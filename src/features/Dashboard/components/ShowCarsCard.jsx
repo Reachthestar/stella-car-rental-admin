@@ -1,10 +1,10 @@
-import recommendCars from '../../../assets/dummy-data/recommendCars';
 import { useCars } from '../../../contexts/car-context';
 import CarItem from './CarItem';
 
 export default function ShowCarsCard() {
-  const {allCarModel} = useCars()
-  console.log(allCarModel)
+
+  const { allCarModel } = useCars();
+
   return (
     <div className="grid grid-cols-4 gap-x-20 gap-y-4">
       {allCarModel?.map((car) => (
