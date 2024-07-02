@@ -11,7 +11,6 @@ export default function CustomerContextProvider({ children }) {
     try {
       const customerRes = await customerApi.getAllCustomer();
       const data = customerRes.data.message;
-      console.log(data);
       setAllCustomer(data);
     } catch (error) {
       console.log(error);

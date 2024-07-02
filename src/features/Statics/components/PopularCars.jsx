@@ -76,9 +76,11 @@ export default function PopularCars() {
           </div>
         </div>
 
-        {allBooking?.map((booking) => (
+        {allBooking?.map((booking,index) => (
           <div
-            key={booking?.id}
+
+            key={index}
+
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-3 text-center">

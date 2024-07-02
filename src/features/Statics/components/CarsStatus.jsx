@@ -43,9 +43,10 @@ export default function CarsStatus() {
           </div>
         </div>
 
-        {filterCarsStatus?.map((car) => (
+        {filterCarsStatus?.map((car,index) => (
+
           <div
-            key={car?.id}
+            key={index}
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-5 text-center">

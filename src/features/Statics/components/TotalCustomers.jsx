@@ -89,9 +89,9 @@ export default function TotalCustomers() {
           </div>
         </div>
 
-        {allCustomer?.map((customer) => (
+        {allCustomer?.map((customer,index) => (
           <div
-            key={customer?.customerId}
+            key={index}
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-6 text-center">
