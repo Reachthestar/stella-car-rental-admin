@@ -10,6 +10,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import { useCustomer } from '../../../contexts/customer-context';
+import { useState } from 'react';
 
 ChartJS.register(
   CategoryScale,
@@ -47,10 +48,19 @@ export const data = {
 };
 
 export default function TotalCustomers() {
+  const [Customers, setCustomers] = useState([]);
   const { allCustomer } = useCustomer();
+  console.log(allCustomer);
+
+  // const filterCus = allCustomer?.reduce((acc, cus, i) =>
+  //   acc[i] = cus.createdAt;
+
+  // , []);
+
+  // console.log(filterCus);
 
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Total Customers</h1>
 
@@ -90,7 +100,7 @@ export default function TotalCustomers() {
                 {customer?.firstName} {customer?.lastName}
               </div>
               <div className="p-2">{customer?.email}</div>
-              <div className="p-2">{customer?.phone}</div>
+              <div className="p-2">{customer?.createdAt}</div>
               <div className="p-2">{customer?.address}</div>
               <div className="p-2">{customer?.driverLicense}</div>
             </div>

@@ -10,15 +10,18 @@ export default function Statistics() {
   const { isAllPaymentLoading } = useBooking()
   return (
     <div className="flex flex-col gap-4">
+
       {isAllPaymentLoading ? <LoadingSpinner /> :
         <>
+     <CarsStatus />
           <Income />
           <TotalCustomers />
-          <CarsStatus />
+         
           <PopularCars />
           <PopularLocations />
         </>
       }
+
     </div>
   )
 }

@@ -1,56 +1,20 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+import { useState } from 'react';
 import { useCars } from '../../../contexts/car-context';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Cars Status',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Cars Status',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
 export default function CarsStatus() {
+  const [selectedStatus, setSelectedStatus] = useState('Available');
   const { allCar } = useCars();
 
+  const handleSelectChange = (e) => {
+    setSelectedStatus(e.target.value);
+  };
+
+  const filterCarsStatus = allCar?.filter(
+    (car) => car.status === selectedStatus
+  );
+
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Cars Status</h1>
 
@@ -59,10 +23,11 @@ export default function CarsStatus() {
             name="status"
             id="statusSelect"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            onChange={handleSelectChange}
           >
-            <option value="available">Available</option>
-            <option value="rented">Rented</option>
-            <option value="maintenance">Maintenance</option>
+            <option value="Available">Available</option>
+            <option value="Rented">Rented</option>
+            <option value="Maintenance">Maintenance</option>
           </select>
         </form>
       </div>
@@ -78,7 +43,8 @@ export default function CarsStatus() {
           </div>
         </div>
 
-        {allCar?.map((car,index) => (
+        {filterCarsStatus?.map((car,index) => (
+
           <div
             key={index}
             className="bg-white rounded-lg p-5 shadow-md w-full"
@@ -114,15 +80,9 @@ export default function CarsStatus() {
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
-              <div className="p-2">{allCar?.length}</div>
+              <div className="p-2">{filterCarsStatus?.length}</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: '700px', height: '350px' }}>
-          <Bar options={options} data={data} />
         </div>
       </div>
     </div>

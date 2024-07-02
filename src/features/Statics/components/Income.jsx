@@ -97,8 +97,13 @@ export default function Income() {
     ],
   };
 
+  const totalAmount = allPayment?.reduce(
+    (acc, payment) => acc + payment.amount,
+    0
+  );
+
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Income</h1>
         <form onChange={handleSelect}>
@@ -123,6 +128,7 @@ export default function Income() {
             <div className="p-2">Amount</div>
           </div>
         </div>
+
 
         {selectIncome === 'yearly' ? <>
           {yearlyPayment?.map((payment, index) => (
@@ -176,6 +182,7 @@ export default function Income() {
                 <div className="p-2"></div>
                 <div className="p-2">&#3647;{totalAmount}</div>
               </div>
+
             </div>
           </div>
         </>

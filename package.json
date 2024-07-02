@@ -13,6 +13,7 @@
     "@faker-js/faker": "^8.4.1",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+    "dayjs": "^1.11.11",
     "joi": "^17.13.3",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

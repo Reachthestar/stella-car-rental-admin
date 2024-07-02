@@ -50,7 +50,7 @@ export default function PopularCars() {
   const { allBooking } = useBooking();
 
   return (
-    <div className="flex flex-col gap-3 ">
+    <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Popular Cars</h1>
 
@@ -78,7 +78,9 @@ export default function PopularCars() {
 
         {allBooking?.map((booking,index) => (
           <div
+
             key={index}
+
             className="bg-white rounded-lg p-5 shadow-md w-full"
           >
             <div className="grid grid-cols-3 text-center">

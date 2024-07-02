@@ -4,6 +4,10 @@ import bookingApi from '../apis/booking';
 const BookingContext = createContext();
 
 export default function BookingContextProvider({ children }) {
+
+  
+
+
     const [allBooking, setAllBooking] = useState(null)
     const [isAllBookingLoading, setAllBookingLoading] = useState(true)
     const [monthlyBookings, setMonthlyBookings] = useState(null)
@@ -59,6 +63,7 @@ export default function BookingContextProvider({ children }) {
             });
             setBookingBrand(bookingBrandDataArray);
 
+
             const totalPaymentPerMonth = bookingRes.data.message.reduce(
                 (acc, item) => {
                     const month = new Date(item.createdAt).getMonth(); // สมมติว่า item.date เป็นวันที่ในรูปแบบ string
@@ -67,6 +72,7 @@ export default function BookingContextProvider({ children }) {
                 },
                 Array(12).fill(0)
             ); // เริ่มต้น array ด้วยค่า 0 สำหรับแต่ละเดือน (12 เดือน)
+
 
             setTotalPaymentPerMonth(totalPaymentPerMonth);
         } catch (error) {
@@ -95,9 +101,12 @@ export default function BookingContextProvider({ children }) {
             {children}
         </BookingContext.Provider>
     );
+
 }
 
 
 export function useBooking() {
+
     return useContext(BookingContext);
+
 }
