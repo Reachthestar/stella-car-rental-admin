@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 import navLinks from '../links/navLinks';
 import { NavLink } from 'react-router-dom';
@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 export default function Sidebar() {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handleClickLogout = () => {
     logout();
@@ -25,7 +27,9 @@ export default function Sidebar() {
               <NavLink
                 to={item.path}
                 key={index}
-                className="hover:bg-secondary-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50"
+                className={`hover:bg-secondary-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50
+                  ${currentPath === item.path ? 'bg-secondary-color rounded-md' : ''}
+                `}
               >
                 <li>
                   <span className="text-gray-50">
