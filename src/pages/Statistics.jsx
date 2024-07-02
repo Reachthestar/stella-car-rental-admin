@@ -7,21 +7,20 @@ import PopularLocations from '../features/Statics/components/PopularLocations';
 import TotalCustomers from '../features/Statics/components/TotalCustomers';
 
 export default function Statistics() {
-  const { isAllPaymentLoading } = useBooking()
+  const { isAllPaymentLoading } = useBooking();
   return (
     <div className="flex flex-col gap-4">
-
-      {isAllPaymentLoading ? <LoadingSpinner /> :
+      {isAllPaymentLoading ? (
+        <LoadingSpinner />
+      ) : (
         <>
-     <CarsStatus />
+          <CarsStatus />
           <Income />
           <TotalCustomers />
-         
           <PopularCars />
           <PopularLocations />
         </>
-      }
-
+      )}
     </div>
-  )
+  );
 }

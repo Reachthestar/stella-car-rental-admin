@@ -6,17 +6,17 @@ import { Bin } from '../assets/icons';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
-  const [currentPage, setCurrentPage] = useState(1)
-  const cardPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardPerPage = 10;
   const totalPage = Math.ceil(allCar.length / cardPerPage);
 
-  const indexOfLastCarPerPage = currentPage * cardPerPage
-  const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage
+  const indexOfLastCarPerPage = currentPage * cardPerPage;
+  const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage;
 
   const currentCarPerPage = allCar.slice(
     firstIndexOfCarPerPage,
     indexOfLastCarPerPage
-  )
+  );
 
   const handleMaintenance = (carId) => {
     Swal.fire({
@@ -75,9 +75,9 @@ function CarsCards() {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            console.log(carId)
-            const res = await carsApi.deleteCar(carId)
-            console.log(res.data.message)
+            console.log(carId);
+            const res = await carsApi.deleteCar(carId);
+            console.log(res.data.message);
           } catch (error) {
             console.log(error);
           } finally {
@@ -86,36 +86,36 @@ function CarsCards() {
         };
         run();
       }
-    })
-  }
+    });
+  };
 
   const handleChangePage = (page) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
     window.scrollTo({
-      top:0,
-      behavior:'smooth'
-    })
-  }
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const goToNextPage = () => {
     if (currentPage < totalPage) {
-      setCurrentPage((prev) => prev + 1)
+      setCurrentPage((prev) => prev + 1);
       window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      })
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }
+  };
 
   const goToPrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1)
+      setCurrentPage((prev) => prev - 1);
       window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      })
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }
+  };
 
   return (
     <div className="w-full flex flex-col items-center">
@@ -152,7 +152,17 @@ function CarsCards() {
               <div className="p-2">{car.useDate}</div>
               <div className="p-2">{car.updatedAt}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
-                {car.status}
+                <p
+                  className={`px-4 font-bold rounded-full ${
+                    car?.status === 'Available'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : car?.status === 'Maintenance'
+                      ? 'text-fail-status-text bg-fail-status-bg'
+                      : 'text-process-status-text bg-process-status-bg'
+                  }`}
+                >
+                  {car.status}
+                </p>
                 <div className="flex space-x-2">
                   {car.status === 'Available' && (
                     <button
@@ -173,8 +183,9 @@ function CarsCards() {
                   {car.status !== 'Rented' && (
                     <button
                       onClick={() => handleDelete(car.id)}
-                      className='px-2 w-10'>
-                      <Bin className=' w-full' />
+                      className="px-2 w-10"
+                    >
+                      <Bin className=" w-full" />
                     </button>
                   )}
                 </div>
@@ -184,12 +195,11 @@ function CarsCards() {
         ))}
       </div>
 
-
-      <div className='p-2 flex gap-2'>
+      <div className="p-2 flex gap-2">
         <button
           onClick={goToPrevPage}
           disabled={currentPage === 1}
-          className='hover:text-orange-500'
+          className="hover:text-orange-500"
         >
           prev
         </button>
@@ -198,10 +208,11 @@ function CarsCards() {
           <button
             key={index + 1}
             onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${currentPage === index + 1
-              ? "bg-black text-white"
-              : "bg-gray-200 hover:bg-gray-700 hover:text-white"
-              }`}
+            className={`w-10 h-10 rounded-full ${
+              currentPage === index + 1
+                ? 'bg-black text-white'
+                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
+            }`}
           >
             {index + 1}
           </button>
@@ -210,7 +221,7 @@ function CarsCards() {
         <button
           onClick={goToNextPage}
           disabled={currentPage === totalPage}
-          className=' hover:text-orange-500'
+          className=" hover:text-orange-500"
         >
           Next
         </button>

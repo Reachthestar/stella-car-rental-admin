@@ -43,12 +43,8 @@ export default function CarsStatus() {
           </div>
         </div>
 
-        {filterCarsStatus?.map((car,index) => (
-
-          <div
-            key={index}
-            className="bg-white rounded-lg p-5 shadow-md w-full"
-          >
+        {filterCarsStatus?.map((car, index) => (
+          <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-5 text-center">
               <div className="p-2">{car?.id}</div>
               <div className="p-2">{car?.plate}</div>
@@ -60,10 +56,10 @@ export default function CarsStatus() {
                 <p
                   className={`font-bold rounded-full ${
                     car?.status === 'Available'
-                      ? 'text-green-600 bg-green-100'
+                      ? 'text-success-status-text bg-success-status-bg'
                       : car?.status === 'Maintenance'
-                      ? 'text-red-400 bg-red-100'
-                      : 'text-indigo-400 bg-indigo-100'
+                      ? 'text-fail-status-text bg-fail-status-bg'
+                      : 'text-process-status-text bg-process-status-bg'
                   } `}
                 >
                   {car?.status}

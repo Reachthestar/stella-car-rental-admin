@@ -1,53 +1,52 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { usePayment } from "../contexts/payment-context";
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import { usePayment } from '../contexts/payment-context';
 
 function PaymentsCards() {
-  const { allPaymentComplete } = usePayment()
-  const [currentPage, setCurrentPage] = useState(1)
-  const cardPerPage = 10
-  const totalPage = Math.ceil(allPaymentComplete.length / cardPerPage)
-  const indexOfLastPaymentPerPage = currentPage * cardPerPage
-  const firstIndexOfPaymentPerPage = indexOfLastPaymentPerPage - cardPerPage
+  const { allPaymentComplete } = usePayment();
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardPerPage = 10;
+  const totalPage = Math.ceil(allPaymentComplete.length / cardPerPage);
+  const indexOfLastPaymentPerPage = currentPage * cardPerPage;
+  const firstIndexOfPaymentPerPage = indexOfLastPaymentPerPage - cardPerPage;
   const currentPaymentPerPage = allPaymentComplete.slice(
     firstIndexOfPaymentPerPage,
     indexOfLastPaymentPerPage
-  )
+  );
 
   const handleChangePage = (page) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
     window.scrollTo({
-      top:0,
-      behavior:'smooth'
-    })
-  }
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const goToNextPage = () => {
     if (currentPage < totalPage) {
-      setCurrentPage((prev) => prev + 1)
+      setCurrentPage((prev) => prev + 1);
       window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      })
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }
+  };
 
   const goToPrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1)
+      setCurrentPage((prev) => prev - 1);
       window.scrollTo({
-        top:0,
-        behavior:'smooth'
-      })
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }
-
+  };
 
   const handleComplete = (paymentId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to mark this payment as complete?`,
-      icon: "info",
+      icon: 'info',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
@@ -86,8 +85,16 @@ function PaymentsCards() {
               <div className="p-2">{payment.paymentDate}</div>
               <div className="p-2">{payment.amount}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
-                {payment.status}
-                {payment.status === "Open" && (
+                <p
+                  className={`px-4 font-bold rounded-full ${
+                    payment.status === 'Complete'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : 'text-fail-status-text bg-fail-status-bg'
+                  }`}
+                >
+                  {payment.status}
+                </p>
+                {payment.status === 'Open' && (
                   <button
                     onClick={() => handleComplete(payment.paymentId)}
                     className="bg-green-500 text-white rounded-full px-2"
@@ -100,11 +107,11 @@ function PaymentsCards() {
           </div>
         ))}
       </div>
-      <div className='p-2 flex gap-2'>
+      <div className="p-2 flex gap-2">
         <button
           onClick={goToPrevPage}
           disabled={currentPage === 1}
-          className='hover:text-orange-500'
+          className="hover:text-orange-500"
         >
           prev
         </button>
@@ -113,10 +120,11 @@ function PaymentsCards() {
           <button
             key={index + 1}
             onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${currentPage === index + 1
-              ? "bg-black text-white"
-              : "bg-gray-200 hover:bg-gray-700 hover:text-white"
-              }`}
+            className={`w-10 h-10 rounded-full ${
+              currentPage === index + 1
+                ? 'bg-black text-white'
+                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
+            }`}
           >
             {index + 1}
           </button>
@@ -125,7 +133,7 @@ function PaymentsCards() {
         <button
           onClick={goToNextPage}
           disabled={currentPage === totalPage}
-          className=' hover:text-orange-500'
+          className=" hover:text-orange-500"
         >
           Next
         </button>
