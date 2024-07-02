@@ -68,6 +68,34 @@ function CustomerCards() {
   );
   const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
 
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col items-center p-4">
       <div className="flex justify-between w-full mb-4">
@@ -81,7 +109,7 @@ function CustomerCards() {
         <select
           value={sortKey}
           onChange={handleSort}
-          className="ml-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="ml-4 shadow text-center appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option value="">Sort by</option>
           <option value="customerId">ID</option>
@@ -129,23 +157,33 @@ function CustomerCards() {
           </div>
         ))}
       </div>
-      <div className="flex justify-between w-full mt-4">
+      <div className="p-2 flex gap-2">
         <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-200"
+          onClick={goToPrevPage}
           disabled={currentPage === 1}
+          className="hover:text-orange-500"
         >
-          Previous
+          prev
         </button>
-        <span className="text-gray-700">
-          Page {currentPage} of {totalPages}
-        </span>
+
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleChangePage(index + 1)}
+            className={`w-10 h-10 rounded-full ${
+              currentPage === index + 1
+                ? "bg-black text-white"
+                : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+
         <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 transition duration-200"
+          onClick={goToNextPage}
           disabled={currentPage === totalPages}
+          className="hover:text-orange-500"
         >
           Next
         </button>
