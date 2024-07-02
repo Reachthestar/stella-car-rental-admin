@@ -7,6 +7,7 @@ import { Bin } from "../assets/icons";
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
   const [currentPage, setCurrentPage] = useState(1);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [sortKey, setSortKey] = useState("");
   const cardPerPage = 10;
@@ -14,6 +15,7 @@ function CarsCards() {
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
+
 
   const handleMaintenance = (carId) => {
     Swal.fire({
@@ -72,6 +74,9 @@ function CarsCards() {
       if (result.isConfirmed) {
         const run = async () => {
           try {
+
+            console.log(carId);
+
             const res = await carsApi.deleteCar(carId);
             console.log(res.data.message);
           } catch (error) {
@@ -84,6 +89,7 @@ function CarsCards() {
       }
     });
   };
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -138,11 +144,13 @@ function CarsCards() {
     indexOfLastCarPerPage
   );
 
+
   const handleChangePage = (page) => {
     setCurrentPage(page);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
+
     });
   };
 
@@ -152,6 +160,7 @@ function CarsCards() {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
+
       });
     }
   };
@@ -162,6 +171,7 @@ function CarsCards() {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
+
       });
     }
   };
@@ -226,7 +236,17 @@ function CarsCards() {
               <div className="p-2">{car.useDate}</div>
               <div className="p-2">{car.updatedAt}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
-                {car.status}
+                <p
+                  className={`px-4 font-bold rounded-full ${
+                    car?.status === 'Available'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : car?.status === 'Maintenance'
+                      ? 'text-fail-status-text bg-fail-status-bg'
+                      : 'text-process-status-text bg-process-status-bg'
+                  }`}
+                >
+                  {car.status}
+                </p>
                 <div className="flex space-x-2">
                   {car.status === "Available" && (
                     <button
@@ -274,8 +294,10 @@ function CarsCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
+
                 ? "bg-black text-white"
                 : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+
             }`}
           >
             {index + 1}

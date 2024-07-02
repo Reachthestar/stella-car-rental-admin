@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { usePayment } from "../contexts/payment-context";
 
+
 function PaymentsCards() {
   const { allPaymentComplete } = usePayment();
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,11 +14,12 @@ function PaymentsCards() {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
 
+
   const handleComplete = (paymentId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to mark this payment as complete?`,
-      icon: "info",
+      icon: 'info',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
@@ -78,12 +80,13 @@ function PaymentsCards() {
     firstIndexOfPaymentPerPage,
     indexOfLastPaymentPerPage
   );
+  
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -92,7 +95,7 @@ function PaymentsCards() {
       setCurrentPage((prev) => prev + 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -102,7 +105,7 @@ function PaymentsCards() {
       setCurrentPage((prev) => prev - 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -157,8 +160,16 @@ function PaymentsCards() {
               <div className="p-2">{payment.paymentDate}</div>
               <div className="p-2">{payment.amount}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
-                {payment.status}
-                {payment.status === "Open" && (
+                <p
+                  className={`px-4 font-bold rounded-full ${
+                    payment.status === 'Complete'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : 'text-fail-status-text bg-fail-status-bg'
+                  }`}
+                >
+                  {payment.status}
+                </p>
+                {payment.status === 'Open' && (
                   <button
                     onClick={() => handleComplete(payment.paymentId)}
                     className="bg-green-500 text-white rounded-full px-2"
@@ -186,8 +197,10 @@ function PaymentsCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
+
                 ? "bg-black text-white"
                 : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+
             }`}
           >
             {index + 1}
