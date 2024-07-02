@@ -10,7 +10,6 @@ function CarsCards() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortKey, setSortKey] = useState("");
   const cardPerPage = 10;
-  const totalPage = Math.ceil(allCar.length / cardPerPage);
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
@@ -161,6 +160,9 @@ function CarsCards() {
       });
     }
   };
+
+  const searchedCar = searchTerm === "" ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
+  const totalPage = Math.ceil(searchedCar.length / cardPerPage); // Have to declare here or cause initialization error
 
   return (
     <div className="w-full flex flex-col items-center">
