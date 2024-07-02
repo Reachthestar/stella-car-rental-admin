@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useBooking } from "../contexts/booking-context";
@@ -6,49 +5,10 @@ import bookingApi from "../apis/booking";
 import paymentApi from "../apis/payment";
 import { usePayment } from "../contexts/payment-context";
 
-
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
   const { fetchPayment } = usePayment();
   const [currentPage, setCurrentPage] = useState(1);
-
-  const cardPerPage = 10;
-  const totalPage = Math.ceil(allBooking.length / cardPerPage);
-  const indexOfLastBookingPerPage = currentPage * cardPerPage;
-  const firstIndexOfBookingPerPage = indexOfLastBookingPerPage - cardPerPage;
-  const currentBookingPerPage = allBooking.slice(
-    firstIndexOfBookingPerPage,
-    indexOfLastBookingPerPage
-  );
-
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPage) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   const [searchTerm, setSearchTerm] = useState("");
   const [sortKey, setSortKey] = useState("");
   const cardPerPage = 10;
@@ -57,18 +17,16 @@ function BookingCards() {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
 
-
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
-        text: 'Status',
+        text: "Status",
         title: `Are you sure you want to cancel this booking?`,
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
         showConfirmButton: true,
       });
       if ((await result).isConfirmed) {
-
         await bookingApi.updateBookingStatus(bookingId, "cancelled");
 
         await paymentApi.deletePayment(bookingId);
@@ -228,16 +186,15 @@ function BookingCards() {
               <div className="p-2 flex flex-col items-center justify-center gap-2">
                 <p
                   className={`px-4 font-bold rounded-full ${
-                    booking.status === 'Cancelled'
-                      ? 'text-fail-status-text bg-fail-status-bg'
-                      : 'text-success-status-text bg-success-status-bg'
+                    booking.status === "Cancelled"
+                      ? "text-fail-status-text bg-fail-status-bg"
+                      : "text-success-status-text bg-success-status-bg"
                   }`}
                 >
                   {booking.status}
                 </p>
 
-                {booking.status === 'Confirmed' ? (
-
+                {booking.status === "Confirmed" ? (
                   <button
                     onClick={() => handleCancel(booking.id)}
                     className="ml-2 bg-red-500 text-white rounded-full px-2"
@@ -266,10 +223,8 @@ function BookingCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
-
                 ? "bg-black text-white"
                 : "bg-gray-200 hover:bg-gray-700 hover:text-white"
-
             }`}
           >
             {index + 1}
