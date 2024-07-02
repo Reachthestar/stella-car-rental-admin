@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
 import { Bin } from '../assets/icons';
+import { AxiosError } from 'axios';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
@@ -52,9 +53,12 @@ function CarsCards() {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            await carsApi.updateCar(carId, { status: 'available' });
+            const res = await carsApi.updateCar(carId, { status: 'available' });
           } catch (error) {
             console.log(error);
+            if(error instanceof AxiosError){
+              alert(error.response.data.message) //wait for toastify
+            }
           } finally {
             fetchCars();
           }
@@ -163,6 +167,14 @@ function CarsCards() {
                     </button>
                   )}
                   {car.status === 'Maintenance' && (
+                    <button
+                      onClick={() => handleMakeAvailable(car.id)}
+                      className="bg-green-500 text-white rounded-full w-6 h-6"
+                    >
+                      <i className="ri-check-double-line"></i>
+                    </button>
+                  )}
+                  {car.status === 'Rented' && (
                     <button
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full w-6 h-6"
