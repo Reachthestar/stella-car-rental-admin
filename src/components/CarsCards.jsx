@@ -72,7 +72,6 @@ function CarsCards() {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            console.log(carId);
             const res = await carsApi.deleteCar(carId);
             console.log(res.data.message);
           } catch (error) {
@@ -113,8 +112,12 @@ function CarsCards() {
     const valueA = a[sortKey];
     const valueB = b[sortKey];
 
-    if (sortKey === "useDate" || sortKey === "updatedAt") {
-      return new Date(valueA) - new Date(valueB);
+    if (sortKey === "updatedAt") {
+      return new Date(valueB) - new Date(valueA); // Sort by update date in descending order
+    }
+
+    if (sortKey === "useDate") {
+      return new Date(valueB) - new Date(valueA); // Sort by use date in descending order
     }
 
     if (typeof valueA === "number" && typeof valueB === "number") {
@@ -126,6 +129,8 @@ function CarsCards() {
     return 0;
   });
 
+  const searchedCar = searchTerm === "" ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
+  const totalPage = Math.ceil(searchedCar.length / cardPerPage); // Have to declare here or cause initialization error
   const indexOfLastCarPerPage = currentPage * cardPerPage;
   const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage;
   const currentCarPerPage = sortedCars.slice(
@@ -160,9 +165,6 @@ function CarsCards() {
       });
     }
   };
-
-  const searchedCar = searchTerm === "" ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
-  const totalPage = Math.ceil(searchedCar.length / cardPerPage); // Have to declare here or cause initialization error
 
   return (
     <div className="w-full flex flex-col items-center">
