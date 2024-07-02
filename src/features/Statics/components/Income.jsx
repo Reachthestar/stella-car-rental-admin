@@ -97,11 +97,6 @@ export default function Income() {
     ],
   };
 
-  const totalAmount = allPayment?.reduce(
-    (acc, payment) => acc + payment.amount,
-    0
-  );
-
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
