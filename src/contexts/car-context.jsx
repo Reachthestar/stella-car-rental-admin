@@ -36,7 +36,6 @@ export default function CarsContextProvider({ children }) {
       //CarModels
       const carModelRes = await carsApi.getAllCarModel()
       const dataCarModel = carModelRes.data.message
-      console.log(dataCarModel)
       setAllCarModel(dataCarModel)
     } catch (error) {
       console.log(error);
