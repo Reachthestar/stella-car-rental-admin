@@ -5,7 +5,8 @@ export default {
     extend: {
       colors: {
         'primary-color': '#FF7A00',
-        'secondary-color': '#1154FF',
+        'secondary-color': '#1f2937',
+        'thirdly-color': '#324258',
         'bg-children-container': '#f0f2f5',
         'side-bar': '#191919',
         'body-bg': '#0b0c28',
@@ -20,6 +21,7 @@ export default {
         'process-status-bg': '#e0e7ff',
         'fail-status-text': '#f87171',
         'fail-status-bg': '#fee2e2',
+        'bg-hover-color': '#1154FF',
       },
       backgroundImage: {
         'card-01-bg': 'linear-gradient(#ffc52d,#ef621c)',
