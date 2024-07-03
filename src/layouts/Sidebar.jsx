@@ -27,8 +27,12 @@ export default function Sidebar() {
               <NavLink
                 to={item.path}
                 key={index}
-                className={`hover:bg-secondary-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50
-                  ${currentPath === item.path ? 'bg-secondary-color rounded-md' : ''}
+                className={`hover:bg-bg-hover-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50
+                  ${
+                    currentPath === item.path
+                      ? 'bg-bg-hover-color rounded-md'
+                      : ''
+                  }
                 `}
               >
                 <li>
