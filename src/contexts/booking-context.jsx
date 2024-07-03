@@ -9,6 +9,10 @@ export default function BookingContextProvider({ children }) {
   const [monthlyBookings, setMonthlyBookings] = useState(null);
   const [bookingBrand, setBookingBrand] = useState(null);
   const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null);
+  const [pickupByBranchPerYear, setPickupByBranchPerYear] = useState(null);
+  const [pickupByBranchPerMonth, setPickupByBranchPerMonth] = useState(null);
+  const [dropOffByBranchPerYear, setDropOffByBranchPerYear] = useState(null);
+  const [dropOffByBranchPerMonth, setDropOffByBranchPerMonth] = useState(null);
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
   const currentYear = today.getFullYear();
@@ -40,6 +44,64 @@ export default function BookingContextProvider({ children }) {
         acc.push(dataBooking);
         return acc;
       }, []);
+
+      // Filter bookings for the current year
+      const bookingsThisYear = data.filter(item => new Date(item.createdAt).getFullYear() === currentYear);
+
+      // Filter bookings for the current month
+      const bookingsThisMonth = data.filter(item => {
+        const date = new Date(item.createdAt);
+        return date.getFullYear() === currentYear && (date.getMonth() + 1) === currentMonth;
+      });
+
+      const countBranchByBooking = (bookings) => {
+        // Aggregate booking counts by pick-up branch
+        const branchCounts = bookings.reduce((acc, item) => {
+          const branch = item.pickup;
+          if (!acc[branch]) {
+            acc[branch] = 0;
+          }
+          acc[branch] += 1;
+          return acc;
+        }, {});
+
+        // Transform the branchCounts object into an array and sort by booking times in descending order
+        const sortedBranchCounts = Object.keys(branchCounts).map(branch => ({
+          branch,
+          bookingTimes: branchCounts[branch],
+        })).sort((a, b) => b.bookingTimes - a.bookingTimes);
+
+        return sortedBranchCounts;
+      };
+
+      const countDropBranchByBooking = (bookings) => {
+        const branchCounts = bookings.reduce((acc , item) => {
+          const branch = item.dropoff;
+          if(!acc[branch]){
+            acc[branch] = 0
+          }
+          acc[branch] += 1
+          return acc
+        },{})
+
+        const sortedDropBranchCounts = Object.keys(branchCounts).map(branch => ({
+          branch,
+          dropTimes: branchCounts[branch]
+        })).sort((a,b) => b.dropTimes - a.dropTimes)
+
+        return sortedDropBranchCounts
+      }
+
+      const branchBookingCountsYear = countBranchByBooking(bookingsThisYear);
+      const branchBookingCountsMonth = countBranchByBooking(bookingsThisMonth);
+      const dropBranchCountsYear = countDropBranchByBooking(bookingsThisYear);
+      const dropBranchCountsMonth = countDropBranchByBooking(bookingsThisMonth);
+
+      setPickupByBranchPerYear(branchBookingCountsYear)
+      setPickupByBranchPerMonth(branchBookingCountsMonth)
+      setDropOffByBranchPerYear(dropBranchCountsYear)
+      setDropOffByBranchPerMonth(dropBranchCountsMonth)
+
       setMonthlyBookings(
         data.filter(
           (item) => parseInt(item.createdAt.split("-")[1]) === currentMonth
@@ -90,6 +152,10 @@ export default function BookingContextProvider({ children }) {
         totalPaymentPerMonth,
         currentMonth,
         currentYear,
+        pickupByBranchPerYear,
+        pickupByBranchPerMonth,
+        dropOffByBranchPerYear,
+        dropOffByBranchPerMonth,
       }}
     >
       {children}

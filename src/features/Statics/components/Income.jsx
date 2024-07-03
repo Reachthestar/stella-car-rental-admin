@@ -75,7 +75,7 @@ export default function Income() {
       },
       title: {
         display: true,
-        text: selectIncome === 'yearly' ? `Yearly Sales (${currentYear})` : `Monthly Sales (${months[month]})`,
+        text: selectIncome === 'yearly' ? `Yearly Sales (${currentYear})` :  selectIncome === 'monthly' ? `Monthly Sales (${months[month]})` : null,
       },
       scales: {
         y: {
@@ -86,11 +86,11 @@ export default function Income() {
   };
 
   const data = {
-    labels: selectIncome === 'yearly' ? months.slice(0, currentMonth) : daysArray,
+    labels: selectIncome === 'yearly' ? months.slice(0, currentMonth) :  selectIncome === 'monthly' ? daysArray : null,
     datasets: [
       {
-        label: `Monthly Sales`,
-        data: selectIncome === 'yearly' ? totalPayment : dailyPayment.map(item => item.totalAmount),
+        label: selectIncome === 'yearly' ? `Monthly Sales`: selectIncome === 'monthly' ? 'Daily Sales' : null,
+        data: selectIncome === 'yearly' ? totalPayment :  selectIncome === 'monthly' ? dailyPayment.map(item => item.totalAmount) : null,
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
       },
@@ -136,7 +136,7 @@ export default function Income() {
                 <div className="p-2">{payment?.paymentId}</div>
                 <div className="p-2">{payment?.customer}</div>
                 <div className="p-2">{payment?.paymentDate}</div>
-                <div className="p-2">{payment?.amount}</div>
+                <div className="p-2">฿ {payment?.amount.toLocaleString()}</div>
               </div>
             </div>
           ))}
@@ -147,7 +147,7 @@ export default function Income() {
                 <div className="p-2"></div>
                 <div className="p-2"></div>
                 <div className="p-2"></div>
-                <div className="p-2">&#3647;{totalAmount}</div>
+                <div className="p-2">&#3647; {totalAmount?.toLocaleString()}</div>
               </div>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function Income() {
                 <div className="p-2">{payment?.paymentId}</div>
                 <div className="p-2">{payment?.customer}</div>
                 <div className="p-2">{payment?.paymentDate}</div>
-                <div className="p-2">{payment?.amount}</div>
+                <div className="p-2">฿ {payment?.amount.toLocaleString()}</div>
               </div>
             </div>
           ))}
@@ -175,7 +175,7 @@ export default function Income() {
                 <div className="p-2"></div>
                 <div className="p-2"></div>
                 <div className="p-2"></div>
-                <div className="p-2">&#3647;{totalAmount}</div>
+                <div className="p-2">&#3647; {totalAmount.toLocaleString()}</div>
               </div>
 
             </div>

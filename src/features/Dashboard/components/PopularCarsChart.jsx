@@ -5,8 +5,10 @@ import { useBooking } from '../../../contexts/booking-context';
 ChartJS.register(ArcElement, Tooltip, Legend);
 export default function PopularCarsChart() {
   const { bookingBrand } = useBooking();
-  const data = {
 
+  console.log(bookingBrand)
+
+  const data = {
     labels: bookingBrand?.map(item => item.brand),
     datasets: [
       {
@@ -34,6 +36,22 @@ export default function PopularCarsChart() {
     ],
   };
 
+  const options = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const data = tooltipItem.dataset.data;
+            const currentValue = data[tooltipItem.dataIndex];
+            const total = data.reduce((a, b) => a + b, 0);
+            const percentage = ((currentValue / total) * 100).toFixed(2);
+            return `${percentage}%`;
+          },
+        },
+      },
+    },
+  };
+
   return (
     <div className="p-2 bg-white rounded-md shadow-md h-full">
       <h1 className="text-center">Popular Cars</h1>
@@ -41,7 +59,7 @@ export default function PopularCarsChart() {
       style={{ height: '500px' }}
       className='flex items-center'
       >
-        <Doughnut data={data} />
+        <Doughnut data={data} options={options} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
@@ -14,7 +14,6 @@ function CarsCards() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortKey, setSortKey] = useState("");
   const cardPerPage = 10;
-
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
