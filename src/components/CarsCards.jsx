@@ -251,7 +251,7 @@ function CarsCards() {
                       onClick={() => handleMaintenance(car.id)}
                       className="bg-red-500 text-white rounded-full w-6 h-6"
                     >
-                      X
+                      <i className="ri-close-fill"></i>
                     </button>
                   )}
                   {car.status === 'Maintenance' && (
@@ -259,7 +259,7 @@ function CarsCards() {
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full w-6 h-6"
                     >
-                      <i className="ri-check-double-line"></i>
+                      <i className="ri-check-fill"></i>
                     </button>
                   )}
 
@@ -268,7 +268,7 @@ function CarsCards() {
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full w-6 h-6"
                     >
-                      <i className="ri-check-double-line"></i>
+                      <i className="ri-check-fill"></i>
                     </button>
                   )}
                   {car.status !== 'Rented' && (
