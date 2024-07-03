@@ -1,11 +1,11 @@
-import axios from "axios";
-import { getAdminToken, removeAdminToken } from "../utils/local-storage";
+import axios from 'axios';
+import { getAdminToken, removeAdminToken } from '../utils/local-storage';
 
 // axios.defaults.baseURL = "https://group-project-car-rental-beckend.vercel.app/";
 
-// axios.defaults.baseURL = "http://localhost:8888";
+// axios.defaults.baseURL = 'http://localhost:8888';
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 axios.interceptors.request.use(
   (config) => {
@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   (err) => {
     if (err.response.status === 401) {
       removeAdminToken();
-      window.location.assign("/login");
+      window.location.assign('/login');
       return;
     }
     return Promise.reject(err);
