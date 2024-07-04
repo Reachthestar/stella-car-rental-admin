@@ -4,6 +4,7 @@ import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
 import { Bin } from '../assets/icons';
 import { AxiosError } from 'axios';
+import dayjs from 'dayjs';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
@@ -173,11 +174,9 @@ function CarsCards() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h1 className="text-xl font-bold text-decoration-line: underline">
-        Cars
-      </h1>
-      <div className="flex justify-between w-full mb-4">
+    <div className="w-full flex flex-col gap-4 items-center">
+      <h1 className="text-2xl font-semibold">Cars</h1>
+      <div className="flex justify-between w-full">
         <input
           type="text"
           placeholder="Search..."
@@ -203,7 +202,7 @@ function CarsCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-9 text-center font-bold">
             <div className="p-2">Car Brand</div>
             <div className="p-2">Car Model</div>
@@ -217,71 +216,75 @@ function CarsCards() {
           </div>
         </div>
 
-        {currentCarPerPage?.map((car) => (
-          <div
-            key={car.id}
-            className="bg-white rounded-lg p-5 shadow-lg w-full"
-          >
-            <div className="grid grid-cols-9 text-center">
-              <div className="p-2">{car.brand}</div>
-              <div className="p-2">{car.model}</div>
-              <div className="p-2">{car.color}</div>
-              <div className="p-2">{car.plate}</div>
-              <div className="p-2">{car.region}</div>
-              <div className="p-2">{car.airport}</div>
-              <div className="p-2">{car.useDate}</div>
-              <div className="p-2">{car.updatedAt}</div>
-              <div className="p-2 flex flex-col items-center justify-center gap-2">
-                <p
-                  className={`px-4 font-bold rounded-full ${
-                    car?.status === 'Available'
-                      ? 'text-success-status-text bg-success-status-bg'
-                      : car?.status === 'Maintenance'
-                      ? 'text-fail-status-text bg-fail-status-bg'
-                      : 'text-process-status-text bg-process-status-bg'
-                  }`}
-                >
-                  {car.status}
-                </p>
-                <div className="flex space-x-2">
-                  {car.status === 'Available' && (
-                    <button
-                      onClick={() => handleMaintenance(car.id)}
-                      className="bg-red-500 text-white rounded-full w-6 h-6"
-                    >
-                      <i className="ri-close-fill"></i>
-                    </button>
-                  )}
-                  {car.status === 'Maintenance' && (
-                    <button
-                      onClick={() => handleMakeAvailable(car.id)}
-                      className="bg-green-500 text-white rounded-full w-6 h-6"
-                    >
-                      <i className="ri-check-fill"></i>
-                    </button>
-                  )}
+        {currentCarPerPage?.map((car) => {
+          const updatedAt = dayjs(car.updatedAt).format('DD/MM/YYYY');
 
-                  {car.status === 'Rented' && (
-                    <button
-                      onClick={() => handleMakeAvailable(car.id)}
-                      className="bg-green-500 text-white rounded-full w-6 h-6"
-                    >
-                      <i className="ri-check-fill"></i>
-                    </button>
-                  )}
-                  {car.status !== 'Rented' && (
-                    <button
-                      onClick={() => handleDelete(car.id)}
-                      className="px-2 w-10"
-                    >
-                      <Bin className=" w-full" />
-                    </button>
-                  )}
+          return (
+            <div
+              key={car.id}
+              className="bg-white rounded-lg p-5 shadow-lg w-full"
+            >
+              <div className="grid grid-cols-9 text-center">
+                <div className="p-2">{car.brand}</div>
+                <div className="p-2">{car.model}</div>
+                <div className="p-2">{car.color}</div>
+                <div className="p-2">{car.plate}</div>
+                <div className="p-2">{car.region}</div>
+                <div className="p-2">{car.airport}</div>
+                <div className="p-2">{car.useDate}</div>
+                <div className="p-2">{updatedAt}</div>
+                <div className="p-2 flex flex-col items-center justify-center gap-2">
+                  <p
+                    className={`px-4 font-bold rounded-full ${
+                      car?.status === 'Available'
+                        ? 'text-success-status-text bg-success-status-bg'
+                        : car?.status === 'Maintenance'
+                        ? 'text-fail-status-text bg-fail-status-bg'
+                        : 'text-process-status-text bg-process-status-bg'
+                    }`}
+                  >
+                    {car.status}
+                  </p>
+                  <div className="flex space-x-2">
+                    {car.status === 'Available' && (
+                      <button
+                        onClick={() => handleMaintenance(car.id)}
+                        className="bg-red-500 text-white rounded-full w-6 h-6"
+                      >
+                        <i className="ri-close-fill"></i>
+                      </button>
+                    )}
+                    {car.status === 'Maintenance' && (
+                      <button
+                        onClick={() => handleMakeAvailable(car.id)}
+                        className="bg-green-500 text-white rounded-full w-6 h-6"
+                      >
+                        <i className="ri-check-fill"></i>
+                      </button>
+                    )}
+
+                    {car.status === 'Rented' && (
+                      <button
+                        onClick={() => handleMakeAvailable(car.id)}
+                        className="bg-green-500 text-white rounded-full w-6 h-6"
+                      >
+                        <i className="ri-check-fill"></i>
+                      </button>
+                    )}
+                    {car.status !== 'Rented' && (
+                      <button
+                        onClick={() => handleDelete(car.id)}
+                        className="px-2 w-10"
+                      >
+                        <Bin className=" w-full" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="p-2 flex gap-2">

@@ -4,6 +4,7 @@ import { useBooking } from '../contexts/booking-context';
 import bookingApi from '../apis/booking';
 import paymentApi from '../apis/payment';
 import { usePayment } from '../contexts/payment-context';
+import dayjs from 'dayjs';
 
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
@@ -13,7 +14,7 @@ function BookingCards() {
   const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
 
-  console.log(window.scrollY)
+  console.log(window.scrollY);
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
@@ -124,8 +125,9 @@ function BookingCards() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="flex justify-between w-full mb-4">
+    <div className="w-full flex flex-col gap-4 items-center">
+      <h1 className="text-2xl font-semibold">Bookings</h1>
+      <div className="flex justify-between w-full">
         <input
           type="text"
           placeholder="Search..."
@@ -153,61 +155,67 @@ function BookingCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-11 text-center font-bold">
             <div className="p-2">Booking ID</div>
             <div className="p-2">Customer</div>
             <div className="p-2">Car</div>
-            <div className="p-2">License Plate</div>
+            <div className="p-2">Plate</div>
             <div className="p-2">Start Date</div>
             <div className="p-2">End Date</div>
-            <div className="p-2">Total Amount</div>
-            <div className="p-2">Pickup Location</div>
-            <div className="p-2">Drop-Off Location</div>
-            <div className="p-2">Pickup & Drop-Off Time</div>
+            <div className="p-2">Amount</div>
+            <div className="p-2">Pickup</div>
+            <div className="p-2">Drop-Off</div>
+            <div className="p-2">Time</div>
             <div className="p-2">Status</div>
           </div>
         </div>
-        {currentBookingPerPage?.map((booking) => (
-          <div
-            key={booking.id}
-            className="bg-white rounded-lg p-5 shadow-lg w-full"
-          >
-            <div className="grid grid-cols-11 text-center items-center">
-              <div className="p-2 h-fit">{booking.id}</div>
-              <div className="p-2 h-fit">{booking.customer}</div>
-              <div className="p-2 h-fit">{booking.car}</div>
-              <div className="p-2 h-fit">{booking.plate}</div>
-              <div className="p-2 h-fit">{booking.startDate}</div>
-              <div className="p-2 h-fit">{booking.endDate}</div>
-              <div className="p-2 h-fit">{booking.amount}</div>
-              <div className="p-2 h-fit">{booking.pickup}</div>
-              <div className="p-2 h-fit">{booking.dropoff}</div>
-              <div className="p-2 h-fit">{booking.time}</div>
+        {currentBookingPerPage?.map((booking) => {
+          const startDate = dayjs(booking.startDate).format('DD/MM/YYYY');
+          const endDate = dayjs(booking.endDate).format('DD/MM/YYYY');
+          return (
+            <div
+              key={booking.id}
+              className="bg-white rounded-lg p-5 shadow-lg w-full"
+            >
+              <div className="grid grid-cols-11 text-center items-center">
+                <div className="p-2 h-fit">{booking.id}</div>
+                <div className="p-2 h-fit">{booking.customer}</div>
+                <div className="p-2 h-fit">{booking.car}</div>
+                <div className="p-2 h-fit">{booking.plate}</div>
+                <div className="p-2 h-fit">{startDate}</div>
+                <div className="p-2 h-fit">{endDate}</div>
+                <div className="p-2 h-fit">
+                  &#3647; {booking.amount.toLocaleString()}
+                </div>
+                <div className="p-2 h-fit">{booking.pickup}</div>
+                <div className="p-2 h-fit">{booking.dropoff}</div>
+                <div className="p-2 h-fit">{booking.time}</div>
 
-              <div className="p-2 flex flex-col items-center justify-center gap-2">
-                <p
-                  className={`px-4 font-bold rounded-full ${
-                    booking.status === 'Cancelled'
-                      ? 'text-fail-status-text bg-fail-status-bg'
-                      : 'text-success-status-text bg-success-status-bg'
-                  }`}
-                >
-                  {booking.status}
-                </p>
-
-                {booking.status === 'Confirmed' ? (
-                  <button
-                    onClick={() => handleCancel(booking.id)}
-                    className="bg-red-500 text-white rounded-full px-2 w-6 h-6 flex justify-center"
+                <div className="p-2 flex flex-col items-center justify-center gap-2">
+                  <p
+                    className={`px-4 font-bold rounded-full ${
+                      booking.status === 'Cancelled'
+                        ? 'text-fail-status-text bg-fail-status-bg'
+                        : 'text-success-status-text bg-success-status-bg'
+                    }`}
                   >
-                    <i className="ri-close-fill"></i>
-                  </button>
-                ) : null}
+                    {booking.status}
+                  </p>
+
+                  {booking.status === 'Confirmed' ? (
+                    <button
+                      onClick={() => handleCancel(booking.id)}
+                      className="bg-red-500 text-white rounded-full px-2 w-6 h-6 flex justify-center"
+                    >
+                      <i className="ri-close-fill"></i>
+                    </button>
+                  ) : null}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="p-2 flex gap-2">

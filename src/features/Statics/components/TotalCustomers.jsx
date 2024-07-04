@@ -111,14 +111,16 @@ export default function TotalCustomers() {
 
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="bg-white rounded-md shadow-md p-4">
-        <h1 className="text-center text-2xl font-semibold">Total Customers</h1>
+      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+        <h1 className="text-center text-2xl text-white font-semibold">
+          Total Customers
+        </h1>
 
         <form>
           <select
             name="category"
             id="categorySelect"
-            className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            className="w-full border bg-gray-100 rounded-md py-1.5 px-2 focus:outline-none"
             onChange={handleCategoryChange}
           >
             <option value="monthly">Monthly</option>
@@ -128,7 +130,7 @@ export default function TotalCustomers() {
       </div>
 
       <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
           <div className="grid grid-cols-7 text-center font-bold">
             <div className="p-2">Customer ID</div>
             <div className="p-2">Name</div>
@@ -165,7 +167,7 @@ export default function TotalCustomers() {
         )}
 
         <div>
-          <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
+          <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-7 text-center font-bold text-lg">
               <div className="p-2">Total customers</div>
               <div className="p-2"></div>

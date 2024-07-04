@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useCustomer } from "../contexts/customer-context";
+import React, { useState, useEffect } from 'react';
+import { useCustomer } from '../contexts/customer-context';
 
 function CustomerCards() {
   const { allCustomer, fetchCustomer } = useCustomer();
   const [customers, setCustomers] = useState([]);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortKey, setSortKey] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortKey, setSortKey] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const customersPerPage = 10;
 
@@ -26,15 +26,15 @@ function CustomerCards() {
       const valueA = a[key];
       const valueB = b[key];
 
-      if (key === "totalPoints") {
+      if (key === 'totalPoints') {
         return valueB - valueA; // Descending order for totalPoints
       }
 
-      if (key === "customerId") {
+      if (key === 'customerId') {
         return valueA - valueB; // Ascending order for customerId
       }
 
-      if (typeof valueA === "number" && typeof valueB === "number") {
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
         return valueA - valueB; // Ascending order for other numerical fields
       }
 
@@ -72,7 +72,7 @@ function CustomerCards() {
     setCurrentPage(page);
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -81,7 +81,7 @@ function CustomerCards() {
       setCurrentPage((prev) => prev + 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -91,14 +91,15 @@ function CustomerCards() {
       setCurrentPage((prev) => prev - 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
 
   return (
-    <div className="w-full flex flex-col items-center p-4">
-      <div className="flex justify-between w-full mb-4">
+    <div className="w-full flex flex-col gap-4 items-center p-4">
+      <h1 className="text-2xl font-semibold">Customers</h1>
+      <div className="flex justify-between w-full">
         <input
           type="text"
           placeholder="Search..."
@@ -123,7 +124,7 @@ function CustomerCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-8 text-center font-bold">
             <div className="p-2">ID</div>
             <div className="p-2">First Name</div>
@@ -172,8 +173,8 @@ function CustomerCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
-                ? "bg-black text-white"
-                : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+                ? 'bg-black text-white'
+                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
             }`}
           >
             {index + 1}
