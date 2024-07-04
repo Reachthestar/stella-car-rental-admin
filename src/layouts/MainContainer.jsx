@@ -7,8 +7,7 @@ export default function MainContainer() {
     <div className="flex h-screen">
       <Sidebar />
       <div className="ml-[260px] w-full shadow">
-        <TopNav />
-        <div className="mt-[80px] flex justify-center bg-bg-children-container h-full w-full scroll-smooth">
+        <div className="mt-[20px] flex justify-center bg-bg-children-container h-full w-full scroll-smooth">
           <div className='w-[97%]'>
             <Outlet />
           </div>
