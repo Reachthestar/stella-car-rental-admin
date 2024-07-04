@@ -13,6 +13,8 @@ function BookingCards() {
   const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
 
+  console.log(window.scrollY)
+
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
@@ -151,7 +153,7 @@ function BookingCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
+        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-11 text-center font-bold">
             <div className="p-2">Booking ID</div>
             <div className="p-2">Customer</div>

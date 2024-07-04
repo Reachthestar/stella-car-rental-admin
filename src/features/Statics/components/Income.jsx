@@ -79,10 +79,9 @@ export default function Income() {
       },
       title: {
         display: true,
-        text:
-          selectIncome === 'yearly'
-            ? `Yearly Sales (${currentYear})`
-            : `Monthly Sales (${months[month]})`,
+
+        text: selectIncome === 'yearly' ? `Yearly Sales (${currentYear})` :  selectIncome === 'monthly' ? `Monthly Sales (${months[month]})` : null,
+
       },
       scales: {
         y: {
@@ -93,15 +92,13 @@ export default function Income() {
   };
 
   const data = {
-    labels:
-      selectIncome === 'yearly' ? months.slice(0, currentMonth) : daysArray,
+
+    labels: selectIncome === 'yearly' ? months.slice(0, currentMonth) :  selectIncome === 'monthly' ? daysArray : null,
     datasets: [
       {
-        label: `Monthly Sales`,
-        data:
-          selectIncome === 'yearly'
-            ? totalPayment
-            : dailyPayment.map((item) => item.totalAmount),
+        label: selectIncome === 'yearly' ? `Monthly Sales`: selectIncome === 'monthly' ? 'Daily Sales' : null,
+        data: selectIncome === 'yearly' ? totalPayment :  selectIncome === 'monthly' ? dailyPayment.map(item => item.totalAmount) : null,
+
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
       },
@@ -135,59 +132,60 @@ export default function Income() {
           </div>
         </div>
 
-        {selectIncome === 'yearly' ? (
-          <>
-            {yearlyPayment?.map((payment, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-5 shadow-md w-full"
-              >
-                <div className="grid grid-cols-5 text-center">
-                  <div className="p-2">{payment?.bookingId}</div>
-                  <div className="p-2">{payment?.paymentId}</div>
-                  <div className="p-2">{payment?.customer}</div>
-                  <div className="p-2">{payment?.paymentDate}</div>
-                  <div className="p-2">{payment?.amount}</div>
-                </div>
-              </div>
-            ))}
-            <div>
-              <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
-                <div className="grid grid-cols-5 text-center font-bold text-lg">
-                  <div className="p-2">Total</div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2">&#3647;{totalAmount}</div>
-                </div>
+
+
+        {selectIncome === 'yearly' ? <>
+          {yearlyPayment?.map((payment, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg p-5 shadow-md w-full"
+            >
+              <div className="grid grid-cols-5 text-center">
+                <div className="p-2">{payment?.bookingId}</div>
+                <div className="p-2">{payment?.paymentId}</div>
+                <div className="p-2">{payment?.customer}</div>
+                <div className="p-2">{payment?.paymentDate}</div>
+                <div className="p-2">&#3647; {payment?.amount.toLocaleString()}</div>
               </div>
             </div>
-          </>
-        ) : selectIncome === 'monthly' ? (
-          <>
-            {monthlyPayments?.map((payment, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-5 shadow-md w-full"
-              >
-                <div className="grid grid-cols-5 text-center">
-                  <div className="p-2">{payment?.bookingId}</div>
-                  <div className="p-2">{payment?.paymentId}</div>
-                  <div className="p-2">{payment?.customer}</div>
-                  <div className="p-2">{payment?.paymentDate}</div>
-                  <div className="p-2">{payment?.amount}</div>
-                </div>
+          ))}
+          <div>
+            <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
+              <div className="grid grid-cols-5 text-center font-bold text-lg">
+                <div className="p-2">Total</div>
+                <div className="p-2"></div>
+                <div className="p-2"></div>
+                <div className="p-2"></div>
+                <div className="p-2">&#3647; {totalAmount?.toLocaleString()}</div>
               </div>
-            ))}
-            <div>
-              <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
-                <div className="grid grid-cols-5 text-center font-bold text-lg">
-                  <div className="p-2">Total</div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2">&#3647;{totalAmount}</div>
-                </div>
+            </div>
+          </div>
+        </>
+          :
+          selectIncome === 'monthly' ? <>
+          {monthlyPayments?.map((payment, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg p-5 shadow-md w-full"
+            >
+              <div className="grid grid-cols-5 text-center">
+                <div className="p-2">{payment?.bookingId}</div>
+                <div className="p-2">{payment?.paymentId}</div>
+                <div className="p-2">{payment?.customer}</div>
+                <div className="p-2">{payment?.paymentDate}</div>
+                <div className="p-2">&#3647; {payment?.amount.toLocaleString()}</div>
+              </div>
+            </div>
+          ))}
+          <div>
+            <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
+              <div className="grid grid-cols-5 text-center font-bold text-lg">
+                <div className="p-2">Total</div>
+                <div className="p-2"></div>
+                <div className="p-2"></div>
+                <div className="p-2"></div>
+                <div className="p-2">&#3647; {totalAmount.toLocaleString()}</div>
+
               </div>
             </div>
           </>

@@ -123,7 +123,7 @@ function CustomerCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
+        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-8 text-center font-bold">
             <div className="p-2">ID</div>
             <div className="p-2">First Name</div>

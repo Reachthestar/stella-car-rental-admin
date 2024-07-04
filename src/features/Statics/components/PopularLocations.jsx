@@ -1,53 +1,74 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 import { useBooking } from '../../../contexts/booking-context';
+import { useState } from 'react';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Popular Locations',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Popular Locations',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function PopularLocations() {
-  const { allBooking } = useBooking();
+  const { allBooking, pickupByBranchPerYear, pickupByBranchPerMonth, dropOffByBranchPerYear, dropOffByBranchPerMonth } = useBooking();
+  const [selectPickOrDrop, setSelectPickOrDrop] = useState('pickUp');
+  const [selectYearOrMonth, setSelectYearOrMonth] = useState('yearly');
+
+  const handleSelectPickOrDrop = (e) => {
+    setSelectPickOrDrop(e.target.value);
+  };
+
+  const handleSelectYearOrMonth = (e) => {
+    setSelectYearOrMonth(e.target.value);
+  };
+
+  const data = {
+    labels: selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'yearly' ? pickupByBranchPerYear?.map(item => item.branch)
+    : selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'monthly' ? pickupByBranchPerMonth?.map(item => item.branch)
+    : selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'yearly' ? dropOffByBranchPerYear?.map(item => item.branch)
+    : selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'monthly' ? dropOffByBranchPerMonth?.map(item => item.branch)
+    : null 
+    ,
+    datasets: [
+      {
+        label: 'Popular Cars',
+        data: selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'yearly' ? pickupByBranchPerYear?.map(item => item.bookingTimes)
+        : selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'monthly' ? pickupByBranchPerMonth?.map(item => item.bookingTimes)
+        : selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'yearly' ? dropOffByBranchPerYear?.map(item => item.dropTimes)
+        : selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'monthly' ? dropOffByBranchPerMonth?.map(item => item.dropTimes)
+        : null,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const data = tooltipItem.dataset.data;
+            const currentValue = data[tooltipItem.dataIndex];
+            const total = data.reduce((a, b) => a + b, 0);
+            const percentage = ((currentValue / total) * 100).toFixed(2);
+            return `${percentage}%`;
+          },
+        },
+      },
+    },
+  };
 
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
@@ -61,6 +82,7 @@ export default function PopularLocations() {
             name="pickDrop"
             id="pickDropSelect"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            onChange={handleSelectPickOrDrop}
           >
             <option value="pickUp">Pick-up</option>
             <option value="dropOff">Drop-off</option>
@@ -70,44 +92,96 @@ export default function PopularLocations() {
             name="category"
             id="category-select"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            onChange={handleSelectYearOrMonth}
           >
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
           </select>
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-5 text-center font-bold">
-            <div className="p-2">Car ID</div>
-            <div className="p-2">Car</div>
-            <div className="p-2">Plate</div>
-            <div className="p-2">Pick-up</div>
-            <div className="p-2">Drop-off</div>
-          </div>
-        </div>
-
-        {allBooking?.map((booking,index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg p-5 shadow-md w-full"
-          >
-            <div className="grid grid-cols-5 text-center">
-              <div className="p-2">{booking?.carModelId}</div>
-              <div className="p-2">{booking?.car}</div>
-              <div className="p-2">{booking?.plate}</div>
-              <div className="p-2">{booking?.pickup}</div>
-              <div className="p-2">{booking?.dropoff}</div>
+      <div className="flex gap-4">
+        <div className="flex flex-col gap-4 h-[540px] overflow-auto flex-1 p-2">
+          <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
+            <div className="flex justify-around text-center font-bold">
+              <div className="p-2 flex-1">No.</div>
+              <div className="p-2 flex-1">{selectPickOrDrop === 'pickUp' ? 'Pick-up Branch' : selectPickOrDrop === 'dropOff' ? 'Drop-off Branch' : ''}</div>
+              <div className="p-2 flex-1">{selectPickOrDrop === 'pickUp' ? 'Pick-up Times' : selectPickOrDrop === 'dropOff' ? 'Drop-off Times' : ''}</div>
             </div>
           </div>
-        ))}
-      </div>
+          {
+            selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'yearly' ? (
+              pickupByBranchPerYear?.map((booking, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                >
+                  <div className="flex justify-around text-center">
+                    <div className="p-2 flex-1">{index + 1}</div>
+                    <div className="p-2 flex-1">{booking.branch}</div>
+                    <div className="p-2 flex-1">{booking.bookingTimes}</div>
+                  </div>
+                </div>
+              ))
+            )
+              :
+              selectPickOrDrop === 'pickUp' && selectYearOrMonth === 'monthly' ? (
+                pickupByBranchPerMonth?.map((booking, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                  >
+                    <div className="flex justify-around text-center">
+                      <div className="p-2 flex-1">{index + 1}</div>
+                      <div className="p-2 flex-1">{booking.branch}</div>
+                      <div className="p-2 flex-1">{booking.bookingTimes}</div>
+                    </div>
+                  </div>
+                ))
+              )
+                :
+                selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'yearly' ? (
+                  dropOffByBranchPerYear?.map((booking, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                    >
+                      <div className="flex justify-around text-center">
+                        <div className="p-2 flex-1">{index + 1}</div>
+                        <div className="p-2 flex-1">{booking.branch}</div>
+                        <div className="p-2 flex-1">{booking.dropTimes}</div>
+                      </div>
+                    </div>
+                  ))
+                )
+                  :
+                  selectPickOrDrop === 'dropOff' && selectYearOrMonth === 'monthly' ? (
+                    dropOffByBranchPerMonth?.map((booking, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                      >
+                        <div className="flex justify-around text-center">
+                          <div className="p-2 flex-1">{index + 1}</div>
+                          <div className="p-2 flex-1">{booking.branch}</div>
+                          <div className="p-2 flex-1">{booking.dropTimes}</div>
+                        </div>
+                      </div>
+                    ))
+                  )
+                    :
+                    null
+          }
+        </div>
 
-      <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: '700px', height: '350px' }}>
-          <Bar options={options} data={data} />
+        <div className="p-2 bg-white rounded-md shadow-md h-full flex-1">
+          <h1 className="text-center">Popular Location</h1>
+          <div
+            style={{ height: '500px' }}
+            className='flex items-center justify-center'
+          >
+            <Doughnut data={data} options={options} />
+          </div>
         </div>
       </div>
     </div>

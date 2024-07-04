@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
@@ -13,7 +13,6 @@ function CarsCards() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
-
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
@@ -56,7 +55,9 @@ function CarsCards() {
           } catch (error) {
             console.log(error);
             if (error instanceof AxiosError) {
-              alert(error.response.data.message); //wait for toastify
+
+              alert(error.response.data.message) //wait for toastify
+
             }
           } finally {
             fetchCars();
@@ -205,7 +206,7 @@ function CarsCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
+        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-9 text-center font-bold">
             <div className="p-2">Car Brand</div>
             <div className="p-2">Car Model</div>
@@ -235,13 +236,12 @@ function CarsCards() {
               <div className="p-2">{car.updatedAt}</div>
               <div className="p-2 flex flex-col items-center justify-center gap-2">
                 <p
-                  className={`px-4 font-bold rounded-full ${
-                    car?.status === 'Available'
+                  className={`px-4 font-bold rounded-full ${car?.status === 'Available'
                       ? 'text-success-status-text bg-success-status-bg'
                       : car?.status === 'Maintenance'
-                      ? 'text-fail-status-text bg-fail-status-bg'
-                      : 'text-process-status-text bg-process-status-bg'
-                  }`}
+                        ? 'text-fail-status-text bg-fail-status-bg'
+                        : 'text-process-status-text bg-process-status-bg'
+                    }`}
                 >
                   {car.status}
                 </p>
@@ -299,11 +299,14 @@ function CarsCards() {
           <button
             key={index + 1}
             onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${
-              currentPage === index + 1
-                ? 'bg-black text-white'
-                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
-            }`}
+
+            className={`w-10 h-10 rounded-full ${currentPage === index + 1
+
+                ? "bg-black text-white"
+                : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+
+              }`}
+
           >
             {index + 1}
           </button>

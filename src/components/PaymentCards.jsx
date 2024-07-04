@@ -138,7 +138,7 @@ function PaymentsCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full">
+        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-6 text-center font-bold">
             <div className="p-2">Booking ID</div>
             <div className="p-2">Payment ID</div>
