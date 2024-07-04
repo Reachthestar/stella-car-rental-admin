@@ -7,6 +7,9 @@ export default function BookingContextProvider({ children }) {
   const [allBooking, setAllBooking] = useState(null);
   const [isAllBookingLoading, setAllBookingLoading] = useState(true);
   const [monthlyBookings, setMonthlyBookings] = useState(null);
+  const [yearlyBookings, setYearlyBookings] = useState(null);
+  const [popularCarsMonthly, setPopularCarsMonthly] = useState([]);
+  const [popularCarsYearly, setPopularCarsYearly] = useState([]);
   const [bookingBrand, setBookingBrand] = useState(null);
   const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null);
   const [pickupByBranchPerYear, setPickupByBranchPerYear] = useState(null);
@@ -46,16 +49,51 @@ export default function BookingContextProvider({ children }) {
       }, []);
 
       // Filter bookings for the current year
-      const bookingsThisYear = data.filter(item => new Date(item.createdAt).getFullYear() === currentYear);
+      const bookingsThisYear = data.filter(
+        (item) => new Date(item.createdAt).getFullYear() === currentYear
+      );
 
       // Filter bookings for the current month
-      const bookingsThisMonth = data.filter(item => {
+      const bookingsThisMonth = data.filter((item) => {
         const date = new Date(item.createdAt);
-        return date.getFullYear() === currentYear && (date.getMonth() + 1) === currentMonth;
+        return (
+          date.getFullYear() === currentYear &&
+          date.getMonth() + 1 === currentMonth
+        );
       });
 
+      setYearlyBookings(bookingsThisYear);
+      setMonthlyBookings(bookingsThisMonth);
+
+      const calculateCarPopularity = (bookings) => {
+        return bookings.reduce((acc, item) => {
+          const car = item.car;
+          if (!acc[car]) {
+            acc[car] = 0;
+          }
+          acc[car] += 1;
+          return acc;
+        }, {});
+      };
+
+      const popularCarsMonthlyData = calculateCarPopularity(bookingsThisMonth);
+      const popularCarsYearlyData = calculateCarPopularity(bookingsThisYear);
+
+      setPopularCarsMonthly(
+        Object.keys(popularCarsMonthlyData).map((key) => ({
+          car: key,
+          count: popularCarsMonthlyData[key],
+        }))
+      );
+
+      setPopularCarsYearly(
+        Object.keys(popularCarsYearlyData).map((key) => ({
+          car: key,
+          count: popularCarsYearlyData[key],
+        }))
+      );
+
       const countBranchByBooking = (bookings) => {
-        // Aggregate booking counts by pick-up branch
         const branchCounts = bookings.reduce((acc, item) => {
           const branch = item.pickup;
           if (!acc[branch]) {
@@ -65,49 +103,48 @@ export default function BookingContextProvider({ children }) {
           return acc;
         }, {});
 
-        // Transform the branchCounts object into an array and sort by booking times in descending order
-        const sortedBranchCounts = Object.keys(branchCounts).map(branch => ({
-          branch,
-          bookingTimes: branchCounts[branch],
-        })).sort((a, b) => b.bookingTimes - a.bookingTimes);
+        const sortedBranchCounts = Object.keys(branchCounts)
+          .map((branch) => ({
+            branch,
+            bookingTimes: branchCounts[branch],
+          }))
+          .sort((a, b) => b.bookingTimes - a.bookingTimes);
 
         return sortedBranchCounts;
       };
 
       const countDropBranchByBooking = (bookings) => {
-        const branchCounts = bookings.reduce((acc , item) => {
+        const branchCounts = bookings.reduce((acc, item) => {
           const branch = item.dropoff;
-          if(!acc[branch]){
-            acc[branch] = 0
+          if (!acc[branch]) {
+            acc[branch] = 0;
           }
-          acc[branch] += 1
-          return acc
-        },{})
+          acc[branch] += 1;
+          return acc;
+        }, {});
 
-        const sortedDropBranchCounts = Object.keys(branchCounts).map(branch => ({
-          branch,
-          dropTimes: branchCounts[branch]
-        })).sort((a,b) => b.dropTimes - a.dropTimes)
+        const sortedDropBranchCounts = Object.keys(branchCounts)
+          .map((branch) => ({
+            branch,
+            dropTimes: branchCounts[branch],
+          }))
+          .sort((a, b) => b.dropTimes - a.dropTimes);
 
-        return sortedDropBranchCounts
-      }
+        return sortedDropBranchCounts;
+      };
 
       const branchBookingCountsYear = countBranchByBooking(bookingsThisYear);
       const branchBookingCountsMonth = countBranchByBooking(bookingsThisMonth);
       const dropBranchCountsYear = countDropBranchByBooking(bookingsThisYear);
       const dropBranchCountsMonth = countDropBranchByBooking(bookingsThisMonth);
 
-      setPickupByBranchPerYear(branchBookingCountsYear)
-      setPickupByBranchPerMonth(branchBookingCountsMonth)
-      setDropOffByBranchPerYear(dropBranchCountsYear)
-      setDropOffByBranchPerMonth(dropBranchCountsMonth)
+      setPickupByBranchPerYear(branchBookingCountsYear);
+      setPickupByBranchPerMonth(branchBookingCountsMonth);
+      setDropOffByBranchPerYear(dropBranchCountsYear);
+      setDropOffByBranchPerMonth(dropBranchCountsMonth);
 
-      setMonthlyBookings(
-        data.filter(
-          (item) => parseInt(item.createdAt.split("-")[1]) === currentMonth
-        )
-      );
       setAllBooking(data.sort((a, b) => b.id - a.id));
+
       const bookingBrandData = data.reduce((acc, item) => {
         if (acc[item.car]) {
           acc[item.car]++;
@@ -123,12 +160,12 @@ export default function BookingContextProvider({ children }) {
 
       const totalPaymentPerMonth = bookingRes.data.message.reduce(
         (acc, item) => {
-          const month = new Date(item.createdAt).getMonth(); // สมมติว่า item.date เป็นวันที่ในรูปแบบ string
+          const month = new Date(item.createdAt).getMonth();
           acc[month] = (acc[month] || 0) + item.totalAmount;
           return acc;
         },
         Array(12).fill(0)
-      ); // เริ่มต้น array ด้วยค่า 0 สำหรับแต่ละเดือน (12 เดือน)
+      );
 
       setTotalPaymentPerMonth(totalPaymentPerMonth);
     } catch (error) {
@@ -137,6 +174,7 @@ export default function BookingContextProvider({ children }) {
       setAllBookingLoading(false);
     }
   };
+
   useEffect(() => {
     fetchBooking();
   }, []);
@@ -148,6 +186,9 @@ export default function BookingContextProvider({ children }) {
         isAllBookingLoading,
         fetchBooking,
         monthlyBookings,
+        yearlyBookings,
+        popularCarsMonthly,
+        popularCarsYearly,
         bookingBrand,
         totalPaymentPerMonth,
         currentMonth,
