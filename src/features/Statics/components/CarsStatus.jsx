@@ -24,7 +24,7 @@ export default function CarsStatus() {
           <select
             name="status"
             id="statusSelect"
-            className="w-full border bg-gray-100rounded-md py-1.5 px-2 focus:outline-none"
+            className="w-full border bg-gray-100 rounded-md py-1.5 px-2 focus:outline-none"
             onChange={handleSelectChange}
           >
             <option value="Available">Available</option>
