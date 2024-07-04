@@ -23,8 +23,13 @@ ChartJS.register(
 );
 
 export default function TotalCustomers() {
-  const { allCustomer, yearlyCustomer, monthlyCustomer, currentYear } =
-    useCustomer();
+  const {
+    allCustomer,
+    yearlyCustomer,
+    monthlyCustomer,
+    currentYear,
+    currentMonth,
+  } = useCustomer();
   const [selectTotalCus, setSelectTotalCus] = useState('monthly');
   const [totalAmount, setTotalAmount] = useState(0);
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
@@ -72,8 +77,28 @@ export default function TotalCustomers() {
       );
     }
 
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
     setChartData({
-      labels,
+      labels:
+        selectTotalCus === 'yearly'
+          ? months.slice(0, currentMonth)
+          : selectTotalCus === 'monthly'
+          ? daysArray
+          : null,
       datasets: [
         {
           label:

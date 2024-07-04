@@ -60,6 +60,7 @@ export default function CustomerContextProvider({ children }) {
         yearlyCustomer,
         monthlyCustomer,
         currentYear,
+        currentMonth,
       }}
     >
       {children}
