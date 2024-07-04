@@ -62,7 +62,9 @@ export default function BookingContextProvider({ children }) {
         );
       });
 
+      // Set State with Year Filter
       setYearlyBookings(bookingsThisYear);
+      // Set State with Month Filter
       setMonthlyBookings(bookingsThisMonth);
 
       const calculateCarPopularity = (bookings) => {
