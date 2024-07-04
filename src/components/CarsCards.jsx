@@ -1,36 +1,34 @@
-
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
 import { Bin } from '../assets/icons';
 import { AxiosError } from 'axios';
-
+import { useEffect } from 'react';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortKey, setSortKey] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
 
-
   const handleMaintenance = (carId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to put this car under maintenance?`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-            await carsApi.updateCar(carId, { status: "maintenance" });
+            await carsApi.updateCar(carId, { status: 'maintenance' });
           } catch (error) {
             console.log(error);
           } finally {
@@ -44,22 +42,22 @@ function CarsCards() {
 
   const handleMakeAvailable = (carId) => {
     Swal.fire({
-      text: "Status",
+      text: 'Status',
       title: `Are you sure you want to mark this car as available?`,
-      icon: "info",
+      icon: 'info',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-
-            await carsApi.updateCar(carId, { status: "available" });
-
+            await carsApi.updateCar(carId, { status: 'available' });
           } catch (error) {
             console.log(error);
             if (error instanceof AxiosError) {
+
               alert(error.response.data.message) //wait for toastify
+
             }
           } finally {
             fetchCars();
@@ -72,16 +70,15 @@ function CarsCards() {
 
   const handleDelete = (carId) => {
     Swal.fire({
-      text: "Remove ?",
-      title: "Are you sure you want to remove this car ?",
-      icon: "error",
+      text: 'Remove ?',
+      title: 'Are you sure you want to remove this car ?',
+      icon: 'error',
       showCancelButton: true,
       showConfirmButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         const run = async () => {
           try {
-
             console.log(carId);
 
             const res = await carsApi.deleteCar(carId);
@@ -96,7 +93,6 @@ function CarsCards() {
       }
     });
   };
-
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -125,15 +121,15 @@ function CarsCards() {
     const valueA = a[sortKey];
     const valueB = b[sortKey];
 
-    if (sortKey === "updatedAt") {
+    if (sortKey === 'updatedAt') {
       return new Date(valueB) - new Date(valueA); // Sort by update date in descending order
     }
 
-    if (sortKey === "useDate") {
+    if (sortKey === 'useDate') {
       return new Date(valueB) - new Date(valueA); // Sort by use date in descending order
     }
 
-    if (typeof valueA === "number" && typeof valueB === "number") {
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
       return valueA - valueB;
     }
 
@@ -142,7 +138,7 @@ function CarsCards() {
     return 0;
   });
 
-  const searchedCar = searchTerm === "" ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
+  const searchedCar = searchTerm === '' ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
   const totalPage = Math.ceil(searchedCar.length / cardPerPage); // Have to declare here or cause initialization error
   const indexOfLastCarPerPage = currentPage * cardPerPage;
   const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage;
@@ -151,13 +147,11 @@ function CarsCards() {
     indexOfLastCarPerPage
   );
 
-
   const handleChangePage = (page) => {
     setCurrentPage(page);
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-
+      behavior: 'smooth',
     });
   };
 
@@ -166,8 +160,7 @@ function CarsCards() {
       setCurrentPage((prev) => prev + 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
-
+        behavior: 'smooth',
       });
     }
   };
@@ -177,8 +170,7 @@ function CarsCards() {
       setCurrentPage((prev) => prev - 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
-
+        behavior: 'smooth',
       });
     }
   };
@@ -254,20 +246,20 @@ function CarsCards() {
                   {car.status}
                 </p>
                 <div className="flex space-x-2">
-                  {car.status === "Available" && (
+                  {car.status === 'Available' && (
                     <button
                       onClick={() => handleMaintenance(car.id)}
                       className="bg-red-500 text-white rounded-full w-6 h-6"
                     >
-                      X
+                      <i className="ri-close-fill"></i>
                     </button>
                   )}
-                  {car.status === "Maintenance" && (
+                  {car.status === 'Maintenance' && (
                     <button
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full w-6 h-6"
                     >
-                      <i className="ri-check-double-line"></i>
+                      <i className="ri-check-fill"></i>
                     </button>
                   )}
 
@@ -276,11 +268,10 @@ function CarsCards() {
                       onClick={() => handleMakeAvailable(car.id)}
                       className="bg-green-500 text-white rounded-full w-6 h-6"
                     >
-                      <i className="ri-check-double-line"></i>
+                      <i className="ri-check-fill"></i>
                     </button>
                   )}
                   {car.status !== 'Rented' && (
-
                     <button
                       onClick={() => handleDelete(car.id)}
                       className="px-2 w-10"
@@ -308,12 +299,14 @@ function CarsCards() {
           <button
             key={index + 1}
             onClick={() => handleChangePage(index + 1)}
+
             className={`w-10 h-10 rounded-full ${currentPage === index + 1
 
                 ? "bg-black text-white"
                 : "bg-gray-200 hover:bg-gray-700 hover:text-white"
 
               }`}
+
           >
             {index + 1}
           </button>

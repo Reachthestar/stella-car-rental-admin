@@ -23,35 +23,39 @@ ChartJS.register(
 );
 
 export default function Income() {
-  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } = usePayment();
-  const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking()
-  const [totalAmount, setTotalAmount] = useState(0)
-  const [selectIncome, setSelectIncome] = useState('yearly')
+  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } =
+    usePayment();
+  const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking();
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [selectIncome, setSelectIncome] = useState('yearly');
 
   const now = new Date();
-  const year = now.getFullYear()
+  const year = now.getFullYear();
   const month = now.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const daysArray = Array.from({ length: daysInMonth }, (_, index) => index + 1)
+  const daysArray = Array.from(
+    { length: daysInMonth },
+    (_, index) => index + 1
+  );
 
   const handleSelect = (e) => {
-    setSelectIncome(e.target.value)
-  }
+    setSelectIncome(e.target.value);
+  };
 
   useEffect(() => {
-    if(selectIncome === 'yearly'){
+    if (selectIncome === 'yearly') {
       const sum = yearlyPayment?.reduce((acc, item) => {
-        return acc += item.amount
-      }, 0)
-      setTotalAmount(sum)
+        return (acc += item.amount);
+      }, 0);
+      setTotalAmount(sum);
     }
-    if(selectIncome === 'monthly'){
-      const sum = monthlyPayments?.reduce((acc,item) => {
-        return acc += item.amount
-      },0)
-      setTotalAmount(sum)
+    if (selectIncome === 'monthly') {
+      const sum = monthlyPayments?.reduce((acc, item) => {
+        return (acc += item.amount);
+      }, 0);
+      setTotalAmount(sum);
     }
-  }, [allPayment,selectIncome])
+  }, [allPayment, selectIncome]);
   const months = [
     'Jan',
     'Feb',
@@ -66,7 +70,7 @@ export default function Income() {
     'Nov',
     'Dec',
   ];
-  const totalPayment = totalPaymentPerMonth
+  const totalPayment = totalPaymentPerMonth;
   const options = {
     responsive: true,
     plugins: {
@@ -75,22 +79,26 @@ export default function Income() {
       },
       title: {
         display: true,
+
         text: selectIncome === 'yearly' ? `Yearly Sales (${currentYear})` :  selectIncome === 'monthly' ? `Monthly Sales (${months[month]})` : null,
+
       },
       scales: {
         y: {
           beginAtZero: true,
-        }
-      }
+        },
+      },
     },
   };
 
   const data = {
+
     labels: selectIncome === 'yearly' ? months.slice(0, currentMonth) :  selectIncome === 'monthly' ? daysArray : null,
     datasets: [
       {
         label: selectIncome === 'yearly' ? `Monthly Sales`: selectIncome === 'monthly' ? 'Daily Sales' : null,
         data: selectIncome === 'yearly' ? totalPayment :  selectIncome === 'monthly' ? dailyPayment.map(item => item.totalAmount) : null,
+
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
       },
@@ -107,8 +115,8 @@ export default function Income() {
             id="categorySelect"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
           >
-            <option value='yearly'>Yearly</option>
-            <option value='monthly'>Monthly</option>
+            <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
           </select>
         </form>
       </div>
@@ -125,6 +133,7 @@ export default function Income() {
         </div>
 
 
+
         {selectIncome === 'yearly' ? <>
           {yearlyPayment?.map((payment, index) => (
             <div
@@ -136,7 +145,7 @@ export default function Income() {
                 <div className="p-2">{payment?.paymentId}</div>
                 <div className="p-2">{payment?.customer}</div>
                 <div className="p-2">{payment?.paymentDate}</div>
-                <div className="p-2">฿ {payment?.amount.toLocaleString()}</div>
+                <div className="p-2">&#3647; {payment?.amount.toLocaleString()}</div>
               </div>
             </div>
           ))}
@@ -164,7 +173,7 @@ export default function Income() {
                 <div className="p-2">{payment?.paymentId}</div>
                 <div className="p-2">{payment?.customer}</div>
                 <div className="p-2">{payment?.paymentDate}</div>
-                <div className="p-2">฿ {payment?.amount.toLocaleString()}</div>
+                <div className="p-2">&#3647; {payment?.amount.toLocaleString()}</div>
               </div>
             </div>
           ))}
@@ -176,14 +185,11 @@ export default function Income() {
                 <div className="p-2"></div>
                 <div className="p-2"></div>
                 <div className="p-2">&#3647; {totalAmount.toLocaleString()}</div>
-              </div>
 
+              </div>
             </div>
-          </div>
-        </>
-        :
-        null
-        }
+          </>
+        ) : null}
       </div>
 
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
@@ -191,6 +197,6 @@ export default function Income() {
           <Bar options={options} data={data} />
         </div>
       </div>
-    </div >
+    </div>
   );
 }

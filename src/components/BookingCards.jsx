@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import { useBooking } from "../contexts/booking-context";
-import bookingApi from "../apis/booking";
-import paymentApi from "../apis/payment";
-import { usePayment } from "../contexts/payment-context";
+import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
+import { useBooking } from '../contexts/booking-context';
+import bookingApi from '../apis/booking';
+import paymentApi from '../apis/payment';
+import { usePayment } from '../contexts/payment-context';
 
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
   const { fetchPayment } = usePayment();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortKey, setSortKey] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
 
   console.log(window.scrollY)
@@ -22,14 +22,14 @@ function BookingCards() {
   const handleCancel = async (bookingId) => {
     try {
       const result = Swal.fire({
-        text: "Status",
+        text: 'Status',
         title: `Are you sure you want to cancel this booking?`,
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
         showConfirmButton: true,
       });
       if ((await result).isConfirmed) {
-        await bookingApi.updateBookingStatus(bookingId, "cancelled");
+        await bookingApi.updateBookingStatus(bookingId, 'cancelled');
 
         await paymentApi.deletePayment(bookingId);
         fetchBooking();
@@ -69,15 +69,15 @@ function BookingCards() {
     const valueA = a[sortKey];
     const valueB = b[sortKey];
 
-    if (sortKey === "startDate" || sortKey === "endDate") {
+    if (sortKey === 'startDate' || sortKey === 'endDate') {
       return new Date(valueB) - new Date(valueA); // Sorty Start and End Date by Descending Order
     }
 
-    if (sortKey === "amount") {
+    if (sortKey === 'amount') {
       return new Date(valueB) - new Date(valueA); // Sort by amount in descending order
     }
 
-    if (typeof valueA === "number" && typeof valueB === "number") {
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
       return valueA - valueB;
     }
 
@@ -86,7 +86,7 @@ function BookingCards() {
     return 0;
   });
 
-  const searchedBookings = searchTerm === "" ? allBooking : filteredBookings;
+  const searchedBookings = searchTerm === '' ? allBooking : filteredBookings;
   const totalPage = Math.ceil(searchedBookings.length / cardPerPage);
   const indexOfLastBookingPerPage = currentPage * cardPerPage;
   const firstIndexOfBookingPerPage = indexOfLastBookingPerPage - cardPerPage;
@@ -99,7 +99,7 @@ function BookingCards() {
     setCurrentPage(page);
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
@@ -108,7 +108,7 @@ function BookingCards() {
       setCurrentPage((prev) => prev + 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -118,7 +118,7 @@ function BookingCards() {
       setCurrentPage((prev) => prev - 1);
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -188,20 +188,20 @@ function BookingCards() {
               <div className="p-2 flex flex-col items-center justify-center gap-2">
                 <p
                   className={`px-4 font-bold rounded-full ${
-                    booking.status === "Cancelled"
-                      ? "text-fail-status-text bg-fail-status-bg"
-                      : "text-success-status-text bg-success-status-bg"
+                    booking.status === 'Cancelled'
+                      ? 'text-fail-status-text bg-fail-status-bg'
+                      : 'text-success-status-text bg-success-status-bg'
                   }`}
                 >
                   {booking.status}
                 </p>
 
-                {booking.status === "Confirmed" ? (
+                {booking.status === 'Confirmed' ? (
                   <button
                     onClick={() => handleCancel(booking.id)}
-                    className="ml-2 bg-red-500 text-white rounded-full px-2"
+                    className="bg-red-500 text-white rounded-full px-2 w-6 h-6 flex justify-center"
                   >
-                    X
+                    <i className="ri-close-fill"></i>
                   </button>
                 ) : null}
               </div>
@@ -225,8 +225,8 @@ function BookingCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
-                ? "bg-black text-white"
-                : "bg-gray-200 hover:bg-gray-700 hover:text-white"
+                ? 'bg-black text-white'
+                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
             }`}
           >
             {index + 1}

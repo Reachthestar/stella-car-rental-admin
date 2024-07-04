@@ -8,9 +8,10 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
 import { useCustomer } from '../../../contexts/customer-context';
 import { useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 ChartJS.register(
   CategoryScale,
@@ -21,46 +22,95 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Total Customers',
-    },
-  },
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Total Customers',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
-
 export default function TotalCustomers() {
-  const [Customers, setCustomers] = useState([]);
-  const { allCustomer } = useCustomer();
-  console.log(allCustomer);
+  const { allCustomer, yearlyCustomer, monthlyCustomer, currentYear } =
+    useCustomer();
+  const [selectTotalCus, setSelectTotalCus] = useState('monthly');
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
-  // const filterCus = allCustomer?.reduce((acc, cus, i) =>
-  //   acc[i] = cus.createdAt;
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysArray = Array.from(
+    { length: daysInMonth },
+    (_, index) => index + 1
+  );
 
-  // , []);
+  const handleCategoryChange = (event) => {
+    setSelectTotalCus(event.target.value);
+  };
 
-  // console.log(filterCus);
+  useEffect(() => {
+    let labels = [];
+    let data = [];
+
+    if (selectTotalCus === 'yearly') {
+      setTotalAmount(yearlyCustomer.length);
+    } else if (selectTotalCus === 'monthly') {
+      setTotalAmount(monthlyCustomer.length);
+    }
+
+    if (selectTotalCus === 'yearly') {
+      labels = Array.from({ length: 12 }, (_, i) =>
+        dayjs().month(i).format('MMM')
+      );
+      data = labels.map(
+        (_, month) =>
+          yearlyCustomer.filter(
+            (customer) => dayjs(customer.createdAt).month() === month
+          ).length
+      );
+    } else {
+      labels = daysArray;
+      data = labels.map(
+        (day) =>
+          monthlyCustomer.filter(
+            (customer) => dayjs(customer.createdAt).date() === day
+          ).length
+      );
+    }
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label:
+            selectTotalCus === 'yearly'
+              ? `Total Customers (${currentYear})`
+              : `Total Customers (${dayjs().format('MMM')})`,
+          data,
+          backgroundColor: 'rgba(53, 162, 235, 0.8)',
+          borderRadius: 5,
+        },
+      ],
+    });
+  }, [allCustomer, selectTotalCus, yearlyCustomer, monthlyCustomer]);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text:
+          selectTotalCus === 'yearly'
+            ? `Yearly Customers (${currentYear})`
+            : `Monthly Customers (${dayjs().format('MMM')})`,
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  };
 
   return (
-    <div className="flex flex-col border border-gray-300 rounded-md p-3">
+    <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
       <div className="bg-white rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl font-semibold">Total Customers</h1>
 
@@ -69,8 +119,8 @@ export default function TotalCustomers() {
             name="category"
             id="categorySelect"
             className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            onChange={handleCategoryChange}
           >
-            <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
           </select>
@@ -79,43 +129,51 @@ export default function TotalCustomers() {
 
       <div className="flex flex-col gap-4 h-[400px] overflow-auto">
         <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-6 text-center font-bold">
+          <div className="grid grid-cols-7 text-center font-bold">
             <div className="p-2">Customer ID</div>
             <div className="p-2">Name</div>
             <div className="p-2">Email</div>
             <div className="p-2">Phone</div>
             <div className="p-2">Address</div>
+            <div className="p-2">Created Date</div>
             <div className="p-2">Driver License</div>
           </div>
         </div>
 
-        {allCustomer?.map((customer,index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg p-5 shadow-md w-full"
-          >
-            <div className="grid grid-cols-6 text-center">
-              <div className="p-2">{customer?.customerId}</div>
-              <div className="p-2">
-                {customer?.firstName} {customer?.lastName}
+        {(selectTotalCus === 'yearly' ? yearlyCustomer : monthlyCustomer)?.map(
+          (customer, index) => {
+            const createDate = dayjs(customer?.createdAt).format('DD/MM/YYYY');
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-lg p-5 shadow-md w-full"
+              >
+                <div className="grid grid-cols-7 text-center">
+                  <div className="p-2">{customer?.customerId}</div>
+                  <div className="p-2">
+                    {customer?.firstName} {customer?.lastName}
+                  </div>
+                  <div className="p-2">{customer?.email}</div>
+                  <div className="p-2">{customer?.phone}</div>
+                  <div className="p-2">{customer?.address}</div>
+                  <div className="p-2">{createDate}</div>
+                  <div className="p-2">{customer?.driverLicense}</div>
+                </div>
               </div>
-              <div className="p-2">{customer?.email}</div>
-              <div className="p-2">{customer?.createdAt}</div>
-              <div className="p-2">{customer?.address}</div>
-              <div className="p-2">{customer?.driverLicense}</div>
-            </div>
-          </div>
-        ))}
+            );
+          }
+        )}
 
         <div>
           <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
-            <div className="grid grid-cols-6 text-center font-bold text-lg">
+            <div className="grid grid-cols-7 text-center font-bold text-lg">
               <div className="p-2">Total customers</div>
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
               <div className="p-2"></div>
-              <div className="p-2">{allCustomer?.length}</div>
+              <div className="p-2"></div>
+              <div className="p-2">{totalAmount}</div>
             </div>
           </div>
         </div>
@@ -123,7 +181,7 @@ export default function TotalCustomers() {
 
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
         <div style={{ width: '700px', height: '350px' }}>
-          <Bar options={options} data={data} />
+          <Bar options={options} data={chartData} />
         </div>
       </div>
     </div>
