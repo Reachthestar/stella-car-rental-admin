@@ -12,6 +12,7 @@ import { faker } from '@faker-js/faker';
 import { usePayment } from '../../../contexts/payment-context';
 import { useBooking } from '../../../contexts/booking-context';
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +28,7 @@ export default function Income() {
     usePayment();
   const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [selectIncome, setSelectIncome] = useState('yearly');
+  const [selectIncome, setSelectIncome] = useState('monthly');
 
   const now = new Date();
   const year = now.getFullYear();
@@ -113,7 +114,7 @@ export default function Income() {
           selectIncome === 'yearly'
             ? totalPayment
             : selectIncome === 'monthly'
-            ? dailyPayment.map((item) => item.totalAmount)
+            ? dailyPayment?.map((item) => item.totalAmount)
             : null,
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
@@ -123,22 +124,24 @@ export default function Income() {
 
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="bg-white rounded-md shadow-md p-4">
-        <h1 className="text-center text-2xl font-semibold">Income</h1>
+      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+        <h1 className="text-center text-2xl text-white font-semibold">
+          Income
+        </h1>
         <form onChange={handleSelect}>
           <select
             name="category"
             id="categorySelect"
-            className="w-full border border-gray-300 rounded-md py-1.5 px-2 focus:outline-none"
+            className="w-full border bg-gray-100 rounded-md py-1.5 px-2 focus:outline-none"
           >
-            <option value="yearly">Yearly</option>
             <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
           </select>
         </form>
       </div>
 
       <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-md w-full">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
           <div className="grid grid-cols-5 text-center font-bold">
             <div className="p-2">Booking ID</div>
             <div className="p-2">Payment ID</div>
@@ -150,24 +153,29 @@ export default function Income() {
 
         {selectIncome === 'yearly' ? (
           <>
-            {yearlyPayment?.map((payment, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-5 shadow-md w-full"
-              >
-                <div className="grid grid-cols-5 text-center">
-                  <div className="p-2">{payment?.bookingId}</div>
-                  <div className="p-2">{payment?.paymentId}</div>
-                  <div className="p-2">{payment?.customer}</div>
-                  <div className="p-2">{payment?.paymentDate}</div>
-                  <div className="p-2">
-                    ฿ {payment?.amount.toLocaleString()}
+            {yearlyPayment?.map((payment, index) => {
+              const paymentDate = dayjs(payment?.paymentDate).format(
+                'DD/MM/YYYY'
+              );
+              return (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg p-5 shadow-md w-full"
+                >
+                  <div className="grid grid-cols-5 text-center">
+                    <div className="p-2">{payment?.bookingId}</div>
+                    <div className="p-2">{payment?.paymentId}</div>
+                    <div className="p-2">{payment?.customer}</div>
+                    <div className="p-2">{paymentDate}</div>
+                    <div className="p-2">
+                      &#3647; {payment?.amount.toLocaleString()}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div>
-              <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
+              <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
                 <div className="grid grid-cols-5 text-center font-bold text-lg">
                   <div className="p-2">Total</div>
                   <div className="p-2"></div>
@@ -182,31 +190,36 @@ export default function Income() {
           </>
         ) : selectIncome === 'monthly' ? (
           <>
-            {monthlyPayments?.map((payment, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-5 shadow-md w-full"
-              >
-                <div className="grid grid-cols-5 text-center">
-                  <div className="p-2">{payment?.bookingId}</div>
-                  <div className="p-2">{payment?.paymentId}</div>
-                  <div className="p-2">{payment?.customer}</div>
-                  <div className="p-2">{payment?.paymentDate}</div>
-                  <div className="p-2">
-                    ฿ {payment?.amount.toLocaleString()}
+            {monthlyPayments?.map((payment, index) => {
+              const paymentDate = dayjs(payment?.paymentDate).format(
+                'DD/MM/YYYY'
+              );
+              return (
+                <div
+                  key={index}
+                  className="bg-white rounded-lg p-5 shadow-md w-full"
+                >
+                  <div className="grid grid-cols-5 text-center">
+                    <div className="p-2">{payment?.bookingId}</div>
+                    <div className="p-2">{payment?.paymentId}</div>
+                    <div className="p-2">{payment?.customer}</div>
+                    <div className="p-2">{paymentDate}</div>
+                    <div className="p-2">
+                      &#3647; {payment?.amount.toLocaleString()}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div>
-              <div className="bg-gray-200 rounded-lg p-5 shadow-md w-full">
+              <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
                 <div className="grid grid-cols-5 text-center font-bold text-lg">
                   <div className="p-2">Total</div>
                   <div className="p-2"></div>
                   <div className="p-2"></div>
                   <div className="p-2"></div>
                   <div className="p-2">
-                    &#3647; {totalAmount.toLocaleString()}
+                    &#3647; {totalAmount?.toLocaleString()}
                   </div>
                 </div>
               </div>

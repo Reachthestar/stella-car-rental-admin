@@ -15,11 +15,9 @@ const navLinks = [
     display: 'Cars',
   },
   {
-      
-
-    path: "/customers",
-    icon: "ri-user-search-fill",
-    display: "Customers",
+    path: '/customers',
+    icon: 'ri-user-search-fill',
+    display: 'Customers',
   },
   {
     path: '/payments',
@@ -27,16 +25,16 @@ const navLinks = [
     display: 'Payments',
   },
 
- {
+  {
     path: '/statistics',
     icon: 'ri-line-chart-fill',
     display: 'Statistics',
- },
-  {
-    path: '/settings',
-    icon: 'ri-settings-2-line',
-    display: 'Settings',
   },
+  // {
+  //   path: '/settings',
+  //   icon: 'ri-settings-2-line',
+  //   display: 'Settings',
+  // },
 ];
 
 export default navLinks;

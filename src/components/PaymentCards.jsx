@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import { usePayment } from "../contexts/payment-context";
-
+import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
+import { usePayment } from '../contexts/payment-context';
+import dayjs from 'dayjs';
 
 function PaymentsCards() {
   const { allPaymentComplete } = usePayment();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortKey, setSortKey] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
-
 
   const handleComplete = (paymentId) => {
     Swal.fire({
@@ -54,15 +53,15 @@ function PaymentsCards() {
     const valueA = a[sortKey];
     const valueB = b[sortKey];
 
-    if (sortKey === "paymentDate") {
+    if (sortKey === 'paymentDate') {
       return new Date(valueB) - new Date(valueA); // Sort by payment date in descending order
     }
 
-    if (sortKey === "amount") {
+    if (sortKey === 'amount') {
       return valueB - valueA; // Sort by amount in descending order
     }
 
-    if (typeof valueA === "number" && typeof valueB === "number") {
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
       return valueA - valueB;
     }
 
@@ -72,7 +71,7 @@ function PaymentsCards() {
   });
 
   const searchedPayments =
-    searchTerm === "" ? allPaymentComplete : filteredPayments; // Make pagination equal to searched payments, not exceeding it
+    searchTerm === '' ? allPaymentComplete : filteredPayments; // Make pagination equal to searched payments, not exceeding it
   const totalPage = Math.ceil(searchedPayments.length / cardPerPage); // Have to declare here or cause initialization error
   const indexOfLastPaymentPerPage = currentPage * cardPerPage;
   const firstIndexOfPaymentPerPage = indexOfLastPaymentPerPage - cardPerPage;
@@ -80,7 +79,6 @@ function PaymentsCards() {
     firstIndexOfPaymentPerPage,
     indexOfLastPaymentPerPage
   );
-  
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
@@ -111,11 +109,9 @@ function PaymentsCards() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h1 className="text-xl font-bold text-decoration-line: underline">
-        Payment
-      </h1>
-      <div className="flex justify-between w-full mb-4">
+    <div className="w-full flex flex-col gap-4 items-center">
+      <h1 className="text-2xl font-semibold">Payments</h1>
+      <div className="flex justify-between w-full">
         <input
           type="text"
           placeholder="Search..."
@@ -138,7 +134,7 @@ function PaymentsCards() {
         </select>
       </div>
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-100 rounded-lg p-5 shadow-lg w-full sticky top-0">
+        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
           <div className="grid grid-cols-6 text-center font-bold">
             <div className="p-2">Booking ID</div>
             <div className="p-2">Payment ID</div>
@@ -148,39 +144,44 @@ function PaymentsCards() {
             <div className="p-2">Status</div>
           </div>
         </div>
-        {currentPaymentPerPage?.map((payment) => (
-          <div
-            key={payment.paymentId}
-            className="bg-white rounded-lg p-5 shadow-lg w-full"
-          >
-            <div className="grid grid-cols-6 text-center">
-              <div className="p-2">{payment.bookingId}</div>
-              <div className="p-2">{payment.paymentId}</div>
-              <div className="p-2">{payment.customer}</div>
-              <div className="p-2">{payment.paymentDate}</div>
-              <div className="p-2">{payment.amount}</div>
-              <div className="p-2 flex flex-col items-center justify-center gap-2">
-                <p
-                  className={`px-4 font-bold rounded-full ${
-                    payment.status === 'Complete'
-                      ? 'text-success-status-text bg-success-status-bg'
-                      : 'text-fail-status-text bg-fail-status-bg'
-                  }`}
-                >
-                  {payment.status}
-                </p>
-                {payment.status === 'Open' && (
-                  <button
-                    onClick={() => handleComplete(payment.paymentId)}
-                    className="bg-green-500 text-white rounded-full px-2"
+        {currentPaymentPerPage?.map((payment) => {
+          const paymentDate = dayjs(payment.paymentDate).format('DD/MM/YYYY');
+          return (
+            <div
+              key={payment.paymentId}
+              className="bg-white rounded-lg p-5 shadow-lg w-full"
+            >
+              <div className="grid grid-cols-6 text-center">
+                <div className="p-2">{payment.bookingId}</div>
+                <div className="p-2">{payment.paymentId}</div>
+                <div className="p-2">{payment.customer}</div>
+                <div className="p-2">{paymentDate}</div>
+                <div className="p-2">
+                  &#3647; {payment.amount.toLocaleString()}
+                </div>
+                <div className="p-2 flex flex-col items-center justify-center gap-2">
+                  <p
+                    className={`px-4 font-bold rounded-full ${
+                      payment.status === 'Complete'
+                        ? 'text-success-status-text bg-success-status-bg'
+                        : 'text-fail-status-text bg-fail-status-bg'
+                    }`}
                   >
-                    <i className="ri-check-double-line"></i>
-                  </button>
-                )}
+                    {payment.status}
+                  </p>
+                  {payment.status === 'Open' && (
+                    <button
+                      onClick={() => handleComplete(payment.paymentId)}
+                      className="bg-green-500 text-white rounded-full px-2"
+                    >
+                      <i className="ri-check-double-line"></i>
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="p-2 flex gap-2">
         <button
@@ -197,10 +198,8 @@ function PaymentsCards() {
             onClick={() => handleChangePage(index + 1)}
             className={`w-10 h-10 rounded-full ${
               currentPage === index + 1
-
-                ? "bg-black text-white"
-                : "bg-gray-200 hover:bg-gray-700 hover:text-white"
-
+                ? 'bg-black text-white'
+                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
             }`}
           >
             {index + 1}

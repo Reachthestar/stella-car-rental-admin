@@ -9,33 +9,27 @@ import Payments from '../pages/Payments';
 import Cars from '../pages/Cars';
 import Statistics from '../pages/Statistics';
 
-import Customers from "../pages/Customers";
+import Customers from '../pages/Customers';
 import CustomerContextProvider from '../contexts/customer-context';
 import CarsContextProvider from '../contexts/car-context';
 import BookingContextProvider from '../contexts/booking-context';
 import PaymentContextProvider from '../contexts/payment-context';
 
-
-
-
-
-
-
 const router = createBrowserRouter([
-  { path: "/login", element: <Login /> },
+  { path: '/login', element: <Login /> },
   {
     path: '/',
-    element:
-        <CustomerContextProvider>
-          <CarsContextProvider>
-            <BookingContextProvider>
-              <PaymentContextProvider>
-                <MainContainer />
-              </PaymentContextProvider>
-            </BookingContextProvider>
-          </CarsContextProvider>
-        </CustomerContextProvider>
-    ,
+    element: (
+      <CustomerContextProvider>
+        <CarsContextProvider>
+          <BookingContextProvider>
+            <PaymentContextProvider>
+              <MainContainer />
+            </PaymentContextProvider>
+          </BookingContextProvider>
+        </CarsContextProvider>
+      </CustomerContextProvider>
+    ),
     children: [
       {
         path: '/',
@@ -72,7 +66,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
 ]);
 
 export default function Router() {
