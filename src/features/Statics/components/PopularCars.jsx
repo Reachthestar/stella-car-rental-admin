@@ -6,10 +6,11 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { useState, useEffect } from "react";
-import { useBooking } from "../../../contexts/booking-context";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { useState, useEffect } from 'react';
+import { useBooking } from '../../../contexts/booking-context';
+import dayjs from 'dayjs';
 
 ChartJS.register(
   CategoryScale,
@@ -22,7 +23,7 @@ ChartJS.register(
 
 export default function PopularCars() {
   const { popularCarsMonthly, popularCarsYearly, currentYear } = useBooking();
-  const [selectCategory, setSelectCategory] = useState("monthly");
+  const [selectCategory, setSelectCategory] = useState('monthly');
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
   const handleCategoryChange = (event) => {
@@ -33,10 +34,10 @@ export default function PopularCars() {
     let labels = [];
     let data = [];
 
-    if (selectCategory === "yearly") {
+    if (selectCategory === 'yearly') {
       labels = popularCarsYearly.map((item) => item.car);
       data = popularCarsYearly.map((item) => item.count);
-    } else if (selectCategory === "monthly") {
+    } else if (selectCategory === 'monthly') {
       labels = popularCarsMonthly.map((item) => item.car);
       data = popularCarsMonthly.map((item) => item.count);
     }
@@ -46,11 +47,11 @@ export default function PopularCars() {
       datasets: [
         {
           label:
-            selectCategory === "yearly"
+            selectCategory === 'yearly'
               ? `Popular Cars (${currentYear})`
-              : `Popular Cars (Current Month)`,
+              : `Popular Cars (${dayjs().format('MMM')})`,
           data,
-          backgroundColor: "rgba(53, 162, 235, 0.8)",
+          backgroundColor: 'rgba(53, 162, 235, 0.8)',
           borderRadius: 5,
         },
       ],
@@ -61,14 +62,14 @@ export default function PopularCars() {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
       },
       title: {
         display: true,
         text:
-          selectCategory === "yearly"
+          selectCategory === 'yearly'
             ? `Yearly Popular Cars (${currentYear})`
-            : `Monthly Popular Cars (Current Month)`,
+            : `Monthly Popular Cars (${dayjs().format('MMM')})`,
       },
       scales: {
         y: {
@@ -79,7 +80,7 @@ export default function PopularCars() {
   };
 
   const sortedData =
-    selectCategory === "yearly"
+    selectCategory === 'yearly'
       ? [...popularCarsYearly].sort((a, b) => b.count - a.count)
       : [...popularCarsMonthly].sort((a, b) => b.count - a.count);
 
@@ -95,10 +96,7 @@ export default function PopularCars() {
             name="category"
             id="categorySelect"
             className="w-full border bg-gray-100 rounded-md py-1.5 px-2 focus:outline-none"
-
-           
             onChange={handleCategoryChange}
-
           >
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
@@ -115,9 +113,7 @@ export default function PopularCars() {
           </div>
         </div>
 
-
         {sortedData?.map((booking, index) => (
-
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-3 text-center">
               <div className="p-2">{index + 1}</div>
@@ -128,7 +124,7 @@ export default function PopularCars() {
         ))}
       </div>
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: "700px", height: "350px" }}>
+        <div style={{ width: '700px', height: '350px' }}>
           <Bar options={options} data={chartData} />
         </div>
       </div>
