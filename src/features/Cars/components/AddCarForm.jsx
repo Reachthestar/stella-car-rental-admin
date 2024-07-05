@@ -88,7 +88,6 @@ export default function AddCarForm() {
             {errorInput?.branchId}
           </div>
         </div>
-
         <div className="text-center mx-auto w-full">
           <select
             name="status"

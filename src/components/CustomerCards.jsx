@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useCustomer } from '../contexts/customer-context';
+import Pagination from './Pagination';
+import Header from './Header';
+import Filter from './Filter';
 
 function CustomerCards() {
   const { allCustomer, fetchCustomer } = useCustomer();
@@ -66,7 +69,7 @@ function CustomerCards() {
     indexOfFirstCustomer,
     indexOfLastCustomer
   );
-  const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
+  const totalPage = Math.ceil(filteredCustomers.length / customersPerPage);
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
@@ -77,7 +80,7 @@ function CustomerCards() {
   };
 
   const goToNextPage = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPage) {
       setCurrentPage((prev) => prev + 1);
       window.scrollTo({
         top: 0,
@@ -99,43 +102,37 @@ function CustomerCards() {
   return (
     <div className="w-full flex flex-col gap-4 items-center p-4">
       <h1 className="text-2xl font-semibold">Customers</h1>
-      <div className="flex justify-between w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <select
-          value={sortKey}
-          onChange={handleSort}
-          className="ml-4 shadow text-center appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Sort by</option>
-          <option value="customerId">ID</option>
-          <option value="firstName">First Name</option>
-          <option value="lastName">Last Name</option>
-          <option value="email">Email</option>
-          <option value="phone">Phone</option>
-          <option value="address">Address</option>
-          <option value="driverLicense">Driver License</option>
-          <option value="totalPoints">Total Points</option>
-        </select>
-      </div>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        sortKey={sortKey}
+        handleSort={handleSort}
+        filterItem={[
+          { value: "customerId", text: "ID" },
+          { value: "firstName", text: "First Name" },
+          { value: "lastName", text: "Last Name" },
+          { value: "email", text: "Email" },
+          { value: "phone", text: "Phone" },
+          { value: "address", text: "Address" },
+          { value: "driverLicense", text: "Driver License" },
+          { value: "totalPoints", text: "Total Points" },
+        ]
+        }
+      />
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
-          <div className="grid grid-cols-8 text-center font-bold">
-            <div className="p-2">ID</div>
-            <div className="p-2">First Name</div>
-            <div className="p-2">Last Name</div>
-            <div className="p-2">Email</div>
-            <div className="p-2">Phone</div>
-            <div className="p-2">Address</div>
-            <div className="p-2">Driver License</div>
-            <div className="p-2">Total Points</div>
-          </div>
-        </div>
+        <Header
+          addClass='grid-cols-8'
+          columns={[
+            'ID',
+            'First Name',
+            'Last Name',
+            'Email',
+            'Phone',
+            'Address',
+            'Driver License',
+            'Total Points',
+          ]}
+        />
         {currentCustomers.map((customer) => (
           <div
             key={customer.customerId}
@@ -158,37 +155,13 @@ function CustomerCards() {
           </div>
         ))}
       </div>
-      <div className="p-2 flex gap-2">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="hover:text-orange-500"
-        >
-          prev
-        </button>
-
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${
-              currentPage === index + 1
-                ? 'bg-black text-white'
-                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPages}
-          className="hover:text-orange-500"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        goToPrevPage={goToPrevPage}
+        goToNextPage={goToNextPage}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        handleChangePage={handleChangePage}
+      />
     </div>
   );
 }

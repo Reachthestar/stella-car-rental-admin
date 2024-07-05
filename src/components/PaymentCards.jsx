@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { usePayment } from '../contexts/payment-context';
 import dayjs from 'dayjs';
+import Pagination from './Pagination';
+import Header from './Header';
+import Filter from './Filter';
 
 function PaymentsCards() {
   const { allPaymentComplete } = usePayment();
@@ -111,39 +114,33 @@ function PaymentsCards() {
   return (
     <div className="w-full flex flex-col gap-4 items-center">
       <h1 className="text-2xl font-semibold">Payments</h1>
-      <div className="flex justify-between w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <select
-          value={sortKey}
-          onChange={handleSort}
-          className="ml-4 shadow text-center appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Sort by</option>
-          <option value="bookingId">Booking ID</option>
-          <option value="paymentId">Payment ID</option>
-          <option value="customer">Customer</option>
-          <option value="paymentDate">Payment Date</option>
-          <option value="amount">Amount</option>
-          <option value="status">Status</option>
-        </select>
-      </div>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        sortKey={sortKey}
+        handleSort={handleSort}
+        filterItem={[
+          { value: "bookingId", text: "Booking ID" },
+          { value: "paymentId", text: "Payment ID" },
+          { value: "customer", text: "Customer" },
+          { value: "paymentDate", text: "Payment Date" },
+          { value: "amount", text: "Amount" },
+          { value: "status", text: "Status" },
+        ]
+        }
+      />
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
-          <div className="grid grid-cols-6 text-center font-bold">
-            <div className="p-2">Booking ID</div>
-            <div className="p-2">Payment ID</div>
-            <div className="p-2">Customer</div>
-            <div className="p-2">Payment Date</div>
-            <div className="p-2">Amount</div>
-            <div className="p-2">Status</div>
-          </div>
-        </div>
+        <Header
+          addClass='grid-cols-6'
+          columns={[
+            'Booking ID',
+            'Payment ID',
+            'Customer',
+            'Payment Date',
+            'Amount',
+            'Status',
+          ]}
+        />
         {currentPaymentPerPage?.map((payment) => {
           const paymentDate = dayjs(payment.paymentDate).format('DD/MM/YYYY');
           return (
@@ -161,11 +158,10 @@ function PaymentsCards() {
                 </div>
                 <div className="p-2 flex flex-col items-center justify-center gap-2">
                   <p
-                    className={`px-4 font-bold rounded-full ${
-                      payment.status === 'Complete'
+                    className={`px-4 font-bold rounded-full ${payment.status === 'Complete'
                         ? 'text-success-status-text bg-success-status-bg'
                         : 'text-fail-status-text bg-fail-status-bg'
-                    }`}
+                      }`}
                   >
                     {payment.status}
                   </p>
@@ -183,37 +179,13 @@ function PaymentsCards() {
           );
         })}
       </div>
-      <div className="p-2 flex gap-2">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="hover:text-orange-500"
-        >
-          prev
-        </button>
-
-        {Array.from({ length: totalPage }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${
-              currentPage === index + 1
-                ? 'bg-black text-white'
-                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPage}
-          className=" hover:text-orange-500"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        goToPrevPage={goToPrevPage}
+        goToNextPage={goToNextPage}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        handleChangePage={handleChangePage}
+      />
     </div>
   );
 }

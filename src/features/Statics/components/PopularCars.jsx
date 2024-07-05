@@ -8,9 +8,10 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useBooking } from '../../../contexts/booking-context';
 import dayjs from 'dayjs';
+import Header from '../../../components/Header';
 
 ChartJS.register(
   CategoryScale,
@@ -25,9 +26,16 @@ export default function PopularCars() {
   const { popularCarsMonthly, popularCarsYearly, currentYear } = useBooking();
   const [selectCategory, setSelectCategory] = useState('monthly');
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const scrollRef = useRef()
 
   const handleCategoryChange = (event) => {
     setSelectCategory(event.target.value);
+    if(scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top : 0,
+        behavior : 'smooth'
+      })
+    }
   };
 
   useEffect(() => {
@@ -104,15 +112,15 @@ export default function PopularCars() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-3 text-center font-bold">
-            <div className="p-2">No.</div>
-            <div className="p-2">Car</div>
-            <div className="p-2">Count</div>
-          </div>
-        </div>
-
+      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+        <Header
+        addClass='grid-cols-3'
+        columns={[
+          'No.',
+          'Car',
+          'Count',
+        ]}
+        />
         {sortedData?.map((booking, index) => (
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-3 text-center">

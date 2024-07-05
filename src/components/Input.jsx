@@ -1,19 +1,16 @@
 
-export default function Input({ placeholder, name, onChange }) {
-
+export default function Input({
+    placeholder,
+          name,
+          value,
+          onChange,
+          error,
+          className,
+}) {
   return (
     <>
-      <div>
-        <input
-
-          className="border-2 outline-none w-full flex-1 px-2 py-1.5 rounded-md"
-
-          placeholder={placeholder}
-          name={name}
-          onChange={onChange}
-        />
-
-      </div>
+    <input placeholder={placeholder} className={className} name={name} value={value} onChange={onChange}/>
+    <div className="text-red-500 text-sm mt-1 text-center">{error}</div>
     </>
-  );
+  )
 }

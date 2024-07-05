@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import paymentApi from '../apis/payment';
+import dayjs from 'dayjs';
 
 const PaymentContext = createContext();
 
@@ -21,20 +22,18 @@ export default function PaymentContextProvider({ children }) {
         const paymentData = {
           bookingId: item.bookingId,
           paymentId: item.paymentId,
-          customer:
-            item.Booking.Customer.firstName +
-            ' ' +
-            item.Booking.Customer.lastName,
-          paymentDate: item.paymentDate.split('T')[0].split('-').join('/'),
+          customer: item.Booking.Customer.firstName + ' ' + item.Booking.Customer.lastName,
+          paymentDate: item.paymentDate,
           amount: item.amount,
-          status:
-            item.paymentStatus.charAt(0).toUpperCase() +
-            item.paymentStatus.slice(1),
-          createdAt: item.createdAt.split('T')[0],
+          status: item.paymentStatus.charAt(0).toUpperCase() + item.paymentStatus.slice(1),
+          createdAt: item.createdAt,
         };
         acc.push(paymentData);
         return acc;
       }, []);
+
+      setAllPayment(data.sort((a, b) => b.bookingId - a.bookingId));
+      setAllPaymentComplete(data.filter((item) => item.status === 'Complete'));
 
       // Filter data for current month
       const currentMonthData = data.filter((item) => {
@@ -49,17 +48,15 @@ export default function PaymentContextProvider({ children }) {
       const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
       const dailyPaymentsMap = {};
 
+      // สร้าง obj ที่มี key เป็นแต่ละวันของ currentMonth ให้ค่าเริ่มต้นของแต่ละวัน = 0
       for (let i = 1; i <= daysInMonth; i++) {
-        const day = `${currentYear}-${String(currentMonth).padStart(
-          2,
-          '0'
-        )}-${String(i).padStart(2, '0')}`;
+        const day = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
         dailyPaymentsMap[day] = 0;
       }
 
       // Calculate daily payments for current month
       currentMonthData.forEach((item) => {
-        const date = item.createdAt; // assuming item.createdAt is already in YYYY-MM-DD format
+        const date = dayjs(item.createdAt).format('YYYY-MM-DD'); // assuming item.createdAt is already in YYYY-MM-DD format
         if (dailyPaymentsMap[date] !== undefined) {
           dailyPaymentsMap[date] += item.amount;
         }
@@ -70,8 +67,9 @@ export default function PaymentContextProvider({ children }) {
         date,
         totalAmount: dailyPaymentsMap[date],
       }));
-
+      console.log(dailyPaymentsArray)
       setDailyPayment(dailyPaymentsArray);
+
       setYearlyPayment(
         data.filter(
           (item) => parseInt(item.createdAt.split('-')[0]) === currentYear
@@ -82,8 +80,7 @@ export default function PaymentContextProvider({ children }) {
           (item) => parseInt(item.createdAt.split('-')[1]) === currentMonth
         )
       );
-      setAllPayment(data.sort((a, b) => b.bookingId - a.bookingId));
-      setAllPaymentComplete(data.filter((item) => item.status === 'Complete'));
+
     } catch (error) {
       console.log(error);
     } finally {
