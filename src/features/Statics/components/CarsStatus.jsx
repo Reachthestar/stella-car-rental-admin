@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCars } from '../../../contexts/car-context';
+import Header from '../../../components/Header';
 
 export default function CarsStatus() {
   const [selectedStatus, setSelectedStatus] = useState('Available');
   const { allCar } = useCars();
+  const scrollRef = useRef()
 
   const handleSelectChange = (e) => {
     setSelectedStatus(e.target.value);
+    if(scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top : 0,
+        behavior : 'smooth'
+      })
+    }
   };
 
   const filterCarsStatus = allCar?.filter(
@@ -34,17 +42,17 @@ export default function CarsStatus() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-5 text-center font-bold">
-            <div className="p-2">Car ID</div>
-            <div className="p-2">Plate</div>
-            <div className="p-2">Model</div>
-            <div className="p-2">color</div>
-            <div className="p-2">Status</div>
-          </div>
-        </div>
-
+      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+        <Header
+        addClass='grid-cols-5'
+        columns={[
+          'Car ID',
+          'Plate',
+          'Model',
+          'color',
+          'Status',
+        ]}
+        />
         {filterCarsStatus?.map((car, index) => (
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-5 text-center">

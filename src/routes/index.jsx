@@ -14,21 +14,24 @@ import CustomerContextProvider from '../contexts/customer-context';
 import CarsContextProvider from '../contexts/car-context';
 import BookingContextProvider from '../contexts/booking-context';
 import PaymentContextProvider from '../contexts/payment-context';
+import ProtectAdminRoute from '../authentication/ProtectAdminRoute';
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
     path: '/',
     element: (
-      <CustomerContextProvider>
-        <CarsContextProvider>
-          <BookingContextProvider>
-            <PaymentContextProvider>
-              <MainContainer />
-            </PaymentContextProvider>
-          </BookingContextProvider>
-        </CarsContextProvider>
-      </CustomerContextProvider>
+      <ProtectAdminRoute>
+        <CustomerContextProvider>
+          <CarsContextProvider>
+            <BookingContextProvider>
+              <PaymentContextProvider>
+                <MainContainer />
+              </PaymentContextProvider>
+            </BookingContextProvider>
+          </CarsContextProvider>
+        </CustomerContextProvider>
+      </ProtectAdminRoute>
     ),
     children: [
       {

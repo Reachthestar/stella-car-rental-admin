@@ -24,25 +24,28 @@ export default function CarsContextProvider({ children }) {
           region: item.Branch.region,
           airport: item.Branch.branchName,
           useDate: item.useDate,
-          updatedAt: item.updatedAt.split('T')[0].split('-').join('/'),
+          updatedAt: item.updatedAt,
           status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
         };
         acc.push(carsData);
         return acc;
       }, []);
-      setCarAvailable(dataCars.filter((item) => item.status === 'Available'));
 
+      setCarAvailable(dataCars.filter((item) => item.status === 'Available'));
       setAllCars(dataCars.sort((beforeModel, afterModel) => beforeModel.model - afterModel.model))
+
       //CarModels
       const carModelRes = await carsApi.getAllCarModel()
       const dataCarModel = carModelRes.data.message
       setAllCarModel(dataCarModel)
+
     } catch (error) {
       console.log(error);
     } finally {
       setIsAllCarLoading(false);
     }
   };
+  
   // BRANCHES
   const fetchBranches = async () => {
     const branchRes = await carsApi.getAllBranches()

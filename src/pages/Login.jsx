@@ -45,6 +45,7 @@ export default function Login() {
         <input
           className="border-2 w-[300px] rounded-md px-2 py-1.5"
           placeholder="Password"
+          type='password'
           name="password"
           value={input.password}
           onChange={handleChangeInput}

@@ -18,7 +18,7 @@ export default function CustomerContextProvider({ children }) {
       const data = customerRes.data.message.reduce((acc, item) => {
         const customerData = {
           ...item,
-          createdAt: item.createdAt.split('T')[0],
+          createdAt: item.createdAt,
         };
         acc.push(customerData);
         return acc;

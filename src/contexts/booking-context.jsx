@@ -10,7 +10,6 @@ export default function BookingContextProvider({ children }) {
   const [yearlyBookings, setYearlyBookings] = useState(null);
   const [popularCarsMonthly, setPopularCarsMonthly] = useState([]);
   const [popularCarsYearly, setPopularCarsYearly] = useState([]);
-  const [bookingBrand, setBookingBrand] = useState(null);
   const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null);
   const [pickupByBranchPerYear, setPickupByBranchPerYear] = useState(null);
   const [pickupByBranchPerMonth, setPickupByBranchPerMonth] = useState(null);
@@ -28,25 +27,32 @@ export default function BookingContextProvider({ children }) {
           id: item.bookingId,
           carModelId: item.Car.CarModel.carModelId,
           customer: item.Customer.firstName,
-          car:
-            item.Car.CarModel.brand +
-            " " +
-            item.Car.CarModel.model +
-            " " +
-            item.Car.CarModel.color,
+          car: item.Car.CarModel.brand + " " + item.Car.CarModel.model + " " + item.Car.CarModel.color,
           plate: item.Car.licensePlate,
-          startDate: item.startDate.split("T")[0].split("-").join("/"),
-          endDate: item.endDate.split("T")[0].split("-").join("/"),
+          startDate: item.startDate,
+          endDate: item.endDate,
           amount: item.totalAmount,
           pickup: item.PickupLocation.branchName,
           dropoff: item.DropoffLocation.branchName,
           time: item.pickDropTime,
           status: item.status.charAt(0).toUpperCase() + item.status.slice(1),
-          createdAt: item.createdAt.split("T")[0],
+          createdAt: item.createdAt,
         };
         acc.push(dataBooking);
         return acc;
       }, []);
+
+      setAllBooking(data.sort((a, b) => b.id - a.id));
+
+      const totalPaymentPerMonth = data.reduce(
+        (acc, item) => {
+          const month = new Date(item.createdAt).getMonth();
+          acc[month] = (acc[month] || 0) + item.amount;
+          return acc;
+        },
+        Array(12).fill(0)
+      );
+      setTotalPaymentPerMonth(totalPaymentPerMonth); // data total amount per month
 
       // Filter bookings for the current year
       const bookingsThisYear = data.filter(
@@ -66,7 +72,7 @@ export default function BookingContextProvider({ children }) {
       setYearlyBookings(bookingsThisYear);
       // Set State with Month Filter
       setMonthlyBookings(bookingsThisMonth);
-
+      // Function count carModel by booking {Honda Jazz black : 1 , Honda Jazz white : 4 , ...}
       const calculateCarPopularity = (bookings) => {
         return bookings.reduce((acc, item) => {
           const car = item.car;
@@ -80,14 +86,14 @@ export default function BookingContextProvider({ children }) {
 
       const popularCarsMonthlyData = calculateCarPopularity(bookingsThisMonth);
       const popularCarsYearlyData = calculateCarPopularity(bookingsThisYear);
-
+      // เอา popularCarsMonthlyData มาทำเป็น array โดยแต่ละ item จะมี data เป็น {car : ... , count : ...}
       setPopularCarsMonthly(
         Object.keys(popularCarsMonthlyData).map((key) => ({
           car: key,
           count: popularCarsMonthlyData[key],
         }))
       );
-
+      // เอา popularCarsYearlyData มาทำเป็น array โดยแต่ละ item จะมี data เป็น {car : ... , count : ...}
       setPopularCarsYearly(
         Object.keys(popularCarsYearlyData).map((key) => ({
           car: key,
@@ -95,6 +101,7 @@ export default function BookingContextProvider({ children }) {
         }))
       );
 
+      // function count pickup branch
       const countBranchByBooking = (bookings) => {
         const branchCounts = bookings.reduce((acc, item) => {
           const branch = item.pickup;
@@ -115,6 +122,7 @@ export default function BookingContextProvider({ children }) {
         return sortedBranchCounts;
       };
 
+      // function count drop-off branch
       const countDropBranchByBooking = (bookings) => {
         const branchCounts = bookings.reduce((acc, item) => {
           const branch = item.dropoff;
@@ -135,41 +143,17 @@ export default function BookingContextProvider({ children }) {
         return sortedDropBranchCounts;
       };
 
+      // call function and set variable for set state
       const branchBookingCountsYear = countBranchByBooking(bookingsThisYear);
       const branchBookingCountsMonth = countBranchByBooking(bookingsThisMonth);
       const dropBranchCountsYear = countDropBranchByBooking(bookingsThisYear);
       const dropBranchCountsMonth = countDropBranchByBooking(bookingsThisMonth);
-
+      // set state
       setPickupByBranchPerYear(branchBookingCountsYear);
       setPickupByBranchPerMonth(branchBookingCountsMonth);
       setDropOffByBranchPerYear(dropBranchCountsYear);
       setDropOffByBranchPerMonth(dropBranchCountsMonth);
 
-      setAllBooking(data.sort((a, b) => b.id - a.id));
-
-      const bookingBrandData = data.reduce((acc, item) => {
-        if (acc[item.car]) {
-          acc[item.car]++;
-        } else {
-          acc[item.car] = 1;
-        }
-        return acc;
-      }, {});
-      const bookingBrandDataArray = Object.keys(bookingBrandData).map((key) => {
-        return { brand: key, count: bookingBrandData[key] };
-      });
-      setBookingBrand(bookingBrandDataArray);
-
-      const totalPaymentPerMonth = bookingRes.data.message.reduce(
-        (acc, item) => {
-          const month = new Date(item.createdAt).getMonth();
-          acc[month] = (acc[month] || 0) + item.totalAmount;
-          return acc;
-        },
-        Array(12).fill(0)
-      );
-
-      setTotalPaymentPerMonth(totalPaymentPerMonth);
     } catch (error) {
       console.log(error);
     } finally {
@@ -191,7 +175,6 @@ export default function BookingContextProvider({ children }) {
         yearlyBookings,
         popularCarsMonthly,
         popularCarsYearly,
-        bookingBrand,
         totalPaymentPerMonth,
         currentMonth,
         currentYear,

@@ -1,104 +1,90 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
 import { Bin } from '../assets/icons';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
+import Pagination from './Pagination';
+import Header from './Header';
+import Filter from './Filter';
 
 function CarsCards() {
   const { allCar, fetchCars } = useCars();
   const [currentPage, setCurrentPage] = useState(1);
-
   const [searchTerm, setSearchTerm] = useState('');
   const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
+
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
   }, [searchTerm, sortKey]);
 
-  const handleMaintenance = (carId) => {
-    Swal.fire({
+  const handleMaintenance = async (carId) => {
+    const result = await Swal.fire({
       text: 'Status',
       title: `Are you sure you want to put this car under maintenance?`,
       icon: 'warning',
       showCancelButton: true,
       showConfirmButton: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const run = async () => {
-          try {
-            await carsApi.updateCar(carId, { status: 'maintenance' });
-          } catch (error) {
-            console.log(error);
-          } finally {
-            fetchCars();
-          }
-        };
-        run();
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        await carsApi.updateCar(carId, { status: 'maintenance' });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        fetchCars();
+      }
+    }
   };
 
-  const handleMakeAvailable = (carId) => {
-    Swal.fire({
+  const handleMakeAvailable = async (carId) => {
+    const result = await Swal.fire({
       text: 'Status',
       title: `Are you sure you want to mark this car as available?`,
       icon: 'info',
       showCancelButton: true,
       showConfirmButton: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const run = async () => {
-          try {
-            await carsApi.updateCar(carId, { status: 'available' });
-          } catch (error) {
-            console.log(error);
-            if (error instanceof AxiosError) {
-              alert(error.response.data.message); //wait for toastify
-            }
-          } finally {
-            fetchCars();
-          }
-        };
-        run();
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        await carsApi.updateCar(carId, { status: 'available' });
+      } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+          alert(error.response.data.message);
+        }
+      } finally {
+        fetchCars();
+      }
+    }
   };
 
-  const handleDelete = (carId) => {
-    Swal.fire({
+  const handleDelete = async (carId) => {
+    const result = await Swal.fire({
       text: 'Remove ?',
       title: 'Are you sure you want to remove this car ?',
       icon: 'error',
       showCancelButton: true,
       showConfirmButton: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const run = async () => {
-          try {
-            console.log(carId);
-
-            const res = await carsApi.deleteCar(carId);
-            console.log(res.data.message);
-          } catch (error) {
-            console.log(error);
-          } finally {
-            fetchCars();
-          }
-        };
-        run();
-      }
     });
+
+    if (result.isConfirmed) {
+      try {
+        await carsApi.deleteCar(carId);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        fetchCars();
+      }
+    }
   };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSort = (event) => {
-    setSortKey(event.target.value);
-  };
+  const handleSearch = (event) => setSearchTerm(event.target.value);
+  const handleSort = (event) => setSortKey(event.target.value);
 
   const filteredCars = allCar.filter((car) => {
     const searchTermLower = searchTerm.toLowerCase();
@@ -119,31 +105,22 @@ function CarsCards() {
     const valueA = a[sortKey];
     const valueB = b[sortKey];
 
-    if (sortKey === 'updatedAt') {
-      return new Date(valueB) - new Date(valueA); // Sort by update date in descending order
-    }
-
-    if (sortKey === 'useDate') {
-      return new Date(valueB) - new Date(valueA); // Sort by use date in descending order
+    if (sortKey === 'updatedAt' || sortKey === 'useDate') {
+      return new Date(valueB) - new Date(valueA);
     }
 
     if (typeof valueA === 'number' && typeof valueB === 'number') {
       return valueA - valueB;
     }
 
-    if (valueA < valueB) return -1;
-    if (valueA > valueB) return 1;
-    return 0;
+    return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
   });
 
-  const searchedCar = searchTerm === '' ? allCar : filteredCars; // Make pagination equal to searched car, not exceeding it
-  const totalPage = Math.ceil(searchedCar.length / cardPerPage); // Have to declare here or cause initialization error
+  const searchedCar = searchTerm === '' ? allCar : filteredCars;
+  const totalPage = Math.ceil(searchedCar.length / cardPerPage);
   const indexOfLastCarPerPage = currentPage * cardPerPage;
   const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage;
-  const currentCarPerPage = sortedCars.slice(
-    firstIndexOfCarPerPage,
-    indexOfLastCarPerPage
-  );
+  const currentCarPerPage = sortedCars.slice(firstIndexOfCarPerPage, indexOfLastCarPerPage);
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
@@ -176,54 +153,43 @@ function CarsCards() {
   return (
     <div className="w-full flex flex-col gap-4 items-center">
       <h1 className="text-2xl font-semibold">Cars</h1>
-      <div className="flex justify-between w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <select
-          value={sortKey}
-          onChange={handleSort}
-          className="ml-4 shadow text-center appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Sort by</option>
-          <option value="brand">Brand</option>
-          <option value="model">Model</option>
-          <option value="color">Color</option>
-          <option value="plate">License Plate</option>
-          <option value="region">Region</option>
-          <option value="airport">Airport</option>
-          <option value="useDate">Use Date</option>
-          <option value="updatedAt">Updated At</option>
-          <option value="status">Status</option>
-        </select>
-      </div>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        sortKey={sortKey}
+        handleSort={handleSort}
+        filterItem={[
+          { value: "brand", text: "Brand" },
+          { value: "model", text: "Model" },
+          { value: "color", text: "Color" },
+          { value: "plate", text: "License Plate" },
+          { value: "region", text: "Region" },
+          { value: "airport", text: "Airport" },
+          { value: "useDate", text: "Use Date" },
+          { value: "updatedAt", text: "Updated At" },
+          { value: "status", text: "Status" },
+        ]
+        }
+      />
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
-          <div className="grid grid-cols-9 text-center font-bold">
-            <div className="p-2">Car Brand</div>
-            <div className="p-2">Car Model</div>
-            <div className="p-2">Color</div>
-            <div className="p-2">License Plate</div>
-            <div className="p-2">Region</div>
-            <div className="p-2">Airport</div>
-            <div className="p-2">Use Date</div>
-            <div className="p-2">Updated At</div>
-            <div className="p-2">Status</div>
-          </div>
-        </div>
-
-        {currentCarPerPage?.map((car) => {
+        <Header
+          addClass="grid-cols-9"
+          columns={[
+            'Car Brand',
+            'Car Model',
+            'Color',
+            'License',
+            'Region',
+            'Airport',
+            'Use Date',
+            'Updated At',
+            'Status'
+          ]} />
+        {currentCarPerPage.map((car) => {
           const updatedAt = dayjs(car.updatedAt).format('DD/MM/YYYY');
 
           return (
-            <div
-              key={car.id}
-              className="bg-white rounded-lg p-5 shadow-lg w-full"
-            >
+            <div key={car.id} className="bg-white rounded-lg p-5 shadow-lg w-full">
               <div className="grid grid-cols-9 text-center">
                 <div className="p-2">{car.brand}</div>
                 <div className="p-2">{car.model}</div>
@@ -235,13 +201,12 @@ function CarsCards() {
                 <div className="p-2">{updatedAt}</div>
                 <div className="p-2 flex flex-col items-center justify-center gap-2">
                   <p
-                    className={`px-4 font-bold rounded-full ${
-                      car?.status === 'Available'
+                    className={`px-4 font-bold rounded-full ${car?.status === 'Available'
                         ? 'text-success-status-text bg-success-status-bg'
                         : car?.status === 'Maintenance'
-                        ? 'text-fail-status-text bg-fail-status-bg'
-                        : 'text-process-status-text bg-process-status-bg'
-                    }`}
+                          ? 'text-fail-status-text bg-fail-status-bg'
+                          : 'text-process-status-text bg-process-status-bg'
+                      }`}
                   >
                     {car.status}
                   </p>
@@ -262,7 +227,6 @@ function CarsCards() {
                         <i className="ri-check-fill"></i>
                       </button>
                     )}
-
                     {car.status === 'Rented' && (
                       <button
                         onClick={() => handleMakeAvailable(car.id)}
@@ -286,38 +250,13 @@ function CarsCards() {
           );
         })}
       </div>
-
-      <div className="p-2 flex gap-2">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="hover:text-orange-500"
-        >
-          prev
-        </button>
-
-        {Array.from({ length: totalPage }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${
-              currentPage === index + 1
-                ? 'bg-black text-white'
-                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPage}
-          className=" hover:text-orange-500"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        goToPrevPage={goToPrevPage}
+        goToNextPage={goToNextPage}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        handleChangePage={handleChangePage}
+      />
     </div>
   );
 }

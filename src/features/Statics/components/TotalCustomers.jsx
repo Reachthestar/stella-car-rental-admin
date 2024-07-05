@@ -9,9 +9,10 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useCustomer } from '../../../contexts/customer-context';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
+import Header from '../../../components/Header';
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,6 @@ export default function TotalCustomers() {
   const [selectTotalCus, setSelectTotalCus] = useState('monthly');
   const [totalAmount, setTotalAmount] = useState(0);
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
-
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -42,9 +42,16 @@ export default function TotalCustomers() {
     { length: daysInMonth },
     (_, index) => index + 1
   );
+  const scrollRef = useRef()
 
   const handleCategoryChange = (event) => {
     setSelectTotalCus(event.target.value);
+    if(scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top : 0 ,
+        behavior : 'smooth'
+      })
+    }
   };
 
   useEffect(() => {
@@ -154,8 +161,20 @@ export default function TotalCustomers() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
+      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+        <Header
+        addClass='grid-cols-7'
+        columns={[
+          'Customer ID',
+          'Name',
+          'Email',
+          'Phone',
+          'Address',
+          'Created Date',
+          'Driver License',
+        ]}
+        />
+        {/* <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
           <div className="grid grid-cols-7 text-center font-bold">
             <div className="p-2">Customer ID</div>
             <div className="p-2">Name</div>
@@ -165,7 +184,7 @@ export default function TotalCustomers() {
             <div className="p-2">Created Date</div>
             <div className="p-2">Driver License</div>
           </div>
-        </div>
+        </div> */}
 
         {(selectTotalCus === 'yearly' ? yearlyCustomer : monthlyCustomer)?.map(
           (customer, index) => {

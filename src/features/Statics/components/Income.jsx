@@ -11,8 +11,9 @@ import { Bar } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker';
 import { usePayment } from '../../../contexts/payment-context';
 import { useBooking } from '../../../contexts/booking-context';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
+import Header from '../../../components/Header';
 
 ChartJS.register(
   CategoryScale,
@@ -24,11 +25,11 @@ ChartJS.register(
 );
 
 export default function Income() {
-  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } =
-    usePayment();
+  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } = usePayment();
   const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectIncome, setSelectIncome] = useState('monthly');
+  const scrollRef = useRef(null)
 
   const now = new Date();
   const year = now.getFullYear();
@@ -41,6 +42,12 @@ export default function Income() {
 
   const handleSelect = (e) => {
     setSelectIncome(e.target.value);
+    if(scrollRef.current){
+      scrollRef.current.scrollTo({
+        top : 0,
+        behavior: 'smooth'
+      })
+    }
   };
 
   useEffect(() => {
@@ -140,17 +147,17 @@ export default function Income() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-5 text-center font-bold">
-            <div className="p-2">Booking ID</div>
-            <div className="p-2">Payment ID</div>
-            <div className="p-2">Customer</div>
-            <div className="p-2">Payment Date</div>
-            <div className="p-2">Amount</div>
-          </div>
-        </div>
-
+      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+        <Header
+        addClass='grid-cols-5'
+        columns={[
+          'Booking ID',
+          'Payment ID',
+          'Customer',
+          'Payment Date',
+          'Amount',
+        ]}
+        />
         {selectIncome === 'yearly' ? (
           <>
             {yearlyPayment?.map((payment, index) => {

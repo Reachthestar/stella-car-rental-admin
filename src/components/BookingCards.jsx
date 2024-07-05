@@ -5,6 +5,9 @@ import bookingApi from '../apis/booking';
 import paymentApi from '../apis/payment';
 import { usePayment } from '../contexts/payment-context';
 import dayjs from 'dayjs';
+import Pagination from './Pagination';
+import Header from './Header';
+import Filter from './Filter';
 
 function BookingCards() {
   const { allBooking, fetchBooking } = useBooking();
@@ -13,8 +16,6 @@ function BookingCards() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortKey, setSortKey] = useState('');
   const cardPerPage = 10;
-
-  console.log(window.scrollY);
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page on search or sort
@@ -127,49 +128,42 @@ function BookingCards() {
   return (
     <div className="w-full flex flex-col gap-4 items-center">
       <h1 className="text-2xl font-semibold">Bookings</h1>
-      <div className="flex justify-between w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-        <select
-          value={sortKey}
-          onChange={handleSort}
-          className="ml-4 text-center shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Sort by</option>
-          <option value="id">ID</option>
-          <option value="customer">Customer</option>
-          <option value="car">Car</option>
-          <option value="plate">License Plate</option>
-          <option value="startDate">Start Date</option>
-          <option value="endDate">End Date</option>
-          <option value="amount">Total Amount</option>
-          <option value="pickup">Pickup Location</option>
-          <option value="dropoff">Drop-Off Location</option>
-          <option value="time">Pickup & Drop-Off Time</option>
-          <option value="status">Status</option>
-        </select>
-      </div>
+      <Filter
+      searchTerm={searchTerm}
+      handleSearch={handleSearch}
+      sortKey={sortKey}
+      handleSort={handleSort}
+      filterItem={[
+        {value:'id',text:'ID'},
+        {value:'customer',text:'Customer'},
+        {value:'car',text:'Car'},
+        {value:'plate',text:'License Plate'},
+        {value:'startDate',text:'Start Date'},
+        {value:'endDate',text:'End Date'},
+        {value:'amount',text:'Total Amount'},
+        {value:'pickup',text:'Pickup Location'},
+        {value:'dropoff',text:'Drop-Off Location'},
+        {value:'time',text:'Pickup & Drop-Off Time'},
+        {value:'status',text:'Status'},
+      ]
+      }
+      />
       <div className="grid grid-cols-1 gap-4 w-full">
-        <div className="bg-gray-500 text-white rounded-lg p-5 shadow-lg w-full sticky top-0">
-          <div className="grid grid-cols-11 text-center font-bold">
-            <div className="p-2">Booking ID</div>
-            <div className="p-2">Customer</div>
-            <div className="p-2">Car</div>
-            <div className="p-2">Plate</div>
-            <div className="p-2">Start Date</div>
-            <div className="p-2">End Date</div>
-            <div className="p-2">Amount</div>
-            <div className="p-2">Pickup</div>
-            <div className="p-2">Drop-Off</div>
-            <div className="p-2">Time</div>
-            <div className="p-2">Status</div>
-          </div>
-        </div>
+        <Header 
+        addClass='grid-cols-11'
+        columns={[
+          'Booking ID',
+          'Customer',
+          'Car',
+          'Plate',
+          'Start Date',
+          'End Date',
+          'Amount',
+          'Pickup',
+          'Drop-Off',
+          'Time',
+          'Status'
+        ]}/>
         {currentBookingPerPage?.map((booking) => {
           const startDate = dayjs(booking.startDate).format('DD/MM/YYYY');
           const endDate = dayjs(booking.endDate).format('DD/MM/YYYY');
@@ -217,38 +211,13 @@ function BookingCards() {
           );
         })}
       </div>
-
-      <div className="p-2 flex gap-2">
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="hover:text-orange-500"
-        >
-          prev
-        </button>
-
-        {Array.from({ length: totalPage }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handleChangePage(index + 1)}
-            className={`w-10 h-10 rounded-full ${
-              currentPage === index + 1
-                ? 'bg-black text-white'
-                : 'bg-gray-200 hover:bg-gray-700 hover:text-white'
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-
-        <button
-          onClick={goToNextPage}
-          disabled={currentPage === totalPage}
-          className=" hover:text-orange-500"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+      goToPrevPage={goToPrevPage} 
+      goToNextPage={goToNextPage} 
+      currentPage={currentPage} 
+      totalPage={totalPage} 
+      handleChangePage={handleChangePage}
+      />
     </div>
   );
 }
