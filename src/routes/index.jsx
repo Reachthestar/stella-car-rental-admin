@@ -1,25 +1,26 @@
-import Login from '../pages/Login';
+import Login from "../pages/Login";
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
-import Bookings from '../pages/Bookings';
-import Settings from '../pages/Settings';
-import MainContainer from '../layouts/MainContainer';
-import Payments from '../pages/Payments';
-import Cars from '../pages/Cars';
-import Statistics from '../pages/Statistics';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Dashboard from "../pages/Dashboard";
+import Bookings from "../pages/Bookings";
+import Settings from "../pages/Settings";
+import MainContainer from "../layouts/MainContainer";
+import Payments from "../pages/Payments";
+import Cars from "../pages/Cars";
+import Statistics from "../pages/Statistics";
 
-import Customers from '../pages/Customers';
-import CustomerContextProvider from '../contexts/customer-context';
-import CarsContextProvider from '../contexts/car-context';
-import BookingContextProvider from '../contexts/booking-context';
-import PaymentContextProvider from '../contexts/payment-context';
-import ProtectAdminRoute from '../authentication/ProtectAdminRoute';
+import Customers from "../pages/Customers";
+import CustomerContextProvider from "../contexts/customer-context";
+import CarsContextProvider from "../contexts/car-context";
+import BookingContextProvider from "../contexts/booking-context";
+import PaymentContextProvider from "../contexts/payment-context";
+import ProtectAdminRoute from "../authentication/ProtectAdminRoute";
+import Chat from "../pages/Chat";
 
 const router = createBrowserRouter([
-  { path: '/login', element: <Login /> },
+  { path: "/login", element: <Login /> },
   {
-    path: '/',
+    path: "/",
     element: (
       <ProtectAdminRoute>
         <CustomerContextProvider>
@@ -35,38 +36,39 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Dashboard />,
       },
       {
-        path: '/bookings',
+        path: "/bookings",
         element: <Bookings />,
       },
 
       {
-        path: '/customers',
+        path: "/customers",
         element: <Customers />,
       },
       {
-        path: '/cars',
+        path: "/cars",
         element: <Cars />,
       },
       {
-        path: '/payments',
+        path: "/payments",
         element: <Payments />,
       },
       {
-        path: '/statistics',
+        path: "/statistics",
         element: <Statistics />,
       },
       {
-        path: '/statistics/income',
+        path: "/statistics/income",
         element: <Statistics />,
       },
       {
-        path: '/settings',
+        path: "/settings",
         element: <Settings />,
       },
+      { path: "/chat", element: <Chat /> },
     ],
   },
 ]);
