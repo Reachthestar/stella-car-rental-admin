@@ -136,7 +136,7 @@ export default function TotalCustomers() {
 
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+      <div className="flex flex-col gap-3 bg-card-03-bg rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl text-white font-semibold">
           Total Customers
         </h1>
