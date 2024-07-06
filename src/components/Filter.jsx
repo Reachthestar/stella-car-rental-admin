@@ -21,7 +21,7 @@ export default function Filter({
                 className="ml-4 text-center shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >   
                 <option value=''>Sort by</option>
-                {filterItem.map(item => <option value={item.value}>{item.text}</option>)}
+                {filterItem.map((item,index) => <option key={index} value={item.value}>{item.text}</option>)}
             </select>
         </div>
     )
