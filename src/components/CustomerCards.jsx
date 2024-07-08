@@ -100,7 +100,7 @@ function CustomerCards() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center p-4">
+    <div className="w-full flex flex-col gap-4 items-center">
       <h1 className="text-2xl font-semibold">Customers</h1>
       <Filter
         searchTerm={searchTerm}
@@ -108,20 +108,19 @@ function CustomerCards() {
         sortKey={sortKey}
         handleSort={handleSort}
         filterItem={[
-          { value: "customerId", text: "ID" },
-          { value: "firstName", text: "First Name" },
-          { value: "lastName", text: "Last Name" },
-          { value: "email", text: "Email" },
-          { value: "phone", text: "Phone" },
-          { value: "address", text: "Address" },
-          { value: "driverLicense", text: "Driver License" },
-          { value: "totalPoints", text: "Total Points" },
-        ]
-        }
+          { value: 'customerId', text: 'ID' },
+          { value: 'firstName', text: 'First Name' },
+          { value: 'lastName', text: 'Last Name' },
+          { value: 'email', text: 'Email' },
+          { value: 'phone', text: 'Phone' },
+          { value: 'address', text: 'Address' },
+          { value: 'driverLicense', text: 'Driver License' },
+          { value: 'totalPoints', text: 'Total Points' },
+        ]}
       />
       <div className="grid grid-cols-1 gap-4 w-full">
         <Header
-          addClass='grid-cols-8'
+          addClass="grid-cols-8"
           columns={[
             'ID',
             'First Name',
