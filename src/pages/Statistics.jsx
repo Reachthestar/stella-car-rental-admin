@@ -29,31 +29,31 @@ export default function Statistics() {
         <div className="flex gap-4 relative">
           <div className="flex flex-col pr-3 gap-4 py-3 w-[200px] h-screen fixed top-0">
             <button
-              className="bg-card-01-bg text-white rounded-md py-2"
+              className="bg-card-01-bg text-white rounded-md font-semibold py-2"
               onClick={() => scrollToRef(carsStatusRef)}
             >
               Car Status
             </button>
             <button
-              className="bg-card-02-bg text-white rounded-md py-2"
+              className="bg-card-02-bg text-white rounded-md font-semibold py-2"
               onClick={() => scrollToRef(incomeRef)}
             >
               Income
             </button>
             <button
-              className="bg-card-03-bg text-white rounded-md py-2"
+              className="bg-card-03-bg text-white rounded-md font-semibold py-2"
               onClick={() => scrollToRef(totalCustomersRef)}
             >
               Total Customers
             </button>
             <button
-              className="bg-card-04-bg text-white rounded-md py-2"
+              className="bg-card-04-bg text-white rounded-md font-semibold py-2"
               onClick={() => scrollToRef(popularCarsRef)}
             >
               Popular Cars
             </button>
             <button
-              className="bg-card-01-bg text-white rounded-md py-2"
+              className="bg-card-01-bg text-white rounded-md font-semibold py-2"
               onClick={() => scrollToRef(popularLocationsRef)}
             >
               Popular Locations
