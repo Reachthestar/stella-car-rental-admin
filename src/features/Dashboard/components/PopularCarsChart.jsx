@@ -1,16 +1,13 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { useBooking } from '../../../contexts/booking-context';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-export default function PopularCarsChart() {
-  const { popularCarsYearly } = useBooking();
+export default function PopularCarsChart({ dashboardData }) {
   const data = {
-    labels: popularCarsYearly?.map((item) => item.car),
+    labels: dashboardData?.yearlyPopularCar.map((item) => item.car),
     datasets: [
       {
-        label: 'Popular Cars',
-        data: popularCarsYearly?.map((item) => item.count),
+        data: dashboardData?.yearlyPopularCar.map((item) => item.count),
 
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
@@ -57,7 +54,7 @@ export default function PopularCarsChart() {
 
   return (
     <div className="p-2 bg-white rounded-md shadow-md h-full">
-      <h1 className="text-center">Popular Cars</h1>
+      <h1 className="text-center">{`Popular Cars (${new Date().getFullYear()})`}</h1>
       <div style={{ height: '500px' }} className="flex items-center">
         <Doughnut data={data} options={options} />
       </div>

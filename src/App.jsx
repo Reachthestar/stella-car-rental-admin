@@ -5,7 +5,7 @@ import Router from './routes/index';
 function App() {
   return (
     <AuthContextProvider>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense>
         <Router />
       </Suspense>
     </AuthContextProvider>

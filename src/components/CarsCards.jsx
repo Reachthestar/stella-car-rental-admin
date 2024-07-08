@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useCars } from '../contexts/car-context';
 import carsApi from '../apis/cars';
 import { Bin } from '../assets/icons';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import Pagination from './Pagination';
 import Header from './Header';
 import Filter from './Filter';
+import { useFilter } from '../contexts/filter-context';
 
 function CarsCards() {
-  const { allCar, fetchCars } = useCars();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortKey, setSortKey] = useState('');
-  const cardPerPage = 10;
-
-  useEffect(() => {
-    setCurrentPage(1); // Reset to the first page on search or sort
-  }, [searchTerm, sortKey]);
+  const { fetchCars } = useCars();
+  const {
+    searchTerm,
+    sortKey,
+    handleSearch,
+    handleSort,
+    currentItemPerPage,
+    pagination,
+  } = useFilter()
 
   const handleMaintenance = async (carId) => {
     const result = await Swal.fire({
@@ -83,73 +82,6 @@ function CarsCards() {
     }
   };
 
-  const handleSearch = (event) => setSearchTerm(event.target.value);
-  const handleSort = (event) => setSortKey(event.target.value);
-
-  const filteredCars = allCar.filter((car) => {
-    const searchTermLower = searchTerm.toLowerCase();
-    return (
-      car.brand.toLowerCase().includes(searchTermLower) ||
-      car.model.toLowerCase().includes(searchTermLower) ||
-      car.color.toLowerCase().includes(searchTermLower) ||
-      car.plate.toLowerCase().includes(searchTermLower) ||
-      car.region.toLowerCase().includes(searchTermLower) ||
-      car.airport.toLowerCase().includes(searchTermLower) ||
-      car.useDate.toLowerCase().includes(searchTermLower) ||
-      car.updatedAt.toLowerCase().includes(searchTermLower) ||
-      car.status.toLowerCase().includes(searchTermLower)
-    );
-  });
-
-  const sortedCars = filteredCars.sort((a, b) => {
-    const valueA = a[sortKey];
-    const valueB = b[sortKey];
-
-    if (sortKey === 'updatedAt' || sortKey === 'useDate') {
-      return new Date(valueB) - new Date(valueA);
-    }
-
-    if (typeof valueA === 'number' && typeof valueB === 'number') {
-      return valueA - valueB;
-    }
-
-    return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-  });
-
-  const searchedCar = searchTerm === '' ? allCar : filteredCars;
-  const totalPage = Math.ceil(searchedCar.length / cardPerPage);
-  const indexOfLastCarPerPage = currentPage * cardPerPage;
-  const firstIndexOfCarPerPage = indexOfLastCarPerPage - cardPerPage;
-  const currentCarPerPage = sortedCars.slice(firstIndexOfCarPerPage, indexOfLastCarPerPage);
-
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPage) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   return (
     <div className="w-full flex flex-col gap-4 items-center">
       <h1 className="text-2xl font-semibold">Cars</h1>
@@ -173,7 +105,6 @@ function CarsCards() {
       />
       <div className="grid grid-cols-1 gap-4 w-full">
         <Header
-          addClass="grid-cols-9"
           columns={[
             'Car Brand',
             'Car Model',
@@ -185,7 +116,7 @@ function CarsCards() {
             'Updated At',
             'Status'
           ]} />
-        {currentCarPerPage.map((car) => {
+        {currentItemPerPage?.map((car) => {
           const updatedAt = dayjs(car.updatedAt).format('DD/MM/YYYY');
 
           return (
@@ -250,13 +181,7 @@ function CarsCards() {
           );
         })}
       </div>
-      <Pagination
-        goToPrevPage={goToPrevPage}
-        goToNextPage={goToNextPage}
-        currentPage={currentPage}
-        totalPage={totalPage}
-        handleChangePage={handleChangePage}
-      />
+      {pagination()}
     </div>
   );
 }

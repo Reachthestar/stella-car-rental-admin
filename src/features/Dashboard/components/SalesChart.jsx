@@ -19,26 +19,8 @@ ChartJS.register(
   Legend
 );
 
-import { faker } from '@faker-js/faker'
-import { useBooking } from '../../../contexts/booking-context';
-
-export default function SalesChart() {
-  const {totalPaymentPerMonth, currentMonth, currentYear} = useBooking()
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  const totalPayment = totalPaymentPerMonth
+export default function SalesChart({ dashboardData }) {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
   const options = {
     responsive: true,
     plugins: {
@@ -47,7 +29,7 @@ export default function SalesChart() {
       },
       title: {
         display: true,
-        text: `Yearly Sales (${currentYear})`,
+        text: `Yearly Sales (${new Date().getFullYear()})`,
       },
       scales: {
         y: {
@@ -58,11 +40,11 @@ export default function SalesChart() {
   };
 
   const data = {
-    labels : months.slice(0,currentMonth),
+    labels: months.slice(0, new Date().getMonth() + 1),
     datasets: [
       {
-        label: `Monthly Sales (${currentMonth} Months)`,
-        data: totalPayment,
+        label: `Monthly Sales (${new Date().getMonth() + 1} Months)`,
+        data: dashboardData?.yearlySale.map(month => month.totalAmount),
         backgroundColor: 'rgba(53, 162, 235, 0.8)',
         borderRadius: '5',
       },
@@ -71,8 +53,8 @@ export default function SalesChart() {
 
   return (
     <div className="flex justify-center p-1 bg-white rounded-md shadow-md border-2">
-      <div 
-      style={{ width: '600px', height: '300px' }}
+      <div
+        style={{ width: '600px', height: '300px' }}
       >
         {data ? <Bar data={data} options={options} /> : <div>Loading...</div>}
       </div>

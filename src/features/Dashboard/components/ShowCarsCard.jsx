@@ -1,14 +1,10 @@
-import { useCars } from '../../../contexts/car-context';
 import CarItem from './CarItem';
 
-export default function ShowCarsCard() {
-
-  const { allCarModel } = useCars();
-
+export default function ShowCarsCard({ dashboardData }) {
   return (
     <div className="grid grid-cols-4 gap-x-20 gap-y-4">
-      {allCarModel?.map((car) => (
-        <div key={car.carModelId}>
+      {dashboardData?.allCarModel.map((car, index) => (
+        <div key={index}>
           <CarItem car={car} />
         </div>
       ))}

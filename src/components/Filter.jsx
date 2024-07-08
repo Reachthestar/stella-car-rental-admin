@@ -6,6 +6,7 @@ export default function Filter({
     handleSort,
     filterItem
 }) {
+    
     return (
         <div className="flex justify-between w-full">
             <input

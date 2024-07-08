@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 export default function Pagination({
     goToPrevPage,
@@ -6,14 +7,13 @@ export default function Pagination({
     currentPage,
     totalPage,
     handleChangePage,
-}) 
+})
 {
     return (
         <div className="p-2 flex gap-2">
             <button onClick={goToPrevPage} disabled={currentPage === 1} className=' hover:text-primary-color'>
                 Prev
             </button>
-
             {Array.from({ length: totalPage }, (_, index) => {
                 const pageNumber = index + 1;
                 return pageNumber === 1 || pageNumber === totalPage || (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2) ? (
@@ -33,7 +33,6 @@ export default function Pagination({
                     ) : null
                 );
             })}
-
             <button onClick={goToNextPage} disabled={currentPage === totalPage} className=' hover:text-primary-color'>
                 Next
             </button>

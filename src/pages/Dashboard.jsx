@@ -1,34 +1,42 @@
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useBooking } from '../contexts/booking-context';
+import { useDashboard } from '../contexts/dashboard-context';
 import PopularCarsChart from '../features/Dashboard/components/PopularCarsChart';
 import SalesChart from '../features/Dashboard/components/SalesChart';
 import ShowCarsCard from '../features/Dashboard/components/ShowCarsCard';
 import SummaryReportCard from '../features/Dashboard/components/SummaryReportCard';
 
 export default function Dashboard() {
-  const { isAllBookingLoading } = useBooking();
+  const { dashboardData, isDashboardDataLoading } = useDashboard()
   return (
     <>
-      {isAllBookingLoading ? (
-        <LoadingSpinner />
-      ) : (
+      {isDashboardDataLoading ?
+        <div className='h-full flex items-center'>
+          <LoadingSpinner />
+        </div>
+        :
         <div className="flex flex-col gap-4 p-3">
           <div className="flex w-full gap-4 h-fit">
             <div className="flex flex-col gap-4 w-2/3">
-              <SummaryReportCard />
-              <SalesChart />
+              <SummaryReportCard
+                dashboardData={dashboardData}
+              />
+              <SalesChart
+                dashboardData={dashboardData}
+              />
             </div>
             <div className="flex-1 justify-between items-center w-1/3 h-[100%]">
-              <PopularCarsChart />
+              <PopularCarsChart
+                dashboardData={dashboardData}
+              />
             </div>
           </div>
           <div className="w-full">
-            <ShowCarsCard />
+            <ShowCarsCard
+              dashboardData={dashboardData}
+            />
           </div>
         </div>
-      )}
+      }
     </>
   );
 }
-
-// flex flex-col gap-4
