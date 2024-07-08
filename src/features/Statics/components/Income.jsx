@@ -6,14 +6,13 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
-import { usePayment } from '../../../contexts/payment-context';
-import { useBooking } from '../../../contexts/booking-context';
-import { useEffect, useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import Header from '../../../components/Header';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { usePayment } from "../../../contexts/payment-context";
+import { useBooking } from "../../../contexts/booking-context";
+import { useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
+import Header from "../../../components/Header";
 
 ChartJS.register(
   CategoryScale,
@@ -25,11 +24,14 @@ ChartJS.register(
 );
 
 export default function Income() {
-  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } = usePayment();
+  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } =
+    usePayment();
   const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [selectIncome, setSelectIncome] = useState('monthly');
-  const scrollRef = useRef(null)
+  const [selectIncome, setSelectIncome] = useState("monthly");
+  const [currentPage, setCurrentPage] = useState(1);
+  const paymentsPerPage = 5;
+  const scrollRef = useRef(null);
 
   const now = new Date();
   const year = now.getFullYear();
@@ -42,55 +44,57 @@ export default function Income() {
 
   const handleSelect = (e) => {
     setSelectIncome(e.target.value);
-    if(scrollRef.current){
+    setCurrentPage(1);
+    if (scrollRef.current) {
       scrollRef.current.scrollTo({
-        top : 0,
-        behavior: 'smooth'
-      })
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
   useEffect(() => {
-    if (selectIncome === 'yearly') {
+    if (selectIncome === "yearly") {
       const sum = yearlyPayment?.reduce((acc, item) => {
         return (acc += item.amount);
       }, 0);
       setTotalAmount(sum);
     }
-    if (selectIncome === 'monthly') {
+    if (selectIncome === "monthly") {
       const sum = monthlyPayments?.reduce((acc, item) => {
         return (acc += item.amount);
       }, 0);
       setTotalAmount(sum);
     }
   }, [allPayment, selectIncome]);
+
   const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   const totalPayment = totalPaymentPerMonth;
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
         text:
-          selectIncome === 'yearly'
+          selectIncome === "yearly"
             ? `Yearly Sales (${currentYear})`
-            : selectIncome === 'monthly'
+            : selectIncome === "monthly"
             ? `Monthly Sales (${months[month]})`
             : null,
       },
@@ -104,34 +108,102 @@ export default function Income() {
 
   const data = {
     labels:
-      selectIncome === 'yearly'
+      selectIncome === "yearly"
         ? months.slice(0, currentMonth)
-        : selectIncome === 'monthly'
+        : selectIncome === "monthly"
         ? daysArray
         : null,
     datasets: [
       {
         label:
-          selectIncome === 'yearly'
+          selectIncome === "yearly"
             ? `Monthly Sales`
-            : selectIncome === 'monthly'
-            ? 'Daily Sales'
+            : selectIncome === "monthly"
+            ? "Daily Sales"
             : null,
         data:
-          selectIncome === 'yearly'
+          selectIncome === "yearly"
             ? totalPayment
-            : selectIncome === 'monthly'
+            : selectIncome === "monthly"
             ? dailyPayment?.map((item) => item.totalAmount)
             : null,
-        backgroundColor: 'rgba(53, 162, 235, 0.8)',
-        borderRadius: '5',
+        backgroundColor: "rgba(53, 162, 235, 0.8)",
+        borderRadius: "5",
       },
     ],
   };
 
+  const indexOfLastPayment = currentPage * paymentsPerPage;
+  const indexOfFirstPayment = indexOfLastPayment - paymentsPerPage;
+  const currentPayments =
+    selectIncome === "yearly"
+      ? yearlyPayment?.slice(indexOfFirstPayment, indexOfLastPayment)
+      : monthlyPayments?.slice(indexOfFirstPayment, indexOfLastPayment);
+
+  const totalPage = Math.ceil(
+    (selectIncome === "yearly"
+      ? yearlyPayment?.length
+      : monthlyPayments?.length) / paymentsPerPage
+  );
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    if (totalPage <= 10) {
+      for (let i = 1; i <= totalPage; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        pageNumbers.push(1, 2, 3, 4, 5, "...", totalPage);
+      } else if (currentPage > 4 && currentPage < totalPage - 3) {
+        pageNumbers.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPage
+        );
+      } else {
+        pageNumbers.push(
+          1,
+          "...",
+          totalPage - 4,
+          totalPage - 3,
+          totalPage - 2,
+          totalPage - 1,
+          totalPage
+        );
+      }
+    }
+
+    return pageNumbers.map((number, index) => (
+      <li key={index} className="mx-1">
+        {number === "..." ? (
+          <span className="px-3 py-1">...</span>
+        ) : (
+          <button
+            type="button"
+            className={`px-3 py-1 border rounded-full ${
+              number === currentPage ? "bg-gray-300" : ""
+            }`}
+            onClick={() => paginate(number)}
+          >
+            {number}
+          </button>
+        )}
+      </li>
+    ));
+  };
+
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+      <div className="flex flex-col gap-3 bg-card-02-bg rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl text-white font-semibold">
           Income
         </h1>
@@ -147,96 +219,80 @@ export default function Income() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+      <div
+        className="flex flex-col gap-4 h-[400px] overflow-auto"
+        ref={scrollRef}
+      >
         <Header
-        addClass='grid-cols-5'
-        columns={[
-          'Booking ID',
-          'Payment ID',
-          'Customer',
-          'Payment Date',
-          'Amount',
-        ]}
+          addClass="grid-cols-5"
+          columns={[
+            "Booking ID",
+            "Payment ID",
+            "Customer",
+            "Payment Date",
+            "Amount",
+          ]}
         />
-        {selectIncome === 'yearly' ? (
-          <>
-            {yearlyPayment?.map((payment, index) => {
-              const paymentDate = dayjs(payment?.paymentDate).format(
-                'DD/MM/YYYY'
-              );
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg p-5 shadow-md w-full"
-                >
-                  <div className="grid grid-cols-5 text-center">
-                    <div className="p-2">{payment?.bookingId}</div>
-                    <div className="p-2">{payment?.paymentId}</div>
-                    <div className="p-2">{payment?.customer}</div>
-                    <div className="p-2">{paymentDate}</div>
-                    <div className="p-2">
-                      &#3647; {payment?.amount.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            <div>
-              <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-                <div className="grid grid-cols-5 text-center font-bold text-lg">
-                  <div className="p-2">Total</div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2">
-                    &#3647; {totalAmount?.toLocaleString()}
-                  </div>
+        {currentPayments?.map((payment, index) => {
+          const paymentDate = dayjs(payment?.paymentDate).format("DD/MM/YYYY");
+          return (
+            <div
+              key={index}
+              className="bg-white rounded-lg p-5 shadow-md w-full"
+            >
+              <div className="grid grid-cols-5 text-center">
+                <div className="p-2">{payment?.bookingId}</div>
+                <div className="p-2">{payment?.paymentId}</div>
+                <div className="p-2">{payment?.customer}</div>
+                <div className="p-2">{paymentDate}</div>
+                <div className="p-2">
+                  &#3647; {payment?.amount.toLocaleString()}
                 </div>
               </div>
             </div>
-          </>
-        ) : selectIncome === 'monthly' ? (
-          <>
-            {monthlyPayments?.map((payment, index) => {
-              const paymentDate = dayjs(payment?.paymentDate).format(
-                'DD/MM/YYYY'
-              );
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg p-5 shadow-md w-full"
-                >
-                  <div className="grid grid-cols-5 text-center">
-                    <div className="p-2">{payment?.bookingId}</div>
-                    <div className="p-2">{payment?.paymentId}</div>
-                    <div className="p-2">{payment?.customer}</div>
-                    <div className="p-2">{paymentDate}</div>
-                    <div className="p-2">
-                      &#3647; {payment?.amount.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            <div>
-              <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-                <div className="grid grid-cols-5 text-center font-bold text-lg">
-                  <div className="p-2">Total</div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2"></div>
-                  <div className="p-2">
-                    &#3647; {totalAmount?.toLocaleString()}
-                  </div>
-                </div>
-              </div>
+          );
+        })}
+        <div>
+          <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
+            <div className="grid grid-cols-5 text-center font-bold text-lg">
+              <div className="p-2">Total</div>
+              <div className="p-2"></div>
+              <div className="p-2"></div>
+              <div className="p-2"></div>
+              <div className="p-2">&#3647; {totalAmount?.toLocaleString()}</div>
             </div>
-          </>
-        ) : null}
+          </div>
+        </div>
       </div>
 
+      <ul className="flex list-none my-4 justify-center">
+        {currentPage > 1 && (
+          <li className="mx-1">
+            <button
+              type="button"
+              className="px-3 py-1 border rounded-full"
+              onClick={() => paginate(currentPage - 1)}
+            >
+              Prev
+            </button>
+          </li>
+        )}
+        {renderPageNumbers()}
+        {currentPage < totalPage && (
+          <li className="mx-1">
+            <button
+              type="button"
+              className="px-3 py-1 border rounded-full"
+              onClick={() => paginate(currentPage + 1)}
+            >
+              Next
+            </button>
+          </li>
+        )}
+      </ul>
+
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: '700px', height: '350px' }}>
+        <div style={{ width: "700px", height: "350px" }}>
           <Bar options={options} data={data} />
         </div>
       </div>

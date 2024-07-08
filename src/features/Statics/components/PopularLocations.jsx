@@ -2,6 +2,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { useBooking } from '../../../contexts/booking-context';
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,6 +13,7 @@ export default function PopularLocations() {
     pickupByBranchPerMonth,
     dropOffByBranchPerYear,
     dropOffByBranchPerMonth,
+    currentYear,
   } = useBooking();
   const [selectPickOrDrop, setSelectPickOrDrop] = useState('pickUp');
   const [selectYearOrMonth, setSelectYearOrMonth] = useState('yearly');
@@ -82,12 +84,21 @@ export default function PopularLocations() {
           },
         },
       },
+      title: {
+        display: true,
+        text:
+          selectYearOrMonth === 'yearly'
+            ? `Popular Cars (${currentYear})`
+            : selectYearOrMonth === 'monthly'
+            ? `Popular Cars (${dayjs().format('MMM')})`
+            : null,
+      },
     },
   };
 
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+      <div className="flex flex-col gap-3 bg-card-01-bg rounded-md shadow-md p-4">
         <h1 className="text-center text-white text-2xl font-semibold">
           Popular Locations
         </h1>
@@ -191,8 +202,7 @@ export default function PopularLocations() {
             : null}
         </div>
 
-        <div className="p-2 bg-white rounded-md shadow-md h-full flex-1">
-          <h1 className="text-center">Popular Location</h1>
+        <div className="p-1 bg-white rounded-md shadow-md h-full flex-1">
           <div
             style={{ height: '500px' }}
             className="flex items-center justify-center"

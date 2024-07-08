@@ -1,22 +1,32 @@
+import { lazy } from 'react';
 import React, { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ProtectAdminRoute from '../authentication/ProtectAdminRoute';
-import MainContainer from '../layouts/MainContainer';
-import CustomerContextProvider from '../contexts/customer-context';
-import CarsContextProvider from '../contexts/car-context';
-import BookingContextProvider from '../contexts/booking-context';
-import PaymentContextProvider from '../contexts/payment-context';
-import FilterContextProvider from '../contexts/filter-context';
-import DashboardContextProvider from '../contexts/dashboard-context';
 
 // Lazy loading components
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Bookings = lazy(() => import('../pages/Bookings'));
-const Customers = lazy(() => import('../pages/Customers'));
-const Cars = lazy(() => import('../pages/Cars'));
+const Settings = lazy(() => import('../pages/Settings'));
+const MainContainer = lazy(() => import('../layouts/MainContainer'));
 const Payments = lazy(() => import('../pages/Payments'));
+const Cars = lazy(() => import('../pages/Cars'));
 const Statistics = lazy(() => import('../pages/Statistics'));
+const Customers = lazy(() => import('../pages/Customers'));
+const CustomerContextProvider = lazy(() =>
+  import('../contexts/customer-context')
+);
+const CarsContextProvider = lazy(() => import('../contexts/car-context'));
+const BookingContextProvider = lazy(() =>
+  import('../contexts/booking-context')
+);
+const PaymentContextProvider = lazy(() =>
+  import('../contexts/payment-context')
+);
+const ProtectAdminRoute = lazy(() =>
+  import('../authentication/ProtectAdminRoute')
+);
+const Chat = lazy(() => import('../pages/Chat'));
+
 
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
@@ -66,6 +76,15 @@ const router = createBrowserRouter([
         path: '/statistics',
         element: <Statistics />,
       },
+      {
+        path: '/statistics/income',
+        element: <Statistics />,
+      },
+      {
+        path: '/settings',
+        element: <Settings />,
+      },
+      { path: '/chat', element: <Chat /> },
     ],
   },
 ]);

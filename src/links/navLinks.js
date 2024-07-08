@@ -6,7 +6,7 @@ const navLinks = [
   },
   {
     path: '/bookings',
-    icon: 'ri-taxi-line',
+    icon: 'ri-health-book-line',
     display: 'Booking',
   },
   {
@@ -29,6 +29,11 @@ const navLinks = [
     path: '/statistics',
     icon: 'ri-line-chart-fill',
     display: 'Statistics',
+  },
+  {
+    path: '/chat',
+    icon: 'ri-message-2-line',
+    display: 'Chat',
   },
   // {
   //   path: '/settings',
