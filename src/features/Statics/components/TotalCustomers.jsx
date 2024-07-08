@@ -254,15 +254,15 @@ export default function TotalCustomers() {
               className="bg-white rounded-lg p-5 shadow-md w-full"
             >
               <div className="grid grid-cols-7 text-center">
-                <div className="p-2 border-2">{customer?.customerId}</div>
-                <div className="p-2 border-2">
+                <div className="p-2">{customer?.customerId}</div>
+                <div className="p-2">
                   {customer?.firstName} {customer?.lastName}
                 </div>
-                <div className="p-2 border-2">{customer?.email}</div>
-                <div className="p-2 border-2">{customer?.phone}</div>
-                <div className="p-2 border-2">{customer?.address}</div>
-                <div className="p-2 border-2">{createDate}</div>
-                <div className="p-2 border-2">{customer?.driverLicense}</div>
+                <div className="p-2">{customer?.email}</div>
+                <div className="p-2">{customer?.phone}</div>
+                <div className="p-2">{customer?.address}</div>
+                <div className="p-2">{createDate}</div>
+                <div className="p-2">{customer?.driverLicense}</div>
               </div>
             </div>
           );
