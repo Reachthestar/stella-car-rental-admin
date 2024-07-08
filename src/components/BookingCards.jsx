@@ -6,9 +6,10 @@ import dayjs from 'dayjs';
 import Header from './Header';
 import Filter from './Filter';
 import { useFilter } from '../contexts/filter-context';
+import { useBooking } from '../contexts/booking-context';
 
 function BookingCards() {
-  const { fetchBooking } = useFilter();
+  const { fetchBooking } = useBooking();
   const { fetchPayment } = usePayment();
   const {
     searchTerm,
@@ -30,7 +31,6 @@ function BookingCards() {
       });
       if ((await result).isConfirmed) {
         await bookingApi.updateBookingStatus(bookingId, 'cancelled');
-
         await paymentApi.deletePayment(bookingId);
         fetchBooking();
         fetchPayment();
