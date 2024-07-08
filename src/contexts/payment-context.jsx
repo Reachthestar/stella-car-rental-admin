@@ -67,7 +67,6 @@ export default function PaymentContextProvider({ children }) {
         date,
         totalAmount: dailyPaymentsMap[date],
       }));
-      console.log(dailyPaymentsArray)
       setDailyPayment(dailyPaymentsArray);
 
       setYearlyPayment(

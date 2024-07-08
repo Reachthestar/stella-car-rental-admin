@@ -1,5 +1,7 @@
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import FilterContextProvider from '../contexts/filter-context';
+import DashboardContextProvider from '../contexts/dashboard-context';
 
 // Lazy loading components
 const Login = lazy(() => import('../pages/Login'));
@@ -26,6 +28,7 @@ const ProtectAdminRoute = lazy(() =>
 );
 const Chat = lazy(() => import('../pages/Chat'));
 
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -36,7 +39,9 @@ const router = createBrowserRouter([
           <CarsContextProvider>
             <BookingContextProvider>
               <PaymentContextProvider>
-                <MainContainer />
+                <FilterContextProvider>
+                  <MainContainer />
+                </FilterContextProvider>
               </PaymentContextProvider>
             </BookingContextProvider>
           </CarsContextProvider>
@@ -46,13 +51,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />,
+        element:
+          <DashboardContextProvider>
+            <Dashboard />
+          </DashboardContextProvider>
+        ,
       },
       {
         path: '/bookings',
         element: <Bookings />,
       },
-
       {
         path: '/customers',
         element: <Customers />,
@@ -83,5 +91,5 @@ const router = createBrowserRouter([
 ]);
 
 export default function Router() {
-  return <RouterProvider router={router} />;
+  return (<RouterProvider router={router} />);
 }

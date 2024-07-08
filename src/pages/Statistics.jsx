@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useBooking } from '../contexts/booking-context';
+import { useCars } from '../contexts/car-context';
+import { useCustomer } from '../contexts/customer-context';
+import { usePayment } from '../contexts/payment-context';
 import CarsStatus from '../features/Statics/components/CarsStatus';
 import Income from '../features/Statics/components/Income';
 import PopularCars from '../features/Statics/components/PopularCars';

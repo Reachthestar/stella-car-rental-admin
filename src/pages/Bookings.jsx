@@ -5,8 +5,14 @@ import LoadingSpinner from "../components/LoadingSpinner";
 export default function Bookings() {
   const { isAllBookingLoading } = useBooking()
   return (
-    <div>
-      {isAllBookingLoading ? <LoadingSpinner /> : <BookingCards />}
-    </div>
+    <>
+      {isAllBookingLoading ?
+        <div className='h-full flex items-center'>
+          <LoadingSpinner />
+        </div>
+        :
+        <BookingCards />
+        }
+    </>
   );
 }

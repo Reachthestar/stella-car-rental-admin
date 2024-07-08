@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { usePayment } from '../contexts/payment-context';
 import dayjs from 'dayjs';
-import Pagination from './Pagination';
 import Header from './Header';
 import Filter from './Filter';
+import { useFilter } from '../contexts/filter-context';
 
 function PaymentsCards() {
-  const { allPaymentComplete } = usePayment();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortKey, setSortKey] = useState('');
-  const cardPerPage = 10;
-
-  useEffect(() => {
-    setCurrentPage(1); // Reset to the first page on search or sort
-  }, [searchTerm, sortKey]);
+  const {
+    searchTerm,
+    sortKey,
+    handleSearch,
+    handleSort,
+    currentItemPerPage,
+    pagination,
+  } = useFilter()
 
   const handleComplete = (paymentId) => {
     Swal.fire({
@@ -30,85 +27,6 @@ function PaymentsCards() {
         console.log(`Payment ID ${paymentId} marked as complete.`);
       }
     });
-  };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSort = (event) => {
-    setSortKey(event.target.value);
-  };
-
-  const filteredPayments = allPaymentComplete.filter((payment) => {
-    const searchTermLower = searchTerm.toLowerCase();
-    return (
-      payment.bookingId.toString().includes(searchTermLower) ||
-      payment.paymentId.toString().includes(searchTermLower) ||
-      payment.customer.toLowerCase().includes(searchTermLower) ||
-      payment.paymentDate.toLowerCase().includes(searchTermLower) ||
-      payment.amount.toString().includes(searchTermLower) ||
-      payment.status.toLowerCase().includes(searchTermLower)
-    );
-  });
-
-  const sortedPayments = filteredPayments.sort((a, b) => {
-    const valueA = a[sortKey];
-    const valueB = b[sortKey];
-
-    if (sortKey === 'paymentDate') {
-      return new Date(valueB) - new Date(valueA); // Sort by payment date in descending order
-    }
-
-    if (sortKey === 'amount') {
-      return valueB - valueA; // Sort by amount in descending order
-    }
-
-    if (typeof valueA === 'number' && typeof valueB === 'number') {
-      return valueA - valueB;
-    }
-
-    if (valueA < valueB) return -1;
-    if (valueA > valueB) return 1;
-    return 0;
-  });
-
-  const searchedPayments =
-    searchTerm === '' ? allPaymentComplete : filteredPayments; // Make pagination equal to searched payments, not exceeding it
-  const totalPage = Math.ceil(searchedPayments.length / cardPerPage); // Have to declare here or cause initialization error
-  const indexOfLastPaymentPerPage = currentPage * cardPerPage;
-  const firstIndexOfPaymentPerPage = indexOfLastPaymentPerPage - cardPerPage;
-  const currentPaymentPerPage = sortedPayments.slice(
-    firstIndexOfPaymentPerPage,
-    indexOfLastPaymentPerPage
-  );
-
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPage) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
   };
 
   return (
@@ -126,12 +44,9 @@ function PaymentsCards() {
           { value: "paymentDate", text: "Payment Date" },
           { value: "amount", text: "Amount" },
           { value: "status", text: "Status" },
-        ]
-        }
-      />
+        ]} />
       <div className="grid grid-cols-1 gap-4 w-full">
         <Header
-          addClass='grid-cols-6'
           columns={[
             'Booking ID',
             'Payment ID',
@@ -141,7 +56,7 @@ function PaymentsCards() {
             'Status',
           ]}
         />
-        {currentPaymentPerPage?.map((payment) => {
+        {currentItemPerPage?.map((payment) => {
           const paymentDate = dayjs(payment.paymentDate).format('DD/MM/YYYY');
           return (
             <div
@@ -159,8 +74,8 @@ function PaymentsCards() {
                 <div className="p-2 flex flex-col items-center justify-center gap-2">
                   <p
                     className={`px-4 font-bold rounded-full ${payment.status === 'Complete'
-                        ? 'text-success-status-text bg-success-status-bg'
-                        : 'text-fail-status-text bg-fail-status-bg'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : 'text-fail-status-text bg-fail-status-bg'
                       }`}
                   >
                     {payment.status}
@@ -179,13 +94,7 @@ function PaymentsCards() {
           );
         })}
       </div>
-      <Pagination
-        goToPrevPage={goToPrevPage}
-        goToNextPage={goToNextPage}
-        currentPage={currentPage}
-        totalPage={totalPage}
-        handleChangePage={handleChangePage}
-      />
+      {pagination()}
     </div>
   );
 }

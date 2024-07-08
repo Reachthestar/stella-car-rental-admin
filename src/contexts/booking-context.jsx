@@ -21,8 +21,8 @@ export default function BookingContextProvider({ children }) {
 
   const fetchBooking = async () => {
     try {
-      const bookingRes = await bookingApi.getAllBooking();
-      const data = bookingRes.data.message.reduce((acc, item) => {
+      const allBookingRes = await bookingApi.getAllBooking();
+      const data = allBookingRes.data.message.reduce((acc, item) => {
         const dataBooking = {
           id: item.bookingId,
           carModelId: item.Car.CarModel.carModelId,

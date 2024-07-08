@@ -23,26 +23,28 @@ export default function Sidebar() {
       <div className="h-full flex flex-col mt-7">
         <div className="h-[80%]">
           <ul className="flex flex-col items-center gap-2 cursor-pointer">
-            {navLinks.map((item, index) => (
-              <NavLink
-                to={item.path}
-                key={index}
-                className={`hover:bg-bg-hover-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50
-                  ${
-                    currentPath === item.path
+            {navLinks.map((item, index) => {
+              return (
+                <NavLink
+                  to={item.path}
+                  key={index}
+                  className={`hover:bg-bg-hover-color w-full py-1.5 hover:rounded-md pl-2 text-gray-50
+                  ${currentPath === item.path
                       ? 'bg-bg-hover-color rounded-md'
                       : ''
-                  }
-                `}
-              >
-                <li>
-                  <span className="text-gray-50">
-                    <i className={item.icon}></i>
-                  </span>{' '}
-                  {item.display}
-                </li>
-              </NavLink>
-            ))}
+                    }
+                  `}
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  <li>
+                    <span className="text-gray-50">
+                      <i className={item.icon}></i>
+                    </span>{' '}
+                    {item.display}
+                  </li>
+                </NavLink>
+              )
+            })}
           </ul>
         </div>
 
