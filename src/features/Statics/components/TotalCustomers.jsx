@@ -6,13 +6,12 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { useCustomer } from '../../../contexts/customer-context';
-import { useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import { useEffect } from 'react';
-import Header from '../../../components/Header';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { useCustomer } from "../../../contexts/customer-context";
+import { useRef, useState, useEffect } from "react";
+import dayjs from "dayjs";
+import Header from "../../../components/Header";
 
 ChartJS.register(
   CategoryScale,
@@ -31,9 +30,13 @@ export default function TotalCustomers() {
     currentYear,
     currentMonth,
   } = useCustomer();
-  const [selectTotalCus, setSelectTotalCus] = useState('monthly');
+  const [selectTotalCus, setSelectTotalCus] = useState("monthly");
   const [totalAmount, setTotalAmount] = useState(0);
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [currentPage, setCurrentPage] = useState(1);
+  const customersPerPage = 5;
+  const scrollRef = useRef();
+
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -42,15 +45,15 @@ export default function TotalCustomers() {
     { length: daysInMonth },
     (_, index) => index + 1
   );
-  const scrollRef = useRef()
 
   const handleCategoryChange = (event) => {
     setSelectTotalCus(event.target.value);
-    if(scrollRef.current) {
+    setCurrentPage(1);
+    if (scrollRef.current) {
       scrollRef.current.scrollTo({
-        top : 0 ,
-        behavior : 'smooth'
-      })
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -58,15 +61,15 @@ export default function TotalCustomers() {
     let labels = [];
     let data = [];
 
-    if (selectTotalCus === 'yearly') {
+    if (selectTotalCus === "yearly") {
       setTotalAmount(yearlyCustomer.length);
-    } else if (selectTotalCus === 'monthly') {
+    } else if (selectTotalCus === "monthly") {
       setTotalAmount(monthlyCustomer.length);
     }
 
-    if (selectTotalCus === 'yearly') {
+    if (selectTotalCus === "yearly") {
       labels = Array.from({ length: 12 }, (_, i) =>
-        dayjs().month(i).format('MMM')
+        dayjs().month(i).format("MMM")
       );
       data = labels.map(
         (_, month) =>
@@ -85,35 +88,35 @@ export default function TotalCustomers() {
     }
 
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
 
     setChartData({
       labels:
-        selectTotalCus === 'yearly'
+        selectTotalCus === "yearly"
           ? months.slice(0, currentMonth)
-          : selectTotalCus === 'monthly'
+          : selectTotalCus === "monthly"
           ? daysArray
           : null,
       datasets: [
         {
           label:
-            selectTotalCus === 'yearly'
+            selectTotalCus === "yearly"
               ? `Total Customers (${currentYear})`
-              : `Total Customers (${dayjs().format('MMM')})`,
+              : `Total Customers (${dayjs().format("MMM")})`,
           data,
-          backgroundColor: 'rgba(53, 162, 235, 0.8)',
+          backgroundColor: "rgba(53, 162, 235, 0.8)",
           borderRadius: 5,
         },
       ],
@@ -124,14 +127,14 @@ export default function TotalCustomers() {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
       },
       title: {
         display: true,
         text:
-          selectTotalCus === 'yearly'
+          selectTotalCus === "yearly"
             ? `Yearly Customers (${currentYear})`
-            : `Monthly Customers (${dayjs().format('MMM')})`,
+            : `Monthly Customers (${dayjs().format("MMM")})`,
       },
       scales: {
         y: {
@@ -141,9 +144,76 @@ export default function TotalCustomers() {
     },
   };
 
+  const indexOfLastCustomer = currentPage * customersPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
+  const currentCustomers =
+    selectTotalCus === "yearly"
+      ? yearlyCustomer?.slice(indexOfFirstCustomer, indexOfLastCustomer)
+      : monthlyCustomer?.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
+  const totalPage = Math.ceil(
+    (selectTotalCus === "yearly"
+      ? yearlyCustomer?.length
+      : monthlyCustomer?.length) / customersPerPage
+  );
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    if (totalPage <= 10) {
+      for (let i = 1; i <= totalPage; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        pageNumbers.push(1, 2, 3, 4, 5, "...", totalPage);
+      } else if (currentPage > 4 && currentPage < totalPage - 3) {
+        pageNumbers.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPage
+        );
+      } else {
+        pageNumbers.push(
+          1,
+          "...",
+          totalPage - 4,
+          totalPage - 3,
+          totalPage - 2,
+          totalPage - 1,
+          totalPage
+        );
+      }
+    }
+
+    return pageNumbers.map((number, index) => (
+      <li key={index} className="mx-1">
+        {number === "..." ? (
+          <span className="px-3 py-1">...</span>
+        ) : (
+          <button
+            type="button"
+            className={`px-3 py-1 border rounded-full ${
+              number === currentPage ? "bg-gray-300" : ""
+            }`}
+            onClick={() => paginate(number)}
+          >
+            {number}
+          </button>
+        )}
+      </li>
+    ));
+  };
   return (
     <div className="flex flex-col gap-3 border border-gray-300 rounded-md p-3">
-      <div className="flex flex-col gap-3 bg-gray-600 rounded-md shadow-md p-4">
+      <div className="flex flex-col gap-3 bg-card-03-bg rounded-md shadow-md p-4">
         <h1 className="text-center text-2xl text-white font-semibold">
           Total Customers
         </h1>
@@ -161,55 +231,43 @@ export default function TotalCustomers() {
         </form>
       </div>
 
-      <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
+      <div
+        className="flex flex-col gap-4 h-[400px] overflow-auto"
+        ref={scrollRef}
+      >
         <Header
-        addClass='grid-cols-7'
-        columns={[
-          'Customer ID',
-          'Name',
-          'Email',
-          'Phone',
-          'Address',
-          'Created Date',
-          'Driver License',
-        ]}
+          addClass="grid-cols-7"
+          columns={[
+            "Customer ID",
+            "Name",
+            "Email",
+            "Phone",
+            "Address",
+            "Created Date",
+            "Driver License",
+          ]}
         />
-        {/* <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
-          <div className="grid grid-cols-7 text-center font-bold">
-            <div className="p-2">Customer ID</div>
-            <div className="p-2">Name</div>
-            <div className="p-2">Email</div>
-            <div className="p-2">Phone</div>
-            <div className="p-2">Address</div>
-            <div className="p-2">Created Date</div>
-            <div className="p-2">Driver License</div>
-          </div>
-        </div> */}
-
-        {(selectTotalCus === 'yearly' ? yearlyCustomer : monthlyCustomer)?.map(
-          (customer, index) => {
-            const createDate = dayjs(customer?.createdAt).format('DD/MM/YYYY');
-            return (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-5 shadow-md w-full"
-              >
-                <div className="grid grid-cols-7 text-center">
-                  <div className="p-2">{customer?.customerId}</div>
-                  <div className="p-2">
-                    {customer?.firstName} {customer?.lastName}
-                  </div>
-                  <div className="p-2">{customer?.email}</div>
-                  <div className="p-2">{customer?.phone}</div>
-                  <div className="p-2">{customer?.address}</div>
-                  <div className="p-2">{createDate}</div>
-                  <div className="p-2">{customer?.driverLicense}</div>
+        {currentCustomers?.map((customer, index) => {
+          const createDate = dayjs(customer?.createdAt).format("DD/MM/YYYY");
+          return (
+            <div
+              key={index}
+              className="bg-white rounded-lg p-5 shadow-md w-full"
+            >
+              <div className="grid grid-cols-7 text-center">
+                <div className="p-2">{customer?.customerId}</div>
+                <div className="p-2">
+                  {customer?.firstName} {customer?.lastName}
                 </div>
+                <div className="p-2">{customer?.email}</div>
+                <div className="p-2">{customer?.phone}</div>
+                <div className="p-2">{customer?.address}</div>
+                <div className="p-2">{createDate}</div>
+                <div className="p-2">{customer?.driverLicense}</div>
               </div>
-            );
-          }
-        )}
-
+            </div>
+          );
+        })}
         <div>
           <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-7 text-center font-bold text-lg">
@@ -225,8 +283,34 @@ export default function TotalCustomers() {
         </div>
       </div>
 
+      <ul className="flex list-none my-4 justify-center">
+        {currentPage > 1 && (
+          <li className="mx-1">
+            <button
+              type="button"
+              className="px-3 py-1 border rounded-full"
+              onClick={() => paginate(currentPage - 1)}
+            >
+              Prev
+            </button>
+          </li>
+        )}
+        {renderPageNumbers()}
+        {currentPage < totalPage && (
+          <li className="mx-1">
+            <button
+              type="button"
+              className="px-3 py-1 border rounded-full"
+              onClick={() => paginate(currentPage + 1)}
+            >
+              Next
+            </button>
+          </li>
+        )}
+      </ul>
+
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: '700px', height: '350px' }}>
+        <div style={{ width: "700px", height: "350px" }}>
           <Bar options={options} data={chartData} />
         </div>
       </div>
