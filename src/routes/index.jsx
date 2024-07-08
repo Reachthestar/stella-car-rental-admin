@@ -1,6 +1,7 @@
 import { lazy } from 'react';
-import React, { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import FilterContextProvider from '../contexts/filter-context';
+import DashboardContextProvider from '../contexts/dashboard-context';
 
 // Lazy loading components
 const Login = lazy(() => import('../pages/Login'));
