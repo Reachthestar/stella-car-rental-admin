@@ -1,26 +1,35 @@
-import Login from "../pages/Login";
+import { lazy } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
-import Bookings from "../pages/Bookings";
-import Settings from "../pages/Settings";
-import MainContainer from "../layouts/MainContainer";
-import Payments from "../pages/Payments";
-import Cars from "../pages/Cars";
-import Statistics from "../pages/Statistics";
-
-import Customers from "../pages/Customers";
-import CustomerContextProvider from "../contexts/customer-context";
-import CarsContextProvider from "../contexts/car-context";
-import BookingContextProvider from "../contexts/booking-context";
-import PaymentContextProvider from "../contexts/payment-context";
-import ProtectAdminRoute from "../authentication/ProtectAdminRoute";
-import Chat from "../pages/Chat";
+// Lazy loading components
+const Login = lazy(() => import('../pages/Login'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Bookings = lazy(() => import('../pages/Bookings'));
+const Settings = lazy(() => import('../pages/Settings'));
+const MainContainer = lazy(() => import('../layouts/MainContainer'));
+const Payments = lazy(() => import('../pages/Payments'));
+const Cars = lazy(() => import('../pages/Cars'));
+const Statistics = lazy(() => import('../pages/Statistics'));
+const Customers = lazy(() => import('../pages/Customers'));
+const CustomerContextProvider = lazy(() =>
+  import('../contexts/customer-context')
+);
+const CarsContextProvider = lazy(() => import('../contexts/car-context'));
+const BookingContextProvider = lazy(() =>
+  import('../contexts/booking-context')
+);
+const PaymentContextProvider = lazy(() =>
+  import('../contexts/payment-context')
+);
+const ProtectAdminRoute = lazy(() =>
+  import('../authentication/ProtectAdminRoute')
+);
+const Chat = lazy(() => import('../pages/Chat'));
 
 const router = createBrowserRouter([
-  { path: "/login", element: <Login /> },
+  { path: '/login', element: <Login /> },
   {
-    path: "/",
+    path: '/',
     element: (
       <ProtectAdminRoute>
         <CustomerContextProvider>
@@ -36,39 +45,39 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Dashboard />,
       },
       {
-        path: "/bookings",
+        path: '/bookings',
         element: <Bookings />,
       },
 
       {
-        path: "/customers",
+        path: '/customers',
         element: <Customers />,
       },
       {
-        path: "/cars",
+        path: '/cars',
         element: <Cars />,
       },
       {
-        path: "/payments",
+        path: '/payments',
         element: <Payments />,
       },
       {
-        path: "/statistics",
+        path: '/statistics',
         element: <Statistics />,
       },
       {
-        path: "/statistics/income",
+        path: '/statistics/income',
         element: <Statistics />,
       },
       {
-        path: "/settings",
+        path: '/settings',
         element: <Settings />,
       },
-      { path: "/chat", element: <Chat /> },
+      { path: '/chat', element: <Chat /> },
     ],
   },
 ]);
