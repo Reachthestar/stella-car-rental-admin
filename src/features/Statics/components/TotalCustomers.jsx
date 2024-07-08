@@ -236,7 +236,6 @@ export default function TotalCustomers() {
         ref={scrollRef}
       >
         <Header
-          addClass="grid-cols-7"
           columns={[
             "Customer ID",
             "Name",

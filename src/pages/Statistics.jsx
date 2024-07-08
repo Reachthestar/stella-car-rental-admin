@@ -1,9 +1,6 @@
 import { useRef } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useBooking } from '../contexts/booking-context';
-import { useCars } from '../contexts/car-context';
-import { useCustomer } from '../contexts/customer-context';
-import { usePayment } from '../contexts/payment-context';
 import CarsStatus from '../features/Statics/components/CarsStatus';
 import Income from '../features/Statics/components/Income';
 import PopularCars from '../features/Statics/components/PopularCars';
@@ -63,7 +60,7 @@ export default function Statistics() {
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 absolute left-[200px]">
+          <div className="flex flex-col gap-4 absolute left-[200px] min-w-[85%]">
             <div ref={carsStatusRef}>
               <CarsStatus />
             </div>
