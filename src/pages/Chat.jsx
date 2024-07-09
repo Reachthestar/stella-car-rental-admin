@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
-import car from "../assets/images/car-01.png";
+import adminIcon from "../assets/images/admin.png";
+import customerIcon from "../assets/images/user.png";
 import { IoMdClose } from "react-icons/io";
 import { FaList } from "react-icons/fa6";
 import { useAuth } from "../contexts/auth-context";
@@ -17,6 +18,25 @@ const Chat = () => {
   const adminId = admin?.id;
   const [chatRooms, setChatRooms] = useState([]);
   const [onlineCustomers, setOnlineCustomers] = useState(new Set());
+
+  // เมื่อกด send ให้เลื่อนลงมาล่างสุด
+  const chatContainerRef = useRef(null);
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      console.dir(chatContainerRef.current);
+      const { scrollHeight, clientHeight } = chatContainerRef.current;
+      chatContainerRef.current.scrollTo({
+        top: scrollHeight - clientHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  //
 
   useEffect(() => {
     // Fetch chat rooms when the component mounts
@@ -113,7 +133,7 @@ const Chat = () => {
         <div className="flex w-full h-full relative ">
           <div
             className={`w-[280px] h-full absolute z-10 gap-2 ${
-              show ? "-left-[16px]" : "-left-[336px]"
+              show ? "-left-[16px]" : "-left-[600px]"
             } md:left-0 md:relative transition-all `}
           >
             <div className="w-full h-[calc(100vh-177px)] bg-secondary-color md:bg-transparent overflow-y-auto space-y-3 ">
@@ -143,7 +163,7 @@ const Chat = () => {
                           ? "border-green-500"
                           : "border-white"
                       } border-2 max-w-[38px] p-[2px] rounded-full`}
-                      src={car}
+                      src={customerIcon}
                       alt=""
                     />
                     <div
@@ -176,7 +196,10 @@ const Chat = () => {
             </div>
 
             <div className="py-4">
-              <div className="bg-[#475569] h-[calc(100vh-290px)] rounded-md p-3 overflow-y-auto">
+              <div
+                className="bg-[#475569] h-[calc(100vh-290px)] rounded-md p-3 overflow-y-auto"
+                ref={chatContainerRef}
+              >
                 {messages.map((msg, index) => (
                   <div
                     key={index}
@@ -190,7 +213,7 @@ const Chat = () => {
                       {msg.senderType !== "Admin" && (
                         <div>
                           <img
-                            src={car}
+                            src={customerIcon}
                             alt=""
                             className={`w-[38px] h-[38px] border-2 ${
                               isCustomerOnline(msg.senderId)
@@ -212,7 +235,7 @@ const Chat = () => {
                       {msg.senderType === "Admin" && (
                         <div>
                           <img
-                            src={car}
+                            src={adminIcon}
                             alt=""
                             className="w-[38px] h-[38px] border-2 border-white rounded-full max-w-[38px] p-[3px]"
                           />
