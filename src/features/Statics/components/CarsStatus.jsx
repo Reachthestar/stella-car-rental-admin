@@ -64,13 +64,11 @@ export default function CarsStatus() {
         {currentCars?.map((car, index) => (
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-5 text-center">
-              <div className="p-2">{car?.id}</div>
-              <div className="p-2">{car?.plate}</div>
-              <div className="p-2">
-                {car?.model}, {car?.brand}
-              </div>
-              <div className="p-2">{car?.color}</div>
-              <div className="p-2">
+              <div className="p-2 break-words">{car?.id}</div>
+              <div className="p-2 break-words">{car?.plate}</div>
+              <div className="p-2 break-words">{car?.model}, {car?.brand}</div>
+              <div className="p-2 break-words">{car?.color}</div>
+              <div className="p-2 break-words">
                 <p
                   className={`font-bold rounded-full ${
                     car?.status === "Available"

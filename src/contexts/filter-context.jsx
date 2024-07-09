@@ -92,8 +92,12 @@ export default function FilterContextProvider({ children }) {
     });
 
     const sortedItems = filteredItems?.sort((a, b) => {
-        const valueA = a[sortKey];
-        const valueB = b[sortKey];
+        let valueA = a[sortKey];
+        let valueB = b[sortKey];
+        if(typeof(valueA) === 'string' && typeof(valueB) === 'string'){
+            valueA = valueA.toLowerCase()
+            valueB = valueB.toLowerCase()
+        }
 
         if (sortKey === 'startDate' || sortKey === 'endDate') {
             return new Date(valueB) - new Date(valueA); // Sorty Start and End Date by Descending Order

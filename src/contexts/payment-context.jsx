@@ -11,6 +11,7 @@ export default function PaymentContextProvider({ children }) {
   const [allPaymentComplete, setAllPaymentComplete] = useState(null);
   const [yearlyPayment, setYearlyPayment] = useState(null);
   const [dailyPayment, setDailyPayment] = useState(null);
+  const [totalPaymentPerMonth , setTotalPaymentPerMonth] = useState(null)
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
   const currentYear = today.getFullYear();
@@ -34,6 +35,15 @@ export default function PaymentContextProvider({ children }) {
 
       setAllPayment(data.sort((a, b) => b.bookingId - a.bookingId));
       setAllPaymentComplete(data.filter((item) => item.status === 'Complete'));
+
+      const totalPaymentPerMonth = data.reduce((acc, item) => {
+          const month = new Date(item.createdAt).getMonth();
+          acc[month] = (acc[month] || 0) + item.amount;
+          return acc;
+        },
+        Array(12).fill(0)
+      );
+      setTotalPaymentPerMonth(totalPaymentPerMonth);
 
       // Filter data for current month
       const currentMonthData = data.filter((item) => {
@@ -101,6 +111,7 @@ export default function PaymentContextProvider({ children }) {
         fetchPayment,
         yearlyPayment,
         dailyPayment,
+        totalPaymentPerMonth,
       }}
     >
       {children}
