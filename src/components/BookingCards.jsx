@@ -37,6 +37,12 @@ function BookingCards() {
         fetchPayment();
         fetchBooking();
         fetchCars();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Booking Id ${bookingId} status changed to Cancelled`,
+          showConfirmButton: true,
+        });
       }
     } catch (error) {
       console.log(error);

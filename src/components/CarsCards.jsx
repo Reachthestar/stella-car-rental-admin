@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useCars } from "../contexts/car-context";
 import carsApi from "../apis/cars";
-import { Bin } from "../assets/icons";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import Pagination from "./Pagination";
 import Header from "./Header";
 import Filter from "./Filter";
 import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
@@ -39,10 +36,16 @@ function CarsCards() {
         console.log(error);
       } finally {
         fetchCars();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Car Id ${carId} status changed to MAINTENANCE`,
+          showConfirmButton: true,
+        });
       }
     }
   };
-
+  
   const handleMakeAvailable = async (carId) => {
     const result = await Swal.fire({
       text: "Status",
@@ -51,7 +54,7 @@ function CarsCards() {
       showCancelButton: true,
       showConfirmButton: true,
     });
-
+    
     if (result.isConfirmed) {
       try {
         await carsApi.updateCar(carId, { status: "available" });
@@ -62,6 +65,12 @@ function CarsCards() {
         }
       } finally {
         fetchCars();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Car Id ${carId} status changed to AVAILABLE`,
+          showConfirmButton: true,
+        });
       }
     }
   };
