@@ -10,7 +10,7 @@ export default function BookingContextProvider({ children }) {
   const [yearlyBookings, setYearlyBookings] = useState(null);
   const [popularCarsMonthly, setPopularCarsMonthly] = useState([]);
   const [popularCarsYearly, setPopularCarsYearly] = useState([]);
-  // const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null);
+  const [totalPaymentPerMonth, setTotalPaymentPerMonth] = useState(null);
   const [pickupByBranchPerYear, setPickupByBranchPerYear] = useState(null);
   const [pickupByBranchPerMonth, setPickupByBranchPerMonth] = useState(null);
   const [dropOffByBranchPerYear, setDropOffByBranchPerYear] = useState(null);
@@ -44,15 +44,15 @@ export default function BookingContextProvider({ children }) {
 
       setAllBooking(data.sort((a, b) => b.id - a.id));
 
-      // const totalPaymentPerMonth = data.reduce(
-      //   (acc, item) => {
-      //     const month = new Date(item.createdAt).getMonth();
-      //     acc[month] = (acc[month] || 0) + item.amount;
-      //     return acc;
-      //   },
-      //   Array(12).fill(0)
-      // );
-      // setTotalPaymentPerMonth(totalPaymentPerMonth); // data total amount per month
+      const totalPaymentPerMonth = data.reduce(
+        (acc, item) => {
+          const month = new Date(item.createdAt).getMonth();
+          acc[month] = (acc[month] || 0) + item.amount;
+          return acc;
+        },
+        Array(12).fill(0)
+      );
+      setTotalPaymentPerMonth(totalPaymentPerMonth); // data total amount per month
 
       // Filter bookings for the current year
       const bookingsThisYear = data.filter(
@@ -175,7 +175,7 @@ export default function BookingContextProvider({ children }) {
         yearlyBookings,
         popularCarsMonthly,
         popularCarsYearly,
-        // totalPaymentPerMonth,
+        totalPaymentPerMonth,
         currentMonth,
         currentYear,
         pickupByBranchPerYear,

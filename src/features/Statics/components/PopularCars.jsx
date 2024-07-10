@@ -114,7 +114,6 @@ export default function PopularCars() {
 
       <div className="flex flex-col gap-4 h-[400px] overflow-auto" ref={scrollRef}>
         <Header
-        addClass='grid-cols-3'
         columns={[
           'No.',
           'Car',

@@ -8,7 +8,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function PopularLocations() {
   const {
-    allBooking,
     pickupByBranchPerYear,
     pickupByBranchPerMonth,
     dropOffByBranchPerYear,
@@ -17,7 +16,7 @@ export default function PopularLocations() {
   } = useBooking();
   const [selectPickOrDrop, setSelectPickOrDrop] = useState('pickUp');
   const [selectYearOrMonth, setSelectYearOrMonth] = useState('yearly');
-
+  
   const handleSelectPickOrDrop = (e) => {
     setSelectPickOrDrop(e.target.value);
   };
@@ -127,7 +126,7 @@ export default function PopularLocations() {
       </div>
 
       <div className="flex gap-4">
-        <div className="flex flex-col gap-4 h-[540px] overflow-auto flex-1">
+        <div className="flex flex-col gap-4 h-[600px] overflow-auto flex-1">
           <div className="bg-gray-500 text-white rounded-lg p-5 shadow-md w-full">
             <div className="flex justify-around text-center font-bold">
               <div className="p-2 flex-1">No.</div>
@@ -151,12 +150,12 @@ export default function PopularLocations() {
             ? pickupByBranchPerYear?.map((booking, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                  className="bg-white rounded-lg p-1 h-fit shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
                     <div className="p-2 flex-1">{index + 1}</div>
-                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
-                    <div className="p-2 flex-1 break-words">{booking.bookingTimes}</div>
+                    <div className="p-2 flex-1">{booking.branch}</div>
+                    <div className="p-2 flex-1">{booking.bookingTimes}</div>
                   </div>
                 </div>
               ))
@@ -164,12 +163,12 @@ export default function PopularLocations() {
             ? pickupByBranchPerMonth?.map((booking, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                  className="bg-white rounded-lg p-1 h-fit shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1 break-words">{index + 1}</div>
-                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
-                    <div className="p-2 flex-1 break-words">{booking.bookingTimes}</div>
+                    <div className="p-2 flex-1">{index + 1}</div>
+                    <div className="p-2 flex-1">{booking.branch}</div>
+                    <div className="p-2 flex-1">{booking.bookingTimes}</div>
                   </div>
                 </div>
               ))
@@ -177,12 +176,12 @@ export default function PopularLocations() {
             ? dropOffByBranchPerYear?.map((booking, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                  className="bg-white rounded-lg p-1 h-fit shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1 break-words">{index + 1}</div>
-                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
-                    <div className="p-2 flex-1 break-words">{booking.dropTimes}</div>
+                    <div className="p-2 flex-1">{index + 1}</div>
+                    <div className="p-2 flex-1">{booking.branch}</div>
+                    <div className="p-2 flex-1">{booking.dropTimes}</div>
                   </div>
                 </div>
               ))
@@ -190,12 +189,12 @@ export default function PopularLocations() {
             ? dropOffByBranchPerMonth?.map((booking, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
+                  className="bg-white rounded-lg p-1 h-fit shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1 break-words">{index + 1}</div>
-                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
-                    <div className="p-2 flex-1 break-words">{booking.dropTimes}</div>
+                    <div className="p-2 flex-1">{index + 1}</div>
+                    <div className="p-2 flex-1">{booking.branch}</div>
+                    <div className="p-2 flex-1">{booking.dropTimes}</div>
                   </div>
                 </div>
               ))
@@ -204,7 +203,7 @@ export default function PopularLocations() {
 
         <div className="p-1 bg-white rounded-md shadow-md h-full flex-1">
           <div
-            style={{ height: '500px' }}
+            style={{ height: '560px' }}
             className="flex items-center justify-center"
           >
             <Doughnut data={data} options={options} />

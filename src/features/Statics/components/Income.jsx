@@ -222,7 +222,6 @@ export default function Income() {
         ref={scrollRef}
       >
         <Header
-          addClass="grid-cols-5"
           columns={[
             "Booking ID",
             "Payment ID",

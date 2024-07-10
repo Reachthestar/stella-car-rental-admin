@@ -58,7 +58,6 @@ export default function CarsStatus() {
         ref={scrollRef}
       >
         <Header
-          addClass="grid-cols-5"
           columns={["Car ID", "Plate", "Model", "color", "Status"]}
         />
         {currentCars?.map((car, index) => (
@@ -66,7 +65,7 @@ export default function CarsStatus() {
             <div className="grid grid-cols-5 text-center">
               <div className="p-2 break-words">{car?.id}</div>
               <div className="p-2 break-words">{car?.plate}</div>
-              <div className="p-2 break-words">{car?.model}, {car?.brand}</div>
+              <div className="p-2 break-words">{car?.brand}, {car?.model}</div>
               <div className="p-2 break-words">{car?.color}</div>
               <div className="p-2 break-words">
                 <p
