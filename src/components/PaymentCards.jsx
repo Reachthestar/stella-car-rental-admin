@@ -43,7 +43,6 @@ function PaymentsCards() {
           { value: "customer", text: "Customer" },
           { value: "paymentDate", text: "Payment Date" },
           { value: "amount", text: "Amount" },
-          { value: "status", text: "Status" },
         ]} />
       <div className="grid grid-cols-1 gap-4 w-full">
         <Header

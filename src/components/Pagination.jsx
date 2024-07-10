@@ -11,12 +11,12 @@ export default function Pagination({
 {
     return (
         <div className="p-2 flex gap-2">
-            <button onClick={goToPrevPage} disabled={currentPage === 1} className=' hover:text-primary-color'>
+            <button onClick={goToPrevPage} hidden={currentPage === 1} className=' hover:text-primary-color'>
                 Prev
             </button>
             {Array.from({ length: totalPage }, (_, index) => {
                 const pageNumber = index + 1;
-                return pageNumber === 1 || pageNumber === totalPage || (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2) ? (
+                return pageNumber === 1 || pageNumber === totalPage || (pageNumber >= currentPage - 4 && pageNumber <= currentPage + 4) ? (
                     <button
                         key={pageNumber}
                         onClick={() => handleChangePage(pageNumber)}
@@ -28,12 +28,12 @@ export default function Pagination({
                         {pageNumber}
                     </button>
                 ) : (
-                    pageNumber === currentPage - 3 || pageNumber === currentPage + 3 ? (
+                    pageNumber === currentPage - 5 || pageNumber === currentPage + 5 ? (
                         <button key={`more-${pageNumber}`} className='pointer-events-none'>...</button>
-                    ) : null
+                    ) : null                 
                 );
             })}
-            <button onClick={goToNextPage} disabled={currentPage === totalPage} className=' hover:text-primary-color'>
+            <button onClick={goToNextPage} hidden={currentPage === totalPage} className=' hover:text-primary-color'>
                 Next
             </button>
         </div>

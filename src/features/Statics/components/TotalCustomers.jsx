@@ -253,16 +253,14 @@ export default function TotalCustomers() {
               key={index}
               className="bg-white rounded-lg p-5 shadow-md w-full"
             >
-              <div className="grid grid-cols-7 text-center">
-                <div className="p-2">{customer?.customerId}</div>
-                <div className="p-2">
-                  {customer?.firstName} {customer?.lastName}
-                </div>
-                <div className="p-2">{customer?.email}</div>
-                <div className="p-2">{customer?.phone}</div>
-                <div className="p-2">{customer?.address}</div>
-                <div className="p-2">{createDate}</div>
-                <div className="p-2">{customer?.driverLicense}</div>
+              <div className="grid grid-cols-7 text-center items-center">
+                <div className="p-2 break-words">{customer?.customerId}</div>
+                <div className="p-2 break-words">{customer?.firstName} {customer?.lastName}</div>
+                <div className="p-2 break-words">{customer?.email}</div>
+                <div className="p-2 break-words">{customer?.phone}</div>
+                <div className="p-2 break-words">{customer?.address}</div>
+                <div className="p-2 break-words">{createDate}</div>
+                <div className="p-2 break-words">{customer?.driverLicense}</div>
               </div>
             </div>
           );

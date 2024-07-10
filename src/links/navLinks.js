@@ -22,7 +22,7 @@ const navLinks = [
   {
     path: '/payments',
     icon: 'ri-bank-card-line',
-    display: 'Payments',
+    display: 'Completed Payments',
   },
 
   {

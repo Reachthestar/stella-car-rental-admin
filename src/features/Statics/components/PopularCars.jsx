@@ -124,9 +124,9 @@ export default function PopularCars() {
         {sortedData?.map((booking, index) => (
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-3 text-center">
-              <div className="p-2">{index + 1}</div>
-              <div className="p-2">{booking?.car}</div>
-              <div className="p-2">{booking?.count}</div>
+              <div className="p-2 break-words">{index + 1}</div>
+              <div className="p-2 break-words">{booking?.car}</div>
+              <div className="p-2 break-words">{booking?.count}</div>
             </div>
           </div>
         ))}

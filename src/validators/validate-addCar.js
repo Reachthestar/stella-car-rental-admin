@@ -10,12 +10,11 @@ const addCarSchema = Joi.object(
             .messages({ 'string.empty': 'Status is required' }),
         useDate: Joi.string().required()
             .messages({ 'string.empty': 'UseDate is required' }),
-        licensePlate: Joi.string().required().max(10).min(4)
+        licensePlate: Joi.string().required().max(13)
             .messages(
                 {
                     'string.empty': 'LicensePlate is required',
-                    'string.max': 'LicensePlate must be 4-10 character',
-                    'string.min': 'LicensePlate must be 4-10 character'
+                    'string.max': 'LicensePlate must be 1-13 character',
                 },
             )
     }

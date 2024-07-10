@@ -155,8 +155,8 @@ export default function PopularLocations() {
                 >
                   <div className="flex justify-around text-center">
                     <div className="p-2 flex-1">{index + 1}</div>
-                    <div className="p-2 flex-1">{booking.branch}</div>
-                    <div className="p-2 flex-1">{booking.bookingTimes}</div>
+                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
+                    <div className="p-2 flex-1 break-words">{booking.bookingTimes}</div>
                   </div>
                 </div>
               ))
@@ -167,9 +167,9 @@ export default function PopularLocations() {
                   className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1">{index + 1}</div>
-                    <div className="p-2 flex-1">{booking.branch}</div>
-                    <div className="p-2 flex-1">{booking.bookingTimes}</div>
+                    <div className="p-2 flex-1 break-words">{index + 1}</div>
+                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
+                    <div className="p-2 flex-1 break-words">{booking.bookingTimes}</div>
                   </div>
                 </div>
               ))
@@ -180,9 +180,9 @@ export default function PopularLocations() {
                   className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1">{index + 1}</div>
-                    <div className="p-2 flex-1">{booking.branch}</div>
-                    <div className="p-2 flex-1">{booking.dropTimes}</div>
+                    <div className="p-2 flex-1 break-words">{index + 1}</div>
+                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
+                    <div className="p-2 flex-1 break-words">{booking.dropTimes}</div>
                   </div>
                 </div>
               ))
@@ -193,9 +193,9 @@ export default function PopularLocations() {
                   className="bg-white rounded-lg p-1 h-[70px] shadow-md w-full"
                 >
                   <div className="flex justify-around text-center">
-                    <div className="p-2 flex-1">{index + 1}</div>
-                    <div className="p-2 flex-1">{booking.branch}</div>
-                    <div className="p-2 flex-1">{booking.dropTimes}</div>
+                    <div className="p-2 flex-1 break-words">{index + 1}</div>
+                    <div className="p-2 flex-1 break-words">{booking.branch}</div>
+                    <div className="p-2 flex-1 break-words">{booking.dropTimes}</div>
                   </div>
                 </div>
               ))

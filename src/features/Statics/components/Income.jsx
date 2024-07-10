@@ -24,9 +24,8 @@ ChartJS.register(
 );
 
 export default function Income() {
-  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment } =
-    usePayment();
-  const { totalPaymentPerMonth, currentMonth, currentYear } = useBooking();
+  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment, totalPaymentPerMonth } = usePayment();
+  const { currentMonth, currentYear } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectIncome, setSelectIncome] = useState("monthly");
   const [currentPage, setCurrentPage] = useState(1);
@@ -105,7 +104,6 @@ export default function Income() {
       },
     },
   };
-
   const data = {
     labels:
       selectIncome === "yearly"

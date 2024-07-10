@@ -6,10 +6,13 @@ import dayjs from 'dayjs';
 import Header from './Header';
 import Filter from './Filter';
 import { useFilter } from '../contexts/filter-context';
+import { useBooking } from '../contexts/booking-context';
+import { useCars } from '../contexts/car-context';
 
 function BookingCards() {
-  const { fetchBooking } = useFilter();
+  const { fetchBooking } = useBooking();
   const { fetchPayment } = usePayment();
+  const { fetchCars } = useCars()
   const {
     searchTerm,
     sortKey,
@@ -30,10 +33,16 @@ function BookingCards() {
       });
       if ((await result).isConfirmed) {
         await bookingApi.updateBookingStatus(bookingId, 'cancelled');
-
         await paymentApi.deletePayment(bookingId);
-        fetchBooking();
         fetchPayment();
+        fetchBooking();
+        fetchCars();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Booking Id ${bookingId} status changed to Cancelled`,
+          showConfirmButton: true,
+        });
       }
     } catch (error) {
       console.log(error);

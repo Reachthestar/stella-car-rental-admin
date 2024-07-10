@@ -60,7 +60,7 @@ export default function Statistics() {
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 absolute left-[200px] min-w-[85%]">
+          <div className="flex flex-col gap-4 absolute left-[200px]">
             <div ref={carsStatusRef}>
               <CarsStatus />
             </div>
