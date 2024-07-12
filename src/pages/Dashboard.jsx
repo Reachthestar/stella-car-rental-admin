@@ -7,6 +7,7 @@ import SummaryReportCard from '../features/Dashboard/components/SummaryReportCar
 
 export default function Dashboard() {
   const { dashboardData, isDashboardDataLoading } = useDashboard()
+  console.log(dashboardData)
   return (
     <>
       {isDashboardDataLoading ?

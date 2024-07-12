@@ -38,7 +38,7 @@ function BookingCards() {
         fetchBooking();
         fetchCars();
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
           title: `Booking Id ${bookingId} status changed to Cancelled`,
           showConfirmButton: true,

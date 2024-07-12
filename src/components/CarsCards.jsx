@@ -32,16 +32,15 @@ function CarsCards() {
     if (result.isConfirmed) {
       try {
         await carsApi.updateCar(carId, { status: "maintenance" });
-      } catch (error) {
-        console.log(error);
-      } finally {
         fetchCars();
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
           title: `Car Id ${carId} status changed to MAINTENANCE`,
           showConfirmButton: true,
         });
+      } catch (error) {
+        console.log(error);
       }
     }
   };
@@ -58,19 +57,23 @@ function CarsCards() {
     if (result.isConfirmed) {
       try {
         await carsApi.updateCar(carId, { status: "available" });
-      } catch (error) {
-        console.log(error);
-        if (error instanceof AxiosError) {
-          alert(error.response.data.message);
-        }
-      } finally {
         fetchCars();
         Swal.fire({
-          position: "top-end",
+          position: "center",
           icon: "success",
           title: `Car Id ${carId} status changed to AVAILABLE`,
           showConfirmButton: true,
         });
+      } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: true,
+          });
+        }
       }
     }
   };
@@ -87,10 +90,15 @@ function CarsCards() {
     if (result.isConfirmed) {
       try {
         await carsApi.deleteCar(carId);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `Car Id ${carId} was deleted`,
+          showConfirmButton: true,
+        });
+        fetchCars();
       } catch (error) {
         console.log(error);
-      } finally {
-        fetchCars();
       }
     }
   };

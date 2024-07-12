@@ -32,7 +32,7 @@ export default function Cars() {
                 onClose={closeAddCarModal}
                 title="Add new car"
               >
-                <AddCarForm />
+                <AddCarForm setIsAddCarModalOpen={setIsAddCarModalOpen}/>
               </Modal>
             </div>
           </div>
