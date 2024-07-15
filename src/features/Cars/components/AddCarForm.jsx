@@ -3,6 +3,7 @@ import Input from "../../../components/Input";
 import { useCars } from "../../../contexts/car-context";
 import carsApi from "../../../apis/cars";
 import validateAddCarsInfo from "../../../validators/validate-addCar";
+import Swal from "sweetalert2";
 
 const currentYear = new Date().getFullYear();
 
@@ -22,7 +23,7 @@ const initial_input_error = {
   licensePlate: "",
 };
 
-export default function AddCarForm() {
+export default function AddCarForm({ setIsAddCarModalOpen }) {
   const { allCarModel, allBranch, fetchCars } = useCars();
   const [input, setInput] = useState(initial_input);
   const [errorInput, setErrorInput] = useState(initial_input_error);
@@ -38,9 +39,15 @@ export default function AddCarForm() {
       const error = validateAddCarsInfo(input);
       setErrorInput(error);
       if (!error) {
-        const message = await carsApi.createCar(input);
-        alert(message.data.message);
+        await carsApi.createCar(input);
         fetchCars();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: `Successfully added car`,
+          showConfirmButton: true,
+        });
+        setIsAddCarModalOpen(false)
       }
     } catch (error) {
       console.log(error);

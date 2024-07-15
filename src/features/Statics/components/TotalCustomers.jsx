@@ -22,6 +22,54 @@ ChartJS.register(
   Legend
 );
 
+const dummyMonthlyCustomer = [
+  { createdAt: "2024-07-01T16:56:13.000Z" },
+  { createdAt: "2024-07-02T16:56:13.000Z" },
+  { createdAt: "2024-07-03T16:56:13.000Z" },
+  { createdAt: "2024-07-04T16:56:13.000Z" },
+  { createdAt: "2024-07-05T16:56:13.000Z" },
+  { createdAt: "2024-07-06T16:56:13.000Z" },
+  { createdAt: "2024-07-07T16:56:13.000Z" },
+  { createdAt: "2024-07-08T16:56:13.000Z" },
+  { createdAt: "2024-07-09T16:56:13.000Z" },
+  { createdAt: "2024-07-10T16:56:13.000Z" },
+  { createdAt: "2024-07-11T16:56:13.000Z" },
+  { createdAt: "2024-07-12T16:56:13.000Z" },
+  { createdAt: "2024-07-13T16:56:13.000Z" },
+  { createdAt: "2024-07-14T16:56:13.000Z" },
+  { createdAt: "2024-07-15T16:56:13.000Z" },
+  { createdAt: "2024-07-16T16:56:13.000Z" },
+  { createdAt: "2024-07-17T16:56:13.000Z" },
+  { createdAt: "2024-07-18T16:56:13.000Z" },
+  { createdAt: "2024-07-19T16:56:13.000Z" },
+  { createdAt: "2024-07-20T16:56:13.000Z" },
+  { createdAt: "2024-07-21T16:56:13.000Z" },
+  { createdAt: "2024-07-22T16:56:13.000Z" },
+  { createdAt: "2024-07-23T16:56:13.000Z" },
+  { createdAt: "2024-07-24T16:56:13.000Z" },
+  { createdAt: "2024-07-25T16:56:13.000Z" },
+  { createdAt: "2024-07-26T16:56:13.000Z" },
+  { createdAt: "2024-07-27T16:56:13.000Z" },
+  { createdAt: "2024-07-28T16:56:13.000Z" },
+  { createdAt: "2024-07-29T16:56:13.000Z" },
+  { createdAt: "2024-07-30T16:56:13.000Z" },
+  { createdAt: "2024-07-01T16:56:13.000Z" },
+  { createdAt: "2024-07-02T16:56:13.000Z" },
+  { createdAt: "2024-07-02T16:56:13.000Z" },
+  { createdAt: "2024-07-03T16:56:13.000Z" },
+  { createdAt: "2024-07-05T16:56:13.000Z" },
+  { createdAt: "2024-07-06T16:56:13.000Z" },
+  { createdAt: "2024-07-09T16:56:13.000Z" },
+  { createdAt: "2024-07-10T16:56:13.000Z" },
+  { createdAt: "2024-07-11T16:56:13.000Z" },
+  { createdAt: "2024-07-12T16:56:13.000Z" },
+  { createdAt: "2024-07-15T16:56:13.000Z" },
+  { createdAt: "2024-07-16T16:56:13.000Z" },
+  { createdAt: "2024-07-16T16:56:13.000Z" },
+  { createdAt: "2024-07-23T16:56:13.000Z" },
+  { createdAt: "2024-07-23T16:56:13.000Z" },
+]
+
 export default function TotalCustomers() {
   const {
     allCustomer,
@@ -29,6 +77,7 @@ export default function TotalCustomers() {
     monthlyCustomer,
     currentYear,
     currentMonth,
+    currentDate
   } = useCustomer();
   const [selectTotalCus, setSelectTotalCus] = useState("monthly");
   const [totalAmount, setTotalAmount] = useState(0);
@@ -66,7 +115,6 @@ export default function TotalCustomers() {
     } else if (selectTotalCus === "monthly") {
       setTotalAmount(monthlyCustomer.length);
     }
-
     if (selectTotalCus === "yearly") {
       labels = Array.from({ length: 12 }, (_, i) =>
         dayjs().month(i).format("MMM")
@@ -81,7 +129,8 @@ export default function TotalCustomers() {
       labels = daysArray;
       data = labels.map(
         (day) =>
-          monthlyCustomer.filter(
+          dummyMonthlyCustomer.filter(
+          // monthlyCustomer.filter(
             (customer) => dayjs(customer.createdAt).date() === day
           ).length
       );
@@ -107,8 +156,8 @@ export default function TotalCustomers() {
         selectTotalCus === "yearly"
           ? months.slice(0, currentMonth)
           : selectTotalCus === "monthly"
-          ? daysArray
-          : null,
+            ? daysArray.slice(0, currentDate)
+            : null,
       datasets: [
         {
           label:
@@ -200,9 +249,8 @@ export default function TotalCustomers() {
         ) : (
           <button
             type="button"
-            className={`px-3 py-1 border rounded-full ${
-              number === currentPage ? "bg-gray-300" : ""
-            }`}
+            className={`px-3 py-1 border rounded-full ${number === currentPage ? "bg-gray-300" : ""
+              }`}
             onClick={() => paginate(number)}
           >
             {number}
