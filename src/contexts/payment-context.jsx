@@ -37,7 +37,7 @@ export default function PaymentContextProvider({ children }) {
       setAllPaymentComplete(data.filter((item) => item.status === 'Complete'));
 
       const totalPaymentPerMonth = data.reduce((acc, item) => {
-          const month = new Date(item.createdAt).getMonth();
+          const month = new Date(item.paymentDate).getMonth();
           acc[month] = (acc[month] || 0) + item.amount;
           return acc;
         },

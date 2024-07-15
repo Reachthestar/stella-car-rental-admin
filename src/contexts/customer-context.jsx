@@ -11,6 +11,7 @@ export default function CustomerContextProvider({ children }) {
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
   const currentYear = today.getFullYear();
+  const currentDate = today.getDate()
 
   const fetchCustomer = async () => {
     try {
@@ -61,6 +62,7 @@ export default function CustomerContextProvider({ children }) {
         monthlyCustomer,
         currentYear,
         currentMonth,
+        currentDate
       }}
     >
       {children}

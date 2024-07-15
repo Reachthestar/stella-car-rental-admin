@@ -23,9 +23,43 @@ ChartJS.register(
   Legend
 );
 
+const dummyDailyPayment = [
+  { date: '2024-07-01', totalAmount: 40000 },
+  { date: '2024-07-02', totalAmount: 30000 },
+  { date: '2024-07-03', totalAmount: 20000 },
+  { date: '2024-07-04', totalAmount: 40000 },
+  { date: '2024-07-05', totalAmount: 50000 },
+  { date: '2024-07-06', totalAmount: 140000 },
+  { date: '2024-07-07', totalAmount: 60000 },
+  { date: '2024-07-08', totalAmount: 10000 },
+  { date: '2024-07-09', totalAmount: 20000 },
+  { date: '2024-07-10', totalAmount: 143400 },
+  { date: '2024-07-11', totalAmount: 30000 },
+  { date: '2024-07-12', totalAmount: 40000 },
+  { date: '2024-07-13', totalAmount: 10000 },
+  { date: '2024-07-14', totalAmount: 80000 },
+  { date: '2024-07-15', totalAmount: 40000 },
+  { date: '2024-07-16', totalAmount: 30000 },
+  { date: '2024-07-17', totalAmount: 20000 },
+  { date: '2024-07-18', totalAmount: 10000 },
+  { date: '2024-07-19', totalAmount: 30000 },
+  { date: '2024-07-20', totalAmount: 40000 },
+  { date: '2024-07-21', totalAmount: 50000 },
+  { date: '2024-07-22', totalAmount: 40000 },
+  { date: '2024-07-23', totalAmount: 10000 },
+  { date: '2024-07-24', totalAmount: 90000 },
+  { date: '2024-07-25', totalAmount: 70000 },
+  { date: '2024-07-26', totalAmount: 40000 },
+  { date: '2024-07-27', totalAmount: 50000 },
+  { date: '2024-07-28', totalAmount: 100000 },
+  { date: '2024-07-29', totalAmount: 50000 },
+  { date: '2024-07-30', totalAmount: 40000 },
+  { date: '2024-07-31', totalAmount: 60000 }
+]
+
 export default function Income() {
   const { allPayment, monthlyPayments, yearlyPayment, dailyPayment, totalPaymentPerMonth } = usePayment();
-  const { currentMonth, currentYear } = useBooking();
+  const { currentMonth, currentYear, currentDate } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
   const [selectIncome, setSelectIncome] = useState("monthly");
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,8 +128,8 @@ export default function Income() {
           selectIncome === "yearly"
             ? `Yearly Sales (${currentYear})`
             : selectIncome === "monthly"
-            ? `Monthly Sales (${months[month]})`
-            : null,
+              ? `Monthly Sales (${months[month]})`
+              : null,
       },
       scales: {
         y: {
@@ -109,22 +143,23 @@ export default function Income() {
       selectIncome === "yearly"
         ? months.slice(0, currentMonth)
         : selectIncome === "monthly"
-        ? daysArray
-        : null,
+          ? daysArray.slice(0, currentDate)
+          : null,
     datasets: [
       {
         label:
           selectIncome === "yearly"
             ? `Monthly Sales`
             : selectIncome === "monthly"
-            ? "Daily Sales"
-            : null,
+              ? "Daily Sales"
+              : null,
         data:
           selectIncome === "yearly"
             ? totalPayment
             : selectIncome === "monthly"
-            ? dailyPayment?.map((item) => item.totalAmount)
-            : null,
+              // ? dailyPayment?.map((item) => item.totalAmount)
+              ? dummyDailyPayment?.map((item) => item.totalAmount)
+              : null,
         backgroundColor: "rgba(53, 162, 235, 0.8)",
         borderRadius: "5",
       },
@@ -187,9 +222,8 @@ export default function Income() {
         ) : (
           <button
             type="button"
-            className={`px-3 py-1 border rounded-full ${
-              number === currentPage ? "bg-gray-300" : ""
-            }`}
+            className={`px-3 py-1 border rounded-full ${number === currentPage ? "bg-gray-300" : ""
+              }`}
             onClick={() => paginate(number)}
           >
             {number}

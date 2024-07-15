@@ -18,6 +18,7 @@ export default function BookingContextProvider({ children }) {
   const today = new Date();
   const currentMonth = today.getMonth() + 1;
   const currentYear = today.getFullYear();
+  const currentDate = today.getDate()
 
   const fetchBooking = async () => {
     try {
@@ -182,6 +183,7 @@ export default function BookingContextProvider({ children }) {
         pickupByBranchPerMonth,
         dropOffByBranchPerYear,
         dropOffByBranchPerMonth,
+        currentDate
       }}
     >
       {children}
