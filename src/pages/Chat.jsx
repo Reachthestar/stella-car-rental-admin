@@ -23,7 +23,7 @@ const Chat = () => {
   const chatContainerRef = useRef(null);
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
-      console.dir(chatContainerRef.current);
+      // console.dir(chatContainerRef.current);
       const { scrollHeight, clientHeight } = chatContainerRef.current;
       chatContainerRef.current.scrollTo({
         top: scrollHeight - clientHeight,
@@ -81,7 +81,7 @@ const Chat = () => {
     });
 
     socket.on("chatRooms", (rooms) => {
-      console.log("Chat rooms from server:", rooms);
+      // console.log("Chat rooms from server:", rooms);
       setChatRooms(rooms);
     });
 
