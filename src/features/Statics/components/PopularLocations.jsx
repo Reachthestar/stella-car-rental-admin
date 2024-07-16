@@ -16,7 +16,7 @@ export default function PopularLocations() {
   } = useBooking();
   const [selectPickOrDrop, setSelectPickOrDrop] = useState('pickUp');
   const [selectYearOrMonth, setSelectYearOrMonth] = useState('yearly');
-  
+
   const handleSelectPickOrDrop = (e) => {
     setSelectPickOrDrop(e.target.value);
   };
@@ -152,7 +152,7 @@ export default function PopularLocations() {
                   key={index}
                   className="bg-white rounded-lg p-1 h-fit shadow-md w-full"
                 >
-                  <div className="flex justify-around text-center">
+                  <div className="flex justify-around text-center items-center">
                     <div className="p-2 flex-1">{index + 1}</div>
                     <div className="p-2 flex-1">{booking.branch}</div>
                     <div className="p-2 flex-1">{booking.bookingTimes}</div>

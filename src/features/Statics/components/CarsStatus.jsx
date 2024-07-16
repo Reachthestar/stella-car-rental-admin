@@ -1,9 +1,9 @@
-import { useRef, useState, useEffect } from "react";
-import { useCars } from "../../../contexts/car-context";
-import Header from "../../../components/Header";
+import { useRef, useState, useEffect } from 'react';
+import { useCars } from '../../../contexts/car-context';
+import Header from '../../../components/Header';
 
 export default function CarsStatus() {
-  const [selectedStatus, setSelectedStatus] = useState("Available");
+  const [selectedStatus, setSelectedStatus] = useState('Available');
   const [currentPage, setCurrentPage] = useState(1);
   const { allCar } = useCars();
   const scrollRef = useRef();
@@ -15,7 +15,7 @@ export default function CarsStatus() {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -53,28 +53,28 @@ export default function CarsStatus() {
         </form>
       </div>
 
-      <div
-        className="flex flex-col gap-4 h-[400px] overflow-auto"
-        ref={scrollRef}
-      >
+      <div className="flex flex-col gap-4 overflow-auto" ref={scrollRef}>
         <Header
-          columns={["Car ID", "Plate", "Model", "color", "Status"]}
+          addClass="grid-cols-5"
+          columns={['Car ID', 'Plate', 'Model', 'color', 'Status']}
         />
         {currentCars?.map((car, index) => (
           <div key={index} className="bg-white rounded-lg p-5 shadow-md w-full">
             <div className="grid grid-cols-5 text-center">
-              <div className="p-2 break-words">{car?.id}</div>
-              <div className="p-2 break-words">{car?.plate}</div>
-              <div className="p-2 break-words">{car?.brand}, {car?.model}</div>
-              <div className="p-2 break-words">{car?.color}</div>
-              <div className="p-2 break-words">
+              <div className="p-2">{car?.id}</div>
+              <div className="p-2">{car?.plate}</div>
+              <div className="p-2">
+                {car?.brand} {car?.model}
+              </div>
+              <div className="p-2">{car?.color}</div>
+              <div className="p-2">
                 <p
                   className={`font-bold rounded-full ${
-                    car?.status === "Available"
-                      ? "text-success-status-text bg-success-status-bg"
-                      : car?.status === "Maintenance"
-                      ? "text-fail-status-text bg-fail-status-bg"
-                      : "text-process-status-text bg-process-status-bg"
+                    car?.status === 'Available'
+                      ? 'text-success-status-text bg-success-status-bg'
+                      : car?.status === 'Maintenance'
+                      ? 'text-fail-status-text bg-fail-status-bg'
+                      : 'text-process-status-text bg-process-status-bg'
                   } `}
                 >
                   {car?.status}
@@ -118,21 +118,21 @@ const Pagination = ({ currentPage, totalPage, paginate }) => {
     }
   } else {
     if (currentPage <= 4) {
-      pageNumbers.push(1, 2, 3, 4, 5, "...", totalPage);
+      pageNumbers.push(1, 2, 3, 4, 5, '...', totalPage);
     } else if (currentPage > 4 && currentPage < totalPage - 3) {
       pageNumbers.push(
         1,
-        "...",
+        '...',
         currentPage - 1,
         currentPage,
         currentPage + 1,
-        "...",
+        '...',
         totalPage
       );
     } else {
       pageNumbers.push(
         1,
-        "...",
+        '...',
         totalPage - 4,
         totalPage - 3,
         totalPage - 2,
@@ -156,12 +156,12 @@ const Pagination = ({ currentPage, totalPage, paginate }) => {
       )}
       {pageNumbers.map((number, index) => (
         <li key={index} className="mx-1">
-          {number === "..." ? (
+          {number === '...' ? (
             <span className="px-3 py-1">...</span>
           ) : (
             <button
               className={`px-3 py-1 border rounded-full ${
-                number === currentPage ? "bg-gray-300" : ""
+                number === currentPage ? 'bg-gray-300' : ''
               }`}
               onClick={() => paginate(number)}
             >

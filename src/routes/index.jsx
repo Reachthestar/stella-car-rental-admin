@@ -28,7 +28,6 @@ const ProtectAdminRoute = lazy(() =>
 );
 const Chat = lazy(() => import('../pages/Chat'));
 
-
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -51,11 +50,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element:
+        element: (
           <DashboardContextProvider>
             <Dashboard />
           </DashboardContextProvider>
-        ,
+        ),
       },
       {
         path: '/bookings',
@@ -91,5 +90,5 @@ const router = createBrowserRouter([
 ]);
 
 export default function Router() {
-  return (<RouterProvider router={router} />);
+  return <RouterProvider router={router} />;
 }
