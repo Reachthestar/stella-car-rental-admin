@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useBooking } from '../contexts/booking-context';
 import CarsStatus from '../features/Statics/components/CarsStatus';
@@ -9,16 +9,10 @@ import TotalCustomers from '../features/Statics/components/TotalCustomers';
 
 export default function Statistics() {
   const { isAllPaymentLoading } = useBooking();
+  const [selectedNavigate, setSelectedNavigate] = useState('CarsStatus');
 
-  const carsStatusRef = useRef(null);
-  const incomeRef = useRef(null);
-  const totalCustomersRef = useRef(null);
-  const popularCarsRef = useRef(null);
-  const popularLocationsRef = useRef(null);
-
-  // Function to scroll to the ref
-  const scrollToRef = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigate = (e) => {
+    setSelectedNavigate(e.target.name);
   };
 
   return (
@@ -26,56 +20,51 @@ export default function Statistics() {
       {isAllPaymentLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="flex gap-4 relative">
-          <div className="flex flex-col pr-3 gap-4 py-3 w-[200px] h-screen fixed top-0">
+        <div className="flex gap-2">
+          <div className="flex flex-col pr-3 gap-4 w-[200px]">
             <button
+              name="CarsStatus"
               className="bg-card-01-bg text-white rounded-md font-semibold py-2"
-              onClick={() => scrollToRef(carsStatusRef)}
+              onClick={handleNavigate}
             >
               Car Status
             </button>
             <button
+              name="Income"
               className="bg-card-02-bg text-white rounded-md font-semibold py-2"
-              onClick={() => scrollToRef(incomeRef)}
+              onClick={handleNavigate}
             >
               Income
             </button>
             <button
+              name="TotalCustomers"
               className="bg-card-03-bg text-white rounded-md font-semibold py-2"
-              onClick={() => scrollToRef(totalCustomersRef)}
+              onClick={handleNavigate}
             >
               Total Customers
             </button>
             <button
+              name="PopularCars"
               className="bg-card-04-bg text-white rounded-md font-semibold py-2"
-              onClick={() => scrollToRef(popularCarsRef)}
+              onClick={handleNavigate}
             >
               Popular Cars
             </button>
             <button
+              name="PopularLocations"
               className="bg-card-01-bg text-white rounded-md font-semibold py-2"
-              onClick={() => scrollToRef(popularLocationsRef)}
+              onClick={handleNavigate}
             >
               Popular Locations
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 absolute left-[200px]">
-            <div ref={carsStatusRef}>
-              <CarsStatus />
-            </div>
-            <div ref={incomeRef}>
-              <Income />
-            </div>
-            <div ref={totalCustomersRef}>
-              <TotalCustomers />
-            </div>
-            <div ref={popularCarsRef}>
-              <PopularCars />
-            </div>
-            <div ref={popularLocationsRef}>
-              <PopularLocations />
-            </div>
+          <div className="flex flex-col gap-4 left-[200px] flex-1">
+            {selectedNavigate === 'CarsStatus' && <CarsStatus />}
+            {selectedNavigate === 'Income' && <Income />}
+            {selectedNavigate === 'TotalCustomers' && <TotalCustomers />}
+            {selectedNavigate === 'PopularCars' && <PopularCars />}
+            {selectedNavigate === 'PopularLocations' && <PopularLocations />}
           </div>
         </div>
       )}

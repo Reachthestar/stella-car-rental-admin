@@ -6,12 +6,12 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { useCustomer } from "../../../contexts/customer-context";
-import { useRef, useState, useEffect } from "react";
-import dayjs from "dayjs";
-import Header from "../../../components/Header";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { useCustomer } from '../../../contexts/customer-context';
+import { useRef, useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import Header from '../../../components/Header';
 
 ChartJS.register(
   CategoryScale,
@@ -23,52 +23,52 @@ ChartJS.register(
 );
 
 const dummyMonthlyCustomer = [
-  { createdAt: "2024-07-01T16:56:13.000Z" },
-  { createdAt: "2024-07-02T16:56:13.000Z" },
-  { createdAt: "2024-07-03T16:56:13.000Z" },
-  { createdAt: "2024-07-04T16:56:13.000Z" },
-  { createdAt: "2024-07-05T16:56:13.000Z" },
-  { createdAt: "2024-07-06T16:56:13.000Z" },
-  { createdAt: "2024-07-07T16:56:13.000Z" },
-  { createdAt: "2024-07-08T16:56:13.000Z" },
-  { createdAt: "2024-07-09T16:56:13.000Z" },
-  { createdAt: "2024-07-10T16:56:13.000Z" },
-  { createdAt: "2024-07-11T16:56:13.000Z" },
-  { createdAt: "2024-07-12T16:56:13.000Z" },
-  { createdAt: "2024-07-13T16:56:13.000Z" },
-  { createdAt: "2024-07-14T16:56:13.000Z" },
-  { createdAt: "2024-07-15T16:56:13.000Z" },
-  { createdAt: "2024-07-16T16:56:13.000Z" },
-  { createdAt: "2024-07-17T16:56:13.000Z" },
-  { createdAt: "2024-07-18T16:56:13.000Z" },
-  { createdAt: "2024-07-19T16:56:13.000Z" },
-  { createdAt: "2024-07-20T16:56:13.000Z" },
-  { createdAt: "2024-07-21T16:56:13.000Z" },
-  { createdAt: "2024-07-22T16:56:13.000Z" },
-  { createdAt: "2024-07-23T16:56:13.000Z" },
-  { createdAt: "2024-07-24T16:56:13.000Z" },
-  { createdAt: "2024-07-25T16:56:13.000Z" },
-  { createdAt: "2024-07-26T16:56:13.000Z" },
-  { createdAt: "2024-07-27T16:56:13.000Z" },
-  { createdAt: "2024-07-28T16:56:13.000Z" },
-  { createdAt: "2024-07-29T16:56:13.000Z" },
-  { createdAt: "2024-07-30T16:56:13.000Z" },
-  { createdAt: "2024-07-01T16:56:13.000Z" },
-  { createdAt: "2024-07-02T16:56:13.000Z" },
-  { createdAt: "2024-07-02T16:56:13.000Z" },
-  { createdAt: "2024-07-03T16:56:13.000Z" },
-  { createdAt: "2024-07-05T16:56:13.000Z" },
-  { createdAt: "2024-07-06T16:56:13.000Z" },
-  { createdAt: "2024-07-09T16:56:13.000Z" },
-  { createdAt: "2024-07-10T16:56:13.000Z" },
-  { createdAt: "2024-07-11T16:56:13.000Z" },
-  { createdAt: "2024-07-12T16:56:13.000Z" },
-  { createdAt: "2024-07-15T16:56:13.000Z" },
-  { createdAt: "2024-07-16T16:56:13.000Z" },
-  { createdAt: "2024-07-16T16:56:13.000Z" },
-  { createdAt: "2024-07-23T16:56:13.000Z" },
-  { createdAt: "2024-07-23T16:56:13.000Z" },
-]
+  { createdAt: '2024-07-01T16:56:13.000Z' },
+  { createdAt: '2024-07-02T16:56:13.000Z' },
+  { createdAt: '2024-07-03T16:56:13.000Z' },
+  { createdAt: '2024-07-04T16:56:13.000Z' },
+  { createdAt: '2024-07-05T16:56:13.000Z' },
+  { createdAt: '2024-07-06T16:56:13.000Z' },
+  { createdAt: '2024-07-07T16:56:13.000Z' },
+  { createdAt: '2024-07-08T16:56:13.000Z' },
+  { createdAt: '2024-07-09T16:56:13.000Z' },
+  { createdAt: '2024-07-10T16:56:13.000Z' },
+  { createdAt: '2024-07-11T16:56:13.000Z' },
+  { createdAt: '2024-07-12T16:56:13.000Z' },
+  { createdAt: '2024-07-13T16:56:13.000Z' },
+  { createdAt: '2024-07-14T16:56:13.000Z' },
+  { createdAt: '2024-07-15T16:56:13.000Z' },
+  { createdAt: '2024-07-16T16:56:13.000Z' },
+  { createdAt: '2024-07-17T16:56:13.000Z' },
+  { createdAt: '2024-07-18T16:56:13.000Z' },
+  { createdAt: '2024-07-19T16:56:13.000Z' },
+  { createdAt: '2024-07-20T16:56:13.000Z' },
+  { createdAt: '2024-07-21T16:56:13.000Z' },
+  { createdAt: '2024-07-22T16:56:13.000Z' },
+  { createdAt: '2024-07-23T16:56:13.000Z' },
+  { createdAt: '2024-07-24T16:56:13.000Z' },
+  { createdAt: '2024-07-25T16:56:13.000Z' },
+  { createdAt: '2024-07-26T16:56:13.000Z' },
+  { createdAt: '2024-07-27T16:56:13.000Z' },
+  { createdAt: '2024-07-28T16:56:13.000Z' },
+  { createdAt: '2024-07-29T16:56:13.000Z' },
+  { createdAt: '2024-07-30T16:56:13.000Z' },
+  { createdAt: '2024-07-01T16:56:13.000Z' },
+  { createdAt: '2024-07-02T16:56:13.000Z' },
+  { createdAt: '2024-07-02T16:56:13.000Z' },
+  { createdAt: '2024-07-03T16:56:13.000Z' },
+  { createdAt: '2024-07-05T16:56:13.000Z' },
+  { createdAt: '2024-07-06T16:56:13.000Z' },
+  { createdAt: '2024-07-09T16:56:13.000Z' },
+  { createdAt: '2024-07-10T16:56:13.000Z' },
+  { createdAt: '2024-07-11T16:56:13.000Z' },
+  { createdAt: '2024-07-12T16:56:13.000Z' },
+  { createdAt: '2024-07-15T16:56:13.000Z' },
+  { createdAt: '2024-07-16T16:56:13.000Z' },
+  { createdAt: '2024-07-16T16:56:13.000Z' },
+  { createdAt: '2024-07-23T16:56:13.000Z' },
+  { createdAt: '2024-07-23T16:56:13.000Z' },
+];
 
 export default function TotalCustomers() {
   const {
@@ -77,9 +77,9 @@ export default function TotalCustomers() {
     monthlyCustomer,
     currentYear,
     currentMonth,
-    currentDate
+    currentDate,
   } = useCustomer();
-  const [selectTotalCus, setSelectTotalCus] = useState("monthly");
+  const [selectTotalCus, setSelectTotalCus] = useState('monthly');
   const [totalAmount, setTotalAmount] = useState(0);
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,7 +101,7 @@ export default function TotalCustomers() {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -110,14 +110,14 @@ export default function TotalCustomers() {
     let labels = [];
     let data = [];
 
-    if (selectTotalCus === "yearly") {
+    if (selectTotalCus === 'yearly') {
       setTotalAmount(yearlyCustomer.length);
-    } else if (selectTotalCus === "monthly") {
+    } else if (selectTotalCus === 'monthly') {
       setTotalAmount(monthlyCustomer.length);
     }
-    if (selectTotalCus === "yearly") {
+    if (selectTotalCus === 'yearly') {
       labels = Array.from({ length: 12 }, (_, i) =>
-        dayjs().month(i).format("MMM")
+        dayjs().month(i).format('MMM')
       );
       data = labels.map(
         (_, month) =>
@@ -130,42 +130,42 @@ export default function TotalCustomers() {
       data = labels.map(
         (day) =>
           dummyMonthlyCustomer.filter(
-          // monthlyCustomer.filter(
+            // monthlyCustomer.filter(
             (customer) => dayjs(customer.createdAt).date() === day
           ).length
       );
     }
 
     const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
 
     setChartData({
       labels:
-        selectTotalCus === "yearly"
+        selectTotalCus === 'yearly'
           ? months.slice(0, currentMonth)
-          : selectTotalCus === "monthly"
-            ? daysArray.slice(0, currentDate)
-            : null,
+          : selectTotalCus === 'monthly'
+          ? daysArray.slice(0, currentDate)
+          : null,
       datasets: [
         {
           label:
-            selectTotalCus === "yearly"
+            selectTotalCus === 'yearly'
               ? `Total Customers (${currentYear})`
-              : `Total Customers (${dayjs().format("MMM")})`,
+              : `Total Customers (${dayjs().format('MMM')})`,
           data,
-          backgroundColor: "rgba(53, 162, 235, 0.8)",
+          backgroundColor: 'rgba(53, 162, 235, 0.8)',
           borderRadius: 5,
         },
       ],
@@ -176,14 +176,14 @@ export default function TotalCustomers() {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
       },
       title: {
         display: true,
         text:
-          selectTotalCus === "yearly"
+          selectTotalCus === 'yearly'
             ? `Yearly Customers (${currentYear})`
-            : `Monthly Customers (${dayjs().format("MMM")})`,
+            : `Monthly Customers (${dayjs().format('MMM')})`,
       },
       scales: {
         y: {
@@ -196,12 +196,12 @@ export default function TotalCustomers() {
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
   const currentCustomers =
-    selectTotalCus === "yearly"
+    selectTotalCus === 'yearly'
       ? yearlyCustomer?.slice(indexOfFirstCustomer, indexOfLastCustomer)
       : monthlyCustomer?.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
   const totalPage = Math.ceil(
-    (selectTotalCus === "yearly"
+    (selectTotalCus === 'yearly'
       ? yearlyCustomer?.length
       : monthlyCustomer?.length) / customersPerPage
   );
@@ -218,21 +218,21 @@ export default function TotalCustomers() {
       }
     } else {
       if (currentPage <= 4) {
-        pageNumbers.push(1, 2, 3, 4, 5, "...", totalPage);
+        pageNumbers.push(1, 2, 3, 4, 5, '...', totalPage);
       } else if (currentPage > 4 && currentPage < totalPage - 3) {
         pageNumbers.push(
           1,
-          "...",
+          '...',
           currentPage - 1,
           currentPage,
           currentPage + 1,
-          "...",
+          '...',
           totalPage
         );
       } else {
         pageNumbers.push(
           1,
-          "...",
+          '...',
           totalPage - 4,
           totalPage - 3,
           totalPage - 2,
@@ -244,13 +244,14 @@ export default function TotalCustomers() {
 
     return pageNumbers.map((number, index) => (
       <li key={index} className="mx-1">
-        {number === "..." ? (
+        {number === '...' ? (
           <span className="px-3 py-1">...</span>
         ) : (
           <button
             type="button"
-            className={`px-3 py-1 border rounded-full ${number === currentPage ? "bg-gray-300" : ""
-              }`}
+            className={`px-3 py-1 border rounded-full ${
+              number === currentPage ? 'bg-gray-300' : ''
+            }`}
             onClick={() => paginate(number)}
           >
             {number}
@@ -280,22 +281,22 @@ export default function TotalCustomers() {
       </div>
 
       <div
-        className="flex flex-col gap-4 h-[400px] overflow-auto"
+        className="flex flex-col gap-4 h-[350px] overflow-auto"
         ref={scrollRef}
       >
         <Header
           columns={[
-            "Customer ID",
-            "Name",
-            "Email",
-            "Phone",
-            "Address",
-            "Created Date",
-            "Driver License",
+            'Customer ID',
+            'Name',
+            'Email',
+            'Phone',
+            'Address',
+            'Created Date',
+            'Driver License',
           ]}
         />
         {currentCustomers?.map((customer, index) => {
-          const createDate = dayjs(customer?.createdAt).format("DD/MM/YYYY");
+          const createDate = dayjs(customer?.createdAt).format('DD/MM/YYYY');
           return (
             <div
               key={index}
@@ -303,7 +304,9 @@ export default function TotalCustomers() {
             >
               <div className="grid grid-cols-7 text-center items-center">
                 <div className="p-2 break-words">{customer?.customerId}</div>
-                <div className="p-2 break-words">{customer?.firstName} {customer?.lastName}</div>
+                <div className="p-2 break-words">
+                  {customer?.firstName} {customer?.lastName}
+                </div>
                 <div className="p-2 break-words">{customer?.email}</div>
                 <div className="p-2 break-words">{customer?.phone}</div>
                 <div className="p-2 break-words">{customer?.address}</div>
@@ -355,7 +358,7 @@ export default function TotalCustomers() {
       </ul>
 
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: "700px", height: "350px" }}>
+        <div style={{ width: '700px', height: '350px' }}>
           <Bar options={options} data={chartData} />
         </div>
       </div>

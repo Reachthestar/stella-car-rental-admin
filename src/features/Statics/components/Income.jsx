@@ -6,13 +6,13 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { usePayment } from "../../../contexts/payment-context";
-import { useBooking } from "../../../contexts/booking-context";
-import { useEffect, useRef, useState } from "react";
-import dayjs from "dayjs";
-import Header from "../../../components/Header";
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { usePayment } from '../../../contexts/payment-context';
+import { useBooking } from '../../../contexts/booking-context';
+import { useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import Header from '../../../components/Header';
 
 ChartJS.register(
   CategoryScale,
@@ -54,14 +54,20 @@ const dummyDailyPayment = [
   { date: '2024-07-28', totalAmount: 100000 },
   { date: '2024-07-29', totalAmount: 50000 },
   { date: '2024-07-30', totalAmount: 40000 },
-  { date: '2024-07-31', totalAmount: 60000 }
-]
+  { date: '2024-07-31', totalAmount: 60000 },
+];
 
 export default function Income() {
-  const { allPayment, monthlyPayments, yearlyPayment, dailyPayment, totalPaymentPerMonth } = usePayment();
+  const {
+    allPayment,
+    monthlyPayments,
+    yearlyPayment,
+    dailyPayment,
+    totalPaymentPerMonth,
+  } = usePayment();
   const { currentMonth, currentYear, currentDate } = useBooking();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [selectIncome, setSelectIncome] = useState("monthly");
+  const [selectIncome, setSelectIncome] = useState('monthly');
   const [currentPage, setCurrentPage] = useState(1);
   const paymentsPerPage = 5;
   const scrollRef = useRef(null);
@@ -81,19 +87,19 @@ export default function Income() {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
 
   useEffect(() => {
-    if (selectIncome === "yearly") {
+    if (selectIncome === 'yearly') {
       const sum = yearlyPayment?.reduce((acc, item) => {
         return (acc += item.amount);
       }, 0);
       setTotalAmount(sum);
     }
-    if (selectIncome === "monthly") {
+    if (selectIncome === 'monthly') {
       const sum = monthlyPayments?.reduce((acc, item) => {
         return (acc += item.amount);
       }, 0);
@@ -102,34 +108,34 @@ export default function Income() {
   }, [allPayment, selectIncome]);
 
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   const totalPayment = totalPaymentPerMonth;
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
       },
       title: {
         display: true,
         text:
-          selectIncome === "yearly"
+          selectIncome === 'yearly'
             ? `Yearly Sales (${currentYear})`
-            : selectIncome === "monthly"
-              ? `Monthly Sales (${months[month]})`
-              : null,
+            : selectIncome === 'monthly'
+            ? `Monthly Sales (${months[month]})`
+            : null,
       },
       scales: {
         y: {
@@ -140,28 +146,28 @@ export default function Income() {
   };
   const data = {
     labels:
-      selectIncome === "yearly"
+      selectIncome === 'yearly'
         ? months.slice(0, currentMonth)
-        : selectIncome === "monthly"
-          ? daysArray.slice(0, currentDate)
-          : null,
+        : selectIncome === 'monthly'
+        ? daysArray.slice(0, currentDate)
+        : null,
     datasets: [
       {
         label:
-          selectIncome === "yearly"
+          selectIncome === 'yearly'
             ? `Monthly Sales`
-            : selectIncome === "monthly"
-              ? "Daily Sales"
-              : null,
+            : selectIncome === 'monthly'
+            ? 'Daily Sales'
+            : null,
         data:
-          selectIncome === "yearly"
+          selectIncome === 'yearly'
             ? totalPayment
-            : selectIncome === "monthly"
-              // ? dailyPayment?.map((item) => item.totalAmount)
-              ? dummyDailyPayment?.map((item) => item.totalAmount)
-              : null,
-        backgroundColor: "rgba(53, 162, 235, 0.8)",
-        borderRadius: "5",
+            : selectIncome === 'monthly'
+            ? // ? dailyPayment?.map((item) => item.totalAmount)
+              dummyDailyPayment?.map((item) => item.totalAmount)
+            : null,
+        backgroundColor: 'rgba(53, 162, 235, 0.8)',
+        borderRadius: '5',
       },
     ],
   };
@@ -169,12 +175,12 @@ export default function Income() {
   const indexOfLastPayment = currentPage * paymentsPerPage;
   const indexOfFirstPayment = indexOfLastPayment - paymentsPerPage;
   const currentPayments =
-    selectIncome === "yearly"
+    selectIncome === 'yearly'
       ? yearlyPayment?.slice(indexOfFirstPayment, indexOfLastPayment)
       : monthlyPayments?.slice(indexOfFirstPayment, indexOfLastPayment);
 
   const totalPage = Math.ceil(
-    (selectIncome === "yearly"
+    (selectIncome === 'yearly'
       ? yearlyPayment?.length
       : monthlyPayments?.length) / paymentsPerPage
   );
@@ -191,21 +197,21 @@ export default function Income() {
       }
     } else {
       if (currentPage <= 4) {
-        pageNumbers.push(1, 2, 3, 4, 5, "...", totalPage);
+        pageNumbers.push(1, 2, 3, 4, 5, '...', totalPage);
       } else if (currentPage > 4 && currentPage < totalPage - 3) {
         pageNumbers.push(
           1,
-          "...",
+          '...',
           currentPage - 1,
           currentPage,
           currentPage + 1,
-          "...",
+          '...',
           totalPage
         );
       } else {
         pageNumbers.push(
           1,
-          "...",
+          '...',
           totalPage - 4,
           totalPage - 3,
           totalPage - 2,
@@ -217,13 +223,14 @@ export default function Income() {
 
     return pageNumbers.map((number, index) => (
       <li key={index} className="mx-1">
-        {number === "..." ? (
+        {number === '...' ? (
           <span className="px-3 py-1">...</span>
         ) : (
           <button
             type="button"
-            className={`px-3 py-1 border rounded-full ${number === currentPage ? "bg-gray-300" : ""
-              }`}
+            className={`px-3 py-1 border rounded-full ${
+              number === currentPage ? 'bg-gray-300' : ''
+            }`}
             onClick={() => paginate(number)}
           >
             {number}
@@ -252,20 +259,20 @@ export default function Income() {
       </div>
 
       <div
-        className="flex flex-col gap-4 h-[400px] overflow-auto"
+        className="flex flex-col gap-4 h-[350px] overflow-auto"
         ref={scrollRef}
       >
         <Header
           columns={[
-            "Booking ID",
-            "Payment ID",
-            "Customer",
-            "Payment Date",
-            "Amount",
+            'Booking ID',
+            'Payment ID',
+            'Customer',
+            'Payment Date',
+            'Amount',
           ]}
         />
         {currentPayments?.map((payment, index) => {
-          const paymentDate = dayjs(payment?.paymentDate).format("DD/MM/YYYY");
+          const paymentDate = dayjs(payment?.paymentDate).format('DD/MM/YYYY');
           return (
             <div
               key={index}
@@ -323,7 +330,7 @@ export default function Income() {
       </ul>
 
       <div className="bg-white rounded-md shadow-md p-4 w-full flex justify-center">
-        <div style={{ width: "700px", height: "350px" }}>
+        <div style={{ width: '700px', height: '350px' }}>
           <Bar options={options} data={data} />
         </div>
       </div>
